@@ -1,4 +1,3 @@
-
 import DeveloperSummary from "../Components/DeveloperSummary";
 import ProjectSummary from "../Components/ProjectSummary";
 import Header from "../Components/Header/Header";
@@ -18,30 +17,12 @@ const data = {
 };
 
 const Dashboard = () => {
-
-  const { user, logout } = useLoginAuthStore();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!user) {
-      navigate("/");
-    }
-  }, [user, navigate]);
-
   return (
     <>
-      <Header user={user} />
-      <div className="p-8">
-        <section>
-          <div className="grid lg:grid-cols-2 gap-x-10 grid-cols-1 ">
-            {/* Passing data.projects as props */}
-            {/* <span>Welcome, {user?.username}!</span>
-            <button
-              onClick={() => logout(navigate)}
-              className="bg-red-500 px-4 py-2 rounded-lg text-white hover:bg-red-600"
-            >
-              Logout
-            </button> */}
+      <Header />
+      <div className="mt-10">
+        <section className="">
+          <div className="grid lg:grid-cols-2 gap-x-10 gap-y-5 grid-cols-1">
             <ProjectSummary projects={data.projects} />
             <DeveloperSummary developers={data.developers} />
           </div>

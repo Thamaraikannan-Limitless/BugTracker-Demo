@@ -23,10 +23,10 @@ const TicketBtn = () => {
   }, [showForm]);
 
   return (
-    <div className="bg-gray-50 p-5 relative">
+    <div className="bg-gray-50 py-3 relative">
       {/* Header Section */}
       <section>
-        <header className="flex justify-between items-center mb-5">
+        <header className="flex justify-between items-center">
           <h1 className="text-2xl font-bold">Tickets</h1>
           <button
             onClick={() => setShowForm(true)}
