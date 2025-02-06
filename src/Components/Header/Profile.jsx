@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import useLoginAuthStore from "../../store/useLoginAuthStore";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +12,7 @@ const Profile = () => {
       navigate("/");
     }
   }, [user, navigate]);
-  
+
   return (
     <div className="relative">
       {/* Profile Icon */}
@@ -38,11 +38,15 @@ const Profile = () => {
       {/* Dropdown Menu */}
       {isOpen && (
         <nav className="absolute right-0 bg-white shadow-lg mt-4  w-52 h-10 text-center rounded-md text-black z-10 hover:bg-gray-200">
-      <ul >
-          <li  onClick={() => logout(navigate)} className="px-4 py-2 bg-red-600 rounded-md  text-black cursor-pointer">Log Out</li>
-        </ul> 
+          <ul>
+            <li
+              onClick={() => logout(navigate)}
+              className="px-2  py-2 bg-green-600 rounded-md  text-white cursor-pointer"
+            >
+              Log Out
+            </li>
+          </ul>
         </nav>
-       
       )}
     </div>
   );

@@ -1,4 +1,3 @@
-// Updated AuthForm.js (Handles login, signup, and password reset)
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useLoginAuthStore from "../store/useLoginAuthStore";
