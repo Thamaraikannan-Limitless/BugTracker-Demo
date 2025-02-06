@@ -1,12 +1,13 @@
-import TicketBtn from "../Components/TicketBtn"
-
+import Header from "../Components/Header/Header";
+import TicketBtn from "../Components/TicketBtn";
 
 const Tickets = () => {
   return (
     <div>
-       <TicketBtn/>
+      <Header />
+      <TicketBtn />
     </div>
-  )
-}
+  );
+};
 
-export default Tickets
+export default Tickets;
