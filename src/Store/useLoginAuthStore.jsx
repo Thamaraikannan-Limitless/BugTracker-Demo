@@ -9,7 +9,7 @@ const useLoginAuthStore = create((set) => ({
     set({ isLoading: true, error: null });
 
     try {
-      console.log("Login process started");
+      console.log("Login started");
       let users = JSON.parse(localStorage.getItem("users")) || [];
       console.log("Existing users:", users);
 
@@ -19,8 +19,8 @@ const useLoginAuthStore = create((set) => ({
 
       if (user) {
         console.log("User found, logging in:", user);
-        localStorage.setItem("user", JSON.stringify(user)); // Save logged-in user
-        set({ user, isLoading: false, error: null }); // Ensure error is cleared on success
+        localStorage.setItem("user", JSON.stringify(user));
+        set({ user, isLoading: false, error: null });
         navigate("/dashboard");
       } else {
         console.log("Invalid username or password");
@@ -34,8 +34,8 @@ const useLoginAuthStore = create((set) => ({
 
   logout: (navigate) => {
     console.log("User logged out");
-    localStorage.removeItem("user"); // Clear persistence
-    set({ user: null, error: null }); // Ensure error is reset on logout
+    localStorage.removeItem("user");
+    set({ user: null, error: null });
     navigate("/");
   },
 }));
