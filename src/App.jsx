@@ -6,11 +6,13 @@ import Tickets from "./Pages/Tickets";
 
 function App() {
   return (
+
     <Router>
       {/* <Header></Header> */}
+
       <Routes>
         <Route path="/" element={<AuthForm />} />
-        <Route path="/dashboard" element={<Dashboard />} />{" "}
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/ticket" element={<Tickets />} />
       </Routes>
     </Router>

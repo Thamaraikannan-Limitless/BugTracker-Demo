@@ -1,6 +1,4 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import useLoginAuthStore from "../store/useLoginAuthStore";
+
 import DeveloperSummary from "../Components/DeveloperSummary";
 import ProjectSummary from "../Components/ProjectSummary";
 import Header from "../Components/Header/Header";
@@ -20,6 +18,7 @@ const data = {
 };
 
 const Dashboard = () => {
+
   const { user, logout } = useLoginAuthStore();
   const navigate = useNavigate();
 
