@@ -3,6 +3,7 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
 import { FiMoreVertical, FiSearch } from "react-icons/fi";
+import PropTypes from "prop-types";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -56,49 +57,15 @@ const MoreOptions = (params) => {
 
 const filters = ["Projects", "Priority", "Status", "Developer", "Tester"];
 
-const TicketTable = () => {
+const TicketTable = ( { tickets, onSelectTicket }) => {
   const [gridApi, setGridApi] = useState(null);
   const [activeTab, setActiveTab] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [paginationPageSize, setPaginationPageSize] = useState(10);
 
-  const rowData = [
-    {
-      priority: "High",
-      ticket: "TK000001",
-      project: "Project 1",
-      createdOn: "20 Jan",
-      assignedOn: "21 Jan",
-      completedOn: "28 Jan",
-      status: "Completed",
-      timeToAllocate: "2 days (16 hrs)",
-      timeToFinish: "2 days (16 hrs)",
-    },
-    {
-      priority: "Medium",
-      ticket: "TK000002",
-      project: "Project 2",
-      createdOn: "22 Jan",
-      assignedOn: "-",
-      completedOn: "-",
-      status: "Created",
-      timeToAllocate: "2 days (16 hrs)",
-      timeToFinish: "-",
-    },
-    {
-      priority: "Low",
-      ticket: "TK000003",
-      project: "Project 3",
-      createdOn: "23 Jan",
-      assignedOn: "24 Jan",
-      completedOn: "30 Jan",
-      status: "For Retest",
-      timeToAllocate: "3 days (24 hrs)",
-      timeToFinish: "1 day (8 hrs)",
-    },
-  ];
+  
 
-  const filteredData = rowData.filter(
+  const filteredData = tickets.filter(
     (ticket) =>
       (activeTab === "All" || ticket.status === activeTab) &&
       (ticket.ticket.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -115,6 +82,7 @@ const TicketTable = () => {
           <a
             href={`#${params.value}`}
             className="text-blue-500 underline cursor-pointer"
+            onClick={() => onSelectTicket(params.data.id)}
           >
             {params.value}
           </a>
@@ -191,7 +159,7 @@ const TicketTable = () => {
   };
 
   return (
-    <section>
+    
       <div className="w-full py-2 overflow-x-auto">
         <div className="flex space-x-4 mb-2 flex-wrap">
           {["All", "Created", "Assigned", "Completed"].map((tab) => (
@@ -243,9 +211,26 @@ const TicketTable = () => {
           />
         </div>
       </div>
-    </section>
+
   );
 
+};
+TicketTable.propTypes = {
+  tickets: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      priority: PropTypes.string.isRequired,
+      ticket: PropTypes.string.isRequired,
+      project: PropTypes.string.isRequired,
+      createdOn: PropTypes.string.isRequired,
+      assignedOn: PropTypes.string,
+      completedOn: PropTypes.string,
+      status: PropTypes.string.isRequired,
+      timeToAllocate: PropTypes.string.isRequired,
+      timeToFinish: PropTypes.string,
+    })
+  ).isRequired,
+  onSelectTicket: PropTypes.func.isRequired,
 };
 
 export default TicketTable;
