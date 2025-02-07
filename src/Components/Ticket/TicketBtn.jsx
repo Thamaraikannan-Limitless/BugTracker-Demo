@@ -59,5 +59,3 @@ const TicketBtn = () => {
 };
 
 export default TicketBtn;
-
-

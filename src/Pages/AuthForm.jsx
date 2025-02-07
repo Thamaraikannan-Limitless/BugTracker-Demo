@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useLoginAuthStore from "../store/useLoginAuthStore";
 import logo from "../assets/limitless-logo.svg";
-import LoginForm from "../Components/LoginForm";
-import SignupForm from "../Components/SignupForm";
-import ResetPasswordForm from "../Components/ResetPasswordFarm";
+import LoginForm from "../Components/LoginSignup/LoginForm";
+import SignupForm from "../Components/LoginSignup/SignupForm";
+import ResetPasswordForm from "../Components/LoginSignup/ResetPasswordFarm";
 
 const AuthForm = () => {
   const { user } = useLoginAuthStore();

@@ -1,5 +1,5 @@
-import DeveloperSummary from "../Components/DeveloperSummary";
-import ProjectSummary from "../Components/ProjectSummary";
+import DeveloperSummary from "../Components/Dashboard/DeveloperSummary";
+import ProjectSummary from "../Components/Dashboard/ProjectSummary";
 import Header from "../Components/Header/Header";
 
 // Dummy project data
