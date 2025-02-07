@@ -5,105 +5,116 @@ import TicketBtn from "../Components/Ticket/TicketBtn";
 
 import { useState } from "react";
 
-const ticketsData = [
+const rowData = [
   {
     id: 1,
-    ticketNumber: "TK000001",
-    projectName: "Project 1",
+    priority: "High",
+    ticket: "TK000001",
+    project: "Project 1",
     createdOn: "20 Jan",
-    status: "Done",
+    assignedOn: "21 Jan",
+    completedOn: "28 Jan",
+    status: "Completed",
+    timeToAllocate: "2 days (16 hrs)",
+    timeToFinish: "2 days (16 hrs)",
+    
     createdBy: {
       name: "Kannan",
-      image: "https://picsum.photos/seed/picsum/200/300",
-      date: "20/18/2025",
+      date: "20 Jan",
+      image:"https://picsum.photos/seed/picsum/200/300"
     },
     assignedBy: {
       name: "Kannan",
-      image: "https://picsum.photos/seed/picsum/200/300",
-      date: "20/18/2025",
+      date: "21 Jan",
+      image:"https://picsum.photos/seed/picsum/200/300"
     },
     assignedTo: {
       name: "Syed",
-      image: "https://picsum.photos/seed/picsum/200/300",
-      date: "20/18/2025",
+      date: "21 Jan",
+      image:"https://picsum.photos/seed/picsum/200/300"
     },
     retestBy: {
       name: "Jasper",
-      image: "https://picsum.photos/seed/picsum/200/300",
-      date: "20/18/2025",
+      date: "28 Jan",
+      image:"https://picsum.photos/seed/picsum/200/300"
     },
-    details:
-      " Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatum blanditiis reiciendis soluta at beatae ducimus assumenda maiores consequatur omnis quos. Deserunt quibusdam distinctio nobis dignissimos molestias eius explicabo eligendi incidunt illo optio, in, quidem maxime quo adipisci dolore blanditiis et iusto saepe assumenda, id molestiae cupiditate veritatis facere! Vel odio modi saepe, ad optio consectetur! Maxime deserunt recusandae harum dolorum nisi est fuga, reprehenderit beatae deleniti distinctio quos quasi neque illo error iure amet laborum nostrum officiis. In hic rem, architecto autem odit atque reiciendis adipisci at praesentium! Officia repellat explicabo deleniti assumenda minus dolorum qui eos voluptates libero. Impedit.",
-    attachments: "https://picsum.photos/seed/picsum/200/300",
+    details: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam consectetur obcaecati quibusdam autem hic sapiente voluptates, suscipit ratione magnam! Nihil aspernatur deserunt, accusantium commodi suscipit illo, doloremque delectus sint atque consequatur consectetur? Tenetur modi ea non iste ipsum temporibus magnam, mollitia expedita minima porro rem, inventore tempora illo odio dicta?",
+    attachments:"https://picsum.photos/seed/picsum/200/300",
     remarks: [
       {
-        author: {
-          name: "John Doe",
-          image: "https://picsum.photos/seed/picsum/200/300",
-        },
-        text: " Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatum blanditiis reiciendis soluta at beatae ducimus assumenda maiores consequatur omnis quos. Deserunt quibusdam distinctio nobis dignissimos molestias eius explicabo eligendi incidunt illo optio, in, quidem maxime quo adipisci dolore blanditiis et iusto saepe assumenda, id molestiae cupiditate veritatis facere! Vel odio modi saepe, ad optio consectetur! Maxime deserunt recusandae harum dolorum nisi est fuga, reprehenderit beatae deleniti distinctio quos quasi neque illo error iure amet laborum nostrum officiis. In hic rem, architecto autem odit atque reiciendis adipisci at praesentium! Officia repellat explicabo deleniti assumenda minus dolorum qui eos voluptates libero. Impedit.",
-        date: "2025-02-06",
+        author: { name: "Syed", image: "https://picsum.photos/seed/picsum/200/300" },
+        text: "This error occurs because React encountered an object in a location where it expected a renderable value (such as a string, number, or component).",
+        date: "22 Jan",
+      },
+      {
+        author: { name: "Kannan", image: "https://picsum.photos/seed/picsum/200/300" },
+        text: "This error occurs because React encountered an object in a location where it expected a renderable value (such as a string, number, or component).",
+        date: "25 Jan",
       },
     ],
   },
   {
     id: 2,
-    ticketNumber: "TK000002",
-    projectName: "Project 2",
-    createdOn: "21 Jan",
-    status: "Created",
+    priority: "Low",
+    ticket: "TK000001",
+    project: "Project 1",
+    createdOn: "20 Jan",
+    assignedOn: "21 Jan",
+    completedOn: "28 Jan",
+    status: "Assigned",
+    timeToAllocate: "2 days (16 hrs)",
+    timeToFinish: "2 days (16 hrs)",
     createdBy: {
       name: "Kannan",
-      image: "https://picsum.photos/seed/picsum/200/300",
-      date: "20/18/2025",
+      date: "20 Jan",
+      image:"https://picsum.photos/seed/picsum/200/300"
     },
-    details:
-      "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nisi totam officia eum amet molestiae, ex provident ullam dicta ratione eius, architecto tempore iure sunt temporibus velit sit impedit, perspiciatis sed!",
-    attachments: "https://picsum.photos/seed/picsum/200/300",
+    assignedBy: {
+      name: "Kannan",
+      date: "21 Jan",
+      image:"https://picsum.photos/seed/picsum/200/300"
+    },
+    assignedTo: {
+      name: "Syed",
+      date: "21 Jan",
+      image:"https://picsum.photos/seed/picsum/200/300"
+    },
+    details: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam consectetur obcaecati quibusdam autem hic sapiente voluptates, suscipit ratione magnam! Nihil aspernatur deserunt, accusantium commodi suscipit illo, doloremque delectus sint atque consequatur consectetur? Tenetur modi ea non iste ipsum temporibus magnam, mollitia expedita minima porro rem, inventore tempora illo odio dicta?",
+    attachments:"https://picsum.photos/seed/picsum/200/300",
     remarks: [
+   
       {
-        author: {
-          name: "John krishna murthy",
-          image: "https://picsum.photos/seed/picsum/200/300",
-        },
-        text: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nisi totam officia eum amet molestiae, ex provident ullam dicta ratione eius, architecto tempore",
-        date: "2025-02-06",
+        author: { name: "Kannan", image: "https://picsum.photos/seed/picsum/200/300" },
+        text: "This error occurs because React encountered an object in a location where it expected a renderable value (such as a string, number, or component).",
+        date: "25 Jan",
       },
     ],
   },
   {
     id: 3,
-    ticketNumber: "TK000003",
-    projectName: "Project 3",
-    createdOn: "21 Jan",
-    status: "Assigned",
+    priority: "Medium",
+    ticket: "TK000001",
+    project: "Project 1",
+    createdOn: "20 Jan",
+    assignedOn: "21 Jan",
+    completedOn: "28 Jan",
+    status: "Created",
+    timeToAllocate: "2 days (16 hrs)",
+    timeToFinish: "2 days (16 hrs)",
     createdBy: {
       name: "Kannan",
-      image: "https://picsum.photos/seed/picsum/200/300",
-      date: "20/18/2025",
+      date: "20 Jan",
+      image:"https://picsum.photos/seed/picsum/200/300"
     },
-    assignedBy: {
-      name: "Kannan",
-      image: "https://picsum.photos/seed/picsum/200/300",
-      date: "20/18/2025",
-    },
-    assignedTo: {
-      name: "Syed",
-      image: "https://picsum.photos/seed/picsum/200/300",
-      date: "20/18/2025",
-    },
-    details:
-      "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nisi totam officia eum amet molestiae, ex provident ullam dicta ratione eius, architecto tempore iure sunt temporibus velit sit impedit, perspiciatis sed!",
-    attachments: "https://picsum.photos/seed/picsum/200/300",
+    details: "This error occurs because React encountered an object in a location where it expected a renderable value (such as a string, number, or component). The issue here lies in how remark.text or other similar parts are handled when rendering inside JSX.",
+    attachments:"https://picsum.photos/seed/picsum/200/300",
     remarks: [
       {
-        author: {
-          name: "John Doe",
-          image: "https://picsum.photos/seed/picsum/200/300",
-        },
-        text: " Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatum blanditiis reiciendis soluta at beatae ducimus assumenda maiores consequatur omnis quos. Deserunt quibusdam distinctio nobis dignissimos molestias eius explicabo eligendi incidunt illo optio, in, quidem maxime quo adipisci dolore blanditiis et iusto saepe assumenda, id molestiae cupiditate veritatis facere! Vel odio modi saepe, ad optio consectetur! Maxime deserunt recusandae harum dolorum nisi est fuga, reprehenderit beatae deleniti distinctio quos quasi neque illo error iure amet laborum nostrum officiis. In hic rem, architecto autem odit atque reiciendis adipisci at praesentium! Officia repellat explicabo deleniti assumenda minus dolorum qui eos voluptates libero. Impedit.",
-        date: "2025-02-06",
+        author: { name: "Syed", image: "https://picsum.photos/seed/picsum/200/300" },
+        text: "This error occurs because React encountered an object in a location where it expected a renderable value (such as a string, number, or component).",
+        date: "22 Jan",
       },
+    
     ],
   },
 ];
@@ -114,10 +125,10 @@ const Tickets = () => {
   const [selectedTicket, setSelectedTicket] = useState(null);
 
   const handleTicketSelect = (ticketId) => {
-    const ticket = ticketsData.find((t) => t.id === ticketId);
+    const ticket = rowData.find((t) => t.id === ticketId);
     setSelectedTicket(ticket);
   };
-
+ 
   return (
     <>
       <Header />
@@ -133,7 +144,7 @@ const Tickets = () => {
             />
           ) : (
             <TicketTable
-              tickets={ticketsData}
+              tickets={rowData}
               onSelectTicket={handleTicketSelect}
             />
           )}
