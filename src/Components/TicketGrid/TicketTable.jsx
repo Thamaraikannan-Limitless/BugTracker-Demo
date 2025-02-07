@@ -245,6 +245,7 @@ const TicketTable = () => {
       </div>
     </section>
   );
+
 };
 
 export default TicketTable;
