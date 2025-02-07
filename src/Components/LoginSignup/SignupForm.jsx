@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FaUser, FaLock } from "react-icons/fa";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-import useSignupAuthStore from "../store/useSignupAuthStore";
+import useSignupAuthStore from "../../store/useSignupAuthStore";
 
 const SignupForm = ({ setIsLogin }) => {
   const [username, setUsername] = useState("");
