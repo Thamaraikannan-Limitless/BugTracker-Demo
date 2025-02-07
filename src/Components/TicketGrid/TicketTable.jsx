@@ -107,6 +107,7 @@ const TicketTable = ( { tickets, onSelectTicket }) => {
       sortable: false,
       filter: false,
       flex: 1,
+      minWidth: 150,
     },
     {
       headerName: "ASSIGNED ON",
@@ -205,7 +206,8 @@ const TicketTable = ( { tickets, onSelectTicket }) => {
             rowData={filteredData}
             columnDefs={columnDefs}
             defaultColDef={defaultColDef}
-            domLayout="autoHeight"
+          // domLayout="autoHeight"
+          
             pagination={true}
             paginationPageSize={paginationPageSize}
           />

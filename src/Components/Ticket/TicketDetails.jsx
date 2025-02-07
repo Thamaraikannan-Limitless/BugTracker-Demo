@@ -46,7 +46,7 @@ const TicketDetails = ({ ticket, onBack }) => {
         {/* Progress Section */}
         <div className="relative lg:w-[450px] h-[500px] bg-gray-100  py-8 shadow-md rounded-xl">
           {progressStages.map((stage, index) => (
-            <div key={index} className="relative flex gap-6 items-start mb-10">
+            <div key={index} className="relative flex gap-0 items-start mb-10">
               {/* Circle Indicator */}
               <div className="relative z-10 px-4 ml-4 md:ml-[37%] lg:ml-12">
                 {stage.user ? (
@@ -103,7 +103,7 @@ const TicketDetails = ({ ticket, onBack }) => {
         </div>
 
         {/* Ticket Details */}
-        <div className="flex-1 bg-white p-6 shadow-md rounded-xl text-sm">
+        <div className="flex-1 bg-white p-6  rounded-xl text-sm">
           <h3 className="font-semibold  mb-2">Ticket Details</h3>
           <p className="text-gray-700">{ticket.details}</p>
 
@@ -129,15 +129,15 @@ const TicketDetails = ({ ticket, onBack }) => {
               <h4 className="font-semibold"> <span>{ticket.remarks.length}</span> Remarks</h4>
     {ticket.remarks.map((remark, i) => (
       <div key={i} className="mt-2 p-3 flex flex-col md:flex-row md:gap-x-16 items-center rounded-lg">
-        <div className="flex items-center  lg:flex-row flex-col mb-4">
+        <div className="flex items-center gap-4 lg:flex-row flex-col mb-4">
           <img
             src={remark.author.image}
             alt="User"
             className="w-12 h-12 rounded-full border  object-cover"
           />
-          <div className="mt-5 lg:mt-0 text-center w-[150px]">
+          <div className="mt-5 lg:mt-0 text-left w-[100px]">
             <p className="text-sm font-semibold">{remark.author?.name}</p>
-            <p className="text-xs text-gray-500 ml-2">on {remark.date}</p>
+            <p className="text-xs  text-gray-500 ">on {remark.date}</p>
           </div>
         </div>
         <p className="text-gray-700">{remark.text}</p>

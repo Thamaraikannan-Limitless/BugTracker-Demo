@@ -98,7 +98,7 @@ const rowData = [
     createdOn: "20 Jan",
     assignedOn: "21 Jan",
     completedOn: "28 Jan",
-    status: "Created",
+    status: "Assigned",
     timeToAllocate: "2 days (16 hrs)",
     timeToFinish: "2 days (16 hrs)",
     createdBy: {
