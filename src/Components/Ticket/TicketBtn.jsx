@@ -48,8 +48,7 @@ const TicketBtn = () => {
       {/* Form Section - Render conditionally */}
       <div
         ref={formRef}
-        className={`absolute md:top-[0px] top-[0px] right-0 h-full min-h-screen md:w-[480px] bg-[#EDEDED] z-20 w-[380px] shadow-md transform ${
-
+        className={`fixed md:top-[70px] top-[50px] right-0 h-full max-h-screen md:w-[480px] bg-[#EDEDED] z-20 md:w-[380px] shadow-md transform ${
           showForm ? "translate-x-0" : "translate-x-full"
         } transition-transform duration-500 ease-in-out overflow-y-auto`}
       >
