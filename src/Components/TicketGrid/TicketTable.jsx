@@ -57,13 +57,10 @@ const MoreOptions = (params) => {
 
 const filters = ["Projects", "Priority", "Status", "Developer", "Tester"];
 
-const TicketTable = ( { tickets, onSelectTicket }) => {
-  const [gridApi, setGridApi] = useState(null);
+const TicketTable = ({ tickets, onSelectTicket }) => {
   const [activeTab, setActiveTab] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [paginationPageSize, setPaginationPageSize] = useState(10);
-
-  
 
   const filteredData = tickets.filter(
     (ticket) =>
@@ -160,62 +157,59 @@ const TicketTable = ( { tickets, onSelectTicket }) => {
   };
 
   return (
-    
-      <div className="w-full py-2 overflow-x-auto">
-        <div className="flex space-x-4 mb-2 flex-wrap">
-          {["All", "Created", "Assigned", "Completed"].map((tab) => (
-            <div
-              key={tab}
-              className={`cursor-pointer pb-2 ${
-                activeTab === tab
-                  ? "border-b-2 border-black font-semibold"
-                  : "hover:border-b-2 hover:border-gray-400"
-              }`}
-              onClick={() => setActiveTab(tab)}
-            >
-              {tab}
-            </div>
-          ))}
-          <div className="ml-auto flex items-center border rounded-xl px-2 py-1">
-            <FiSearch className="mr-2" />
-            <input
-              type="text"
-              placeholder="Search"
-              className="outline-none"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
+    <div className="w-full py-2 overflow-x-auto">
+      <div className="flex space-x-4 mb-2 flex-wrap">
+        {["All", "Created", "Assigned", "Completed"].map((tab) => (
+          <div
+            key={tab}
+            className={`cursor-pointer pb-2 ${
+              activeTab === tab
+                ? "border-b-2 border-black font-semibold"
+                : "hover:border-b-2 hover:border-gray-400"
+            }`}
+            onClick={() => setActiveTab(tab)}
+          >
+            {tab}
           </div>
-        </div>
-
-        <div className="flex flex-wrap space-x-2 mb-4">
-          {filters.map((filter) => (
-            <div key={filter} className="flex items-center space-x-1">
-              <label>{filter}: </label>
-              <select className="">
-                <option>All</option>
-                <option>Option 1</option>
-                <option>Option 2</option>
-              </select>
-            </div>
-          ))}
-        </div>
-
-        <div className="ag-theme-quartz h-[600px] w-full border-none overflow-x-auto">
-          <AgGridReact
-            rowData={filteredData}
-            columnDefs={columnDefs}
-            defaultColDef={defaultColDef}
-          // domLayout="autoHeight"
-          
-            pagination={true}
-            paginationPageSize={paginationPageSize}
+        ))}
+        <div className="ml-auto flex items-center border rounded-xl px-2 py-1">
+          <FiSearch className="mr-2" />
+          <input
+            type="text"
+            placeholder="Search"
+            className="outline-none"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
       </div>
 
-  );
+      <div className="flex flex-wrap space-x-2 mb-4">
+        {filters.map((filter) => (
+          <div key={filter} className="flex items-center space-x-1">
+            <label>{filter}: </label>
+            <select className="">
+              <option>All</option>
+              <option>Option 1</option>
+              <option>Option 2</option>
+            </select>
+          </div>
+        ))}
+      </div>
 
+      <div className="ag-theme-quartz h-[600px] w-full border-none overflow-x-auto">
+        <AgGridReact
+          rowData={filteredData}
+          columnDefs={columnDefs}
+          defaultColDef={defaultColDef}
+          // domLayout="autoHeight"
+
+          pagination={true}
+          paginationPageSize={paginationPageSize}
+        />
+      </div>
+    </div>
+  );
 };
 TicketTable.propTypes = {
   tickets: PropTypes.arrayOf(
