@@ -26,6 +26,38 @@ section {
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 10;
 }
+/* Remove borders around the entire grid */
+.ag-root-wrapper {
+  border: none !important;
+  box-shadow: none !important; /* Optional: removes shadow if present */
+}
+
+/* Remove borders between rows */
+.ag-row,
+.ag-cell {
+  border: none !important;
+}
+
+/* Remove header borders */
+.ag-header-cell,
+.ag-header {
+  border: none !important;
+  border-bottom: none !important;
+}
+.ag-paging-panel {
+  border: none;
+  justify-content: space-between;
+}
+.ag-paging-row-summary-panel {
+  display: none;
+}
+/* Change header background color */
+.ag-header {
+  font-size: 12px;
+  padding: 0;
+  background-color: #fff !important; /* Indigo color */
+  color: #9f9f9f !important; /* White text for contrast */
+}
 
 /* Grid data pagination */
 @media (max-width: 640px) {

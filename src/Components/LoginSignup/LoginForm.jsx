@@ -9,6 +9,8 @@ const LoginForm = ({ setResetPassword, setIsLogin }) => {
   const [showPassword, setShowPassword] = useState(false);
   const { login, error: loginError } = useLoginAuthStore();
 
+  const isFormValid = username.trim() !== "" && password.trim() !== "";
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     await login(username, password);
@@ -49,7 +51,10 @@ const LoginForm = ({ setResetPassword, setIsLogin }) => {
 
         <button
           type="submit"
-          className="w-full bg-gradient-to-r from-[#71BF44] to-[#034C41] cursor-pointer text-white py-2 rounded-lg"
+          className={`w-full bg-gradient-to-r from-[#71BF44] to-[#034C41] text-white py-2 rounded-lg ${
+            !isFormValid ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+          }`}
+          disabled={!isFormValid}
         >
           LOGIN
         </button>
