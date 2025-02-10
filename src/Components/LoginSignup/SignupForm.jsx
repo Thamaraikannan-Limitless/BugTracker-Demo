@@ -14,7 +14,9 @@ const SignupForm = ({ setIsLogin }) => {
   const [error, setError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [emailError, setEmailError] = useState("");
   const [isFormValid, setIsFormValid] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
 
   const {
     signup,
@@ -32,12 +34,26 @@ const SignupForm = ({ setIsLogin }) => {
   }, [confirmPassword, password]);
 
   useEffect(() => {
+    if (email) {
+      if (!email.includes("@") || !email.includes(".com")) {
+        setEmailError("Invalid email format. Example: user@example.com");
+      } else {
+        setEmailError("");
+      }
+    } else {
+      setEmailError("");
+    }
+  }, [email]);
+
+  useEffect(() => {
     const allFieldsFilled =
       username && email && password && confirmPassword && position;
     const passwordsMatch = password.trim() === confirmPassword.trim();
+    const emailIsValid = email.includes("@") && email.includes(".com");
 
-    if (allFieldsFilled && passwordsMatch) {
+    if (allFieldsFilled && passwordsMatch && emailIsValid) {
       setIsFormValid(true);
+      setShowTooltip(false);
     } else {
       setIsFormValid(false);
     }
@@ -54,6 +70,12 @@ const SignupForm = ({ setIsLogin }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+
+    if (!isFormValid) {
+      setShowTooltip(true);
+      setTimeout(() => setShowTooltip(false), 3000); // Tooltip hides after 3 seconds
+      return;
+    }
 
     if (password.trim() !== confirmPassword.trim()) {
       setConfirmPasswordError("Passwords do not match");
@@ -73,7 +95,7 @@ const SignupForm = ({ setIsLogin }) => {
   };
 
   return (
-    <div className="">
+    <div>
       {success && (
         <p className="text-green-500 text-sm mb-3">{successMessage}</p>
       )}
@@ -104,6 +126,7 @@ const SignupForm = ({ setIsLogin }) => {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
+        {emailError && <p className="text-red-500 text-sm">{emailError}</p>}
 
         <select
           className="bg-transparent w-full text-white p-3 rounded-lg border border-white"
@@ -163,15 +186,26 @@ const SignupForm = ({ setIsLogin }) => {
           <p className="text-red-500 text-sm">{confirmPasswordError}</p>
         )}
 
-        <button
-          type="submit"
-          className={`w-full bg-gradient-to-r from-[#71BF44] to-[#034C41] text-white py-2 rounded-lg ${
-            !isFormValid ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
-          }`}
-          disabled={!isFormValid}
-        >
-          SIGN UP
-        </button>
+        <div className="relative">
+          <button
+            type="submit"
+            className={`w-full bg-gradient-to-r from-[#71BF44] to-[#034C41] text-white py-2 rounded-lg relative ${
+              !isFormValid ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+            }`}
+            disabled={!isFormValid}
+            onMouseEnter={() => {
+              if (!isFormValid) setShowTooltip(true);
+            }}
+            onMouseLeave={() => setShowTooltip(false)}
+          >
+            SIGN UP
+          </button>
+          {showTooltip && !isFormValid && (
+            <div className="absolute top-[-30px] left-1/2 transform -translate-x-1/2 bg-black text-white text-xs rounded py-1 px-2 shadow-md">
+              Please fill the form
+            </div>
+          )}
+        </div>
       </form>
 
       <p className="mt-4 text-[#71BF44] text-sm">
