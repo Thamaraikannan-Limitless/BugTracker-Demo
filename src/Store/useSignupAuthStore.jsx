@@ -8,6 +8,7 @@ const useSignupAuthStore = create((set) => ({
 
   signup: async (
     username,
+    email,
     position,
     password,
     confirmPassword,
@@ -32,6 +33,17 @@ const useSignupAuthStore = create((set) => ({
         return;
       }
 
+      if (users.some((u) => u.email === email)) {
+        console.log("Email already registered!");
+        set({
+          error: "Email already registered!",
+          isLoading: false,
+          success: false,
+          successMessage: "",
+        });
+        return;
+      }
+
       if (password !== confirmPassword) {
         console.log("Passwords do not match!");
         set({
@@ -43,12 +55,11 @@ const useSignupAuthStore = create((set) => ({
         return;
       }
 
-      const newUser = { username, position, password };
+      const newUser = { username, email, position, password };
       users.push(newUser);
-      localStorage.setItem("users", JSON.stringify(users)); // Save to localStorage
+      localStorage.setItem("users", JSON.stringify(users));
       console.log("User successfully added:", newUser);
 
-      // Call clearFormFields to reset the input fields
       clearFormFields();
 
       set({
@@ -59,7 +70,7 @@ const useSignupAuthStore = create((set) => ({
       });
 
       setTimeout(() => {
-        set({ successMessage: "", success: false, error: null }); // Clear success message and error after 2 seconds
+        set({ successMessage: "", success: false, error: null });
       }, 2000);
     } catch (error) {
       console.error("Signup error:", error);

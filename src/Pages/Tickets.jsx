@@ -135,7 +135,7 @@ const Tickets = () => {
 
       {!selectedTicket && <TicketBtn />}
 
-      <div className="py-10">
+      <div className="py-2">
         <section>
           {selectedTicket ? (
             <TicketDetails

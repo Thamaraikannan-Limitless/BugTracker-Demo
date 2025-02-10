@@ -1,16 +1,21 @@
-import { useState } from "react";
-import { FaUser, FaLock } from "react-icons/fa";
+import { useState, useEffect } from "react";
+import { FaUser, FaLock, FaEnvelope } from "react-icons/fa";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import useSignupAuthStore from "../../Store/useSignupAuthStore";
 
 const SignupForm = ({ setIsLogin }) => {
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [position, setPosition] = useState("developer");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [isFormValid, setIsFormValid] = useState(false);
+
   const {
     signup,
     error: signupError,
@@ -18,9 +23,29 @@ const SignupForm = ({ setIsLogin }) => {
     successMessage,
   } = useSignupAuthStore();
 
-  // Function to clear form fields
+  useEffect(() => {
+    if (confirmPassword && password.trim() !== confirmPassword.trim()) {
+      setConfirmPasswordError("Passwords do not match");
+    } else {
+      setConfirmPasswordError("");
+    }
+  }, [confirmPassword, password]);
+
+  useEffect(() => {
+    const allFieldsFilled =
+      username && email && password && confirmPassword && position;
+    const passwordsMatch = password.trim() === confirmPassword.trim();
+
+    if (allFieldsFilled && passwordsMatch) {
+      setIsFormValid(true);
+    } else {
+      setIsFormValid(false);
+    }
+  }, [username, email, password, confirmPassword, position]);
+
   const clearFormFields = () => {
     setUsername("");
+    setEmail("");
     setPassword("");
     setConfirmPassword("");
     setPosition("developer");
@@ -30,13 +55,16 @@ const SignupForm = ({ setIsLogin }) => {
     e.preventDefault();
     setError("");
 
-    if (password !== confirmPassword) {
-      setError("Passwords do not match");
+    if (password.trim() !== confirmPassword.trim()) {
+      setConfirmPasswordError("Passwords do not match");
       return;
+    } else {
+      setConfirmPasswordError("");
     }
 
     await signup(
       username,
+      email,
       position,
       password,
       confirmPassword,
@@ -63,6 +91,17 @@ const SignupForm = ({ setIsLogin }) => {
             className="bg-transparent w-full outline-none text-white"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+          />
+        </div>
+
+        <div className="flex items-center border border-white p-3 rounded-lg">
+          <FaEnvelope className="text-gray-400 mx-2" />
+          <input
+            type="email"
+            placeholder="Email"
+            className="bg-transparent w-full outline-none text-white"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
 
@@ -99,6 +138,9 @@ const SignupForm = ({ setIsLogin }) => {
             {showPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
           </button>
         </div>
+        {passwordError && (
+          <p className="text-red-500 text-sm">{passwordError}</p>
+        )}
 
         <div className="flex items-center border border-white p-3 rounded-lg relative">
           <FaLock className="text-gray-400 mx-2" />
@@ -117,10 +159,16 @@ const SignupForm = ({ setIsLogin }) => {
             {showConfirmPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
           </button>
         </div>
+        {confirmPasswordError && (
+          <p className="text-red-500 text-sm">{confirmPasswordError}</p>
+        )}
 
         <button
           type="submit"
-          className="w-full bg-gradient-to-r from-[#71BF44] to-[#034C41] text-white py-2 rounded-lg"
+          className={`w-full bg-gradient-to-r from-[#71BF44] to-[#034C41] text-white py-2 rounded-lg ${
+            !isFormValid ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+          }`}
+          disabled={!isFormValid}
         >
           SIGN UP
         </button>
