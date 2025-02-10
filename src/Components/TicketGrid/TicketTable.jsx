@@ -145,7 +145,7 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
       headerName: "",
       field: "moreOptions",
       cellRenderer: MoreOptions,
-      width: 10,
+      width: 1,
     },
   ];
 
@@ -158,7 +158,7 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
 
   return (
     <div className="w-full py-2 overflow-x-auto">
-      <div className="flex space-x-4 mb-2 flex-wrap">
+      <div className="flex space-x-8 mb-2 flex-wrap border-b-[1px] text-[16px] border-[#EDEDED]">
         {["All", "Created", "Assigned", "Completed"].map((tab) => (
           <div
             key={tab}
@@ -172,8 +172,21 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
             {tab}
           </div>
         ))}
-        <div className="ml-auto flex items-center border rounded-xl px-2 py-1">
-          <FiSearch className="mr-2" />
+      </div>
+
+      <div className="flex flex-wrap text-[14px] space-x-2 mb-2">
+        {filters.map((filter) => (
+          <div key={filter} className="flex items-center space-x-0 ">
+            <label>{filter}: </label>
+            <select className="">
+              <option>All</option>
+              <option>Option 1</option>
+              <option>Option 2</option>
+            </select>
+          </div>
+        ))}
+        <div className="ml-auto flex items-center border border-[#9F9F9F] rounded-xl px-2 py-1 ">
+          <FiSearch className="mr-2 text-[#9F9F9F]" />
           <input
             type="text"
             placeholder="Search"
@@ -184,28 +197,15 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
         </div>
       </div>
 
-      <div className="flex flex-wrap space-x-2 mb-4">
-        {filters.map((filter) => (
-          <div key={filter} className="flex items-center space-x-1">
-            <label>{filter}: </label>
-            <select className="">
-              <option>All</option>
-              <option>Option 1</option>
-              <option>Option 2</option>
-            </select>
-          </div>
-        ))}
-      </div>
-
-      <div className="ag-theme-quartz h-[600px] w-full border-none overflow-x-auto">
+      <div className="ag-theme-quartz h-[600px] w-full overflow-x-auto">
         <AgGridReact
           rowData={filteredData}
           columnDefs={columnDefs}
           defaultColDef={defaultColDef}
           // domLayout="autoHeight"
-
           pagination={true}
-          paginationPageSize={paginationPageSize}
+          paginationPageSizeSelector={[10, 25, 50, 100]}
+          // paginationPageSize={paginationPageSize}
         />
       </div>
     </div>

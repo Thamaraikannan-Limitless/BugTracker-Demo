@@ -5,10 +5,8 @@ const Tickets = () => {
 
  
   return (
-    <>
-   
+    <>   
   <TicketDisplay></TicketDisplay>
-     
     </>
   );
 };
