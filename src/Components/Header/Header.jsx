@@ -4,15 +4,15 @@ import logo from "../../assets/logo/limitless-logo.svg";
 import { NavLink } from "react-router-dom";
 import { MdOutlineClose } from "react-icons/md";
 import { IoMenu } from "react-icons/io5";
-
-const Header = () => {
+import PropTypes from "prop-types";
+const Header = ({ onReset }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
   return (
-    <header className="bg-gradient-to-r from-[#034C41] to-[#71BF44]">
-      <section className="flex justify-between items-center py-2 text-base">
+    <header className="bg-gradient-to-r from-[#034C41] to-[#71BF44]  ">
+      <section className=" flex justify-between items-center py-2 text-base">
         {/* Logo */}
         <div>
           <img
@@ -30,8 +30,8 @@ const Header = () => {
         </div>
 
         {/* Navigation Links for Desktop */}
-        <div className="hidden lg:flex lg:items-center gap-x-10">
-          <nav className="flex flex-row gap-x-10">
+        <div className="hidden lg:flex lg:items-center gap-x-8">
+          <nav className="flex flex-row gap-x-10 text-xs">
             <NavLink
               to="/dashboard"
               className="relative text-white hover:text-gray-200 after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[3px] after:bg-white after:transition-all hover:after:w-full"
@@ -40,10 +40,12 @@ const Header = () => {
             </NavLink>
             <NavLink
               to="/ticket"
+              onClick={onReset}
               className="relative text-white hover:text-gray-200 after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[3px] after:bg-white after:transition-all hover:after:w-full"
             >
               Tickets
             </NavLink>
+            {/* <NavLink to="/test"  className="relative text-white hover:text-gray-200 after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[3px] after:bg-white after:transition-all hover:after:w-full">test</NavLink> */}
           </nav>
           <div>
             <Profile />
@@ -77,7 +79,10 @@ const Header = () => {
               </NavLink>
               <NavLink
                 to="/ticket"
-                onClick={toggleMenu}
+                onClick={() => {
+                  onReset(); // Call the reset function
+                  toggleMenu(); // Call the toggle menu function
+                }}
                 className="relative hover:text-gray-200 after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] after:bg-white after:transition-all hover:after:w-full"
               >
                 Tickets
@@ -88,6 +93,10 @@ const Header = () => {
       )}
     </header>
   );
+};
+Header.propTypes = {
+  onReset: PropTypes.func.isRequired,
+  // PropType to ensure the 'onReset' function is provided
 };
 
 export default Header;
