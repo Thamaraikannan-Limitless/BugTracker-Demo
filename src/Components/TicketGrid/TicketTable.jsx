@@ -50,7 +50,7 @@ const MoreOptions = (params) => {
       href={`#${params.data.ticket}-options`}
       className="cursor-pointer text-sm"
     >
-      <FiMoreVertical className="cursor-pointer" />
+      <FiMoreVertical className="cursor-pointer mt-4" />
     </a>
   );
 };
@@ -174,11 +174,11 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
         ))}
       </div>
 
-      <div className="flex flex-wrap text-[14px] space-x-2 mb-2">
+      <div className="flex flex-wrap text-[14px] space-x-4 mb-2">
         {filters.map((filter) => (
           <div key={filter} className="flex items-center space-x-0 ">
-            <label>{filter}: </label>
-            <select className="">
+            <label className="mr-2">{filter}: </label>
+            <select className="-pr-100">
               <option>All</option>
               <option>Option 1</option>
               <option>Option 2</option>

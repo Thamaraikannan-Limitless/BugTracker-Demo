@@ -80,7 +80,7 @@ const TicketDetails = ({ ticket, onBack }) => {
                       <img
                         src={stage.user.image}
                         alt="User"
-                        className="w-9 h-9 rounded-full mr-2 border"
+                        className="w-9 h-9 rounded-full mr-2  "
                       />
                     }
                     <div>
@@ -111,14 +111,14 @@ const TicketDetails = ({ ticket, onBack }) => {
           {ticket.attachments && (
             <div className="mt-6">
               <h4 className="font-semibold text-sm">
-                Attachments 
+                Attachments
                 {/* ({ticket.attachments.length}) */}
               </h4>
               {ticket.attachments.length > 0 && (
                 <img
                   src={ticket.attachments}
                   alt="Attachment"
-                  className="mt-2 w-24 h-24 border object-cover rounded-lg"
+                  className="mt-2 w-24 h-24 object-cover rounded-lg"
                 />
               )}
             </div>
@@ -128,19 +128,19 @@ const TicketDetails = ({ ticket, onBack }) => {
           {ticket.remarks?.length > 0 && (
             <div className="mt-10">
               <h4 className="font-semibold">
-                {" "} 
+                {" "}
                 <span>{ticket.remarks.length}</span> Remarks
               </h4>
               {ticket.remarks.map((remark, i) => (
                 <div
                   key={i}
-                  className="mt-2 p-3 flex flex-col md:flex-row md:gap-x-8 items-center rounded-lg"
+                  className="mt-2 flex flex-col md:flex-row md:gap-x-8 items-center rounded-lg"
                 >
-                  <div className="flex items-center gap-4 lg:flex-row flex-col mb-4">
+                  <div className="flex items-center gap-4 lg:flex-row flex-col mb-4 py-3">
                     <img
                       src={remark.author.image}
                       alt="User"
-                      className="w-9 h-9 rounded-full border  object-cover"
+                      className="w-9 h-9 max-w-9 rounded-full object-cover"
                     />
                     <div className="mt-0 md:ml-14 ml-14 lg:ml-0 text-left w-[100px]">
                       <p className="text-sm font-semibold">
