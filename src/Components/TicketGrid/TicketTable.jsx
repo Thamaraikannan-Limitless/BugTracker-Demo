@@ -1,10 +1,11 @@
-import React, { useState, useCallback } from "react";
+import { useState } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
 import { FiMoreVertical, FiSearch } from "react-icons/fi";
 import PropTypes from "prop-types";
 
+// AG-Grid module register
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 const statusCellRenderer = (params) => {
@@ -13,7 +14,7 @@ const statusCellRenderer = (params) => {
     Assigned: "bg-orange-500 text-white",
     ForRetest: "bg-red-500 text-white",
     Completed: "bg-green-500 text-white",
-    NotDone: "bg-purple-500 text-white",
+    NotDone: "bg-[#6141AC] text-white",
   };
 
   return (
@@ -60,7 +61,6 @@ const filters = ["Projects", "Priority", "Status", "Developer", "Tester"];
 const TicketTable = ({ tickets, onSelectTicket }) => {
   const [activeTab, setActiveTab] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
-  const [paginationPageSize, setPaginationPageSize] = useState(10);
 
   const filteredData = tickets.filter(
     (ticket) =>
@@ -178,7 +178,7 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
         {filters.map((filter) => (
           <div key={filter} className="flex items-center space-x-0 ">
             <label className="mr-2">{filter}: </label>
-            <select className="-pr-100">
+            <select className="pr-0 pl-0">
               <option>All</option>
               <option>Option 1</option>
               <option>Option 2</option>
@@ -197,7 +197,7 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
         </div>
       </div>
 
-      <div className="ag-theme-quartz h-[600px] w-full overflow-x-auto">
+      <div className="ag-theme-quartz h-[600px] w-full text-[] overflow-x-auto">
         <AgGridReact
           rowData={filteredData}
           columnDefs={columnDefs}
