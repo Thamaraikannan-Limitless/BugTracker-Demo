@@ -27,7 +27,7 @@ const Profile = () => {
             className="w-12 h-12 rounded-full"
           />
           <div className="text-white ">
-  <h6 className="text-xs font-bold leading-none pt-0">{user?.username} <span className="text-xs font-extralight block leading-0 pt-1 mt-1">UI/UX Designer</span></h6>
+  <h6 className="text-xs font-bold leading-none pt-0">{user?.username} <span className="text-[10px] font-extralight block leading-0 pt-1 mt-1">Ui/Ux Designer</span></h6>
   
 </div>
         </div>

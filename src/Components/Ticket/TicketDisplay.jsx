@@ -43,12 +43,12 @@ const rowData = [
       remarks: [
         {
           author: { name: "Syed", image: "https://picsum.photos/seed/picsum/200/300" },
-          text: "This error occurs because React encountered an object in a location where it expected a renderable value (such as a string, number, or component).",
+          text: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam consectetur obcaecati quibusdam autem hic sapiente voluptates, suscipit ratione magnam! Nihil aspernatur deserunt, accusantium commodi suscipit illo,.",
           date: "22 Jan",
         },
         {
           author: { name: "Kannan", image: "https://picsum.photos/seed/picsum/200/300" },
-          text: "This error occurs because React encountered an object in a location where it expected a renderable value (such as a string, number, or component).",
+          text: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam consectetur obcaecati quibusdam autem hic sapiente voluptates, suscipit ratione magnam! Nihil aspernatur deserunt, accusantium commodi suscipit illo,.",
           date: "25 Jan",
         },
       ],
@@ -65,7 +65,7 @@ const rowData = [
       timeToAllocate: "2 days (16 hrs)",
       timeToFinish: "2 days (16 hrs)",
       createdBy: {
-        name: "Kannan",
+        name: "Kannan ",
         date: "20 Jan",
         image:"https://picsum.photos/seed/picsum/200/300"
       },
@@ -85,7 +85,7 @@ const rowData = [
      
         {
           author: { name: "Kannan", image: "https://picsum.photos/seed/picsum/200/300" },
-          text: "This error occurs because React encountered an object in a location where it expected a renderable value (such as a string, number, or component).",
+          text: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam consectetur obcaecati quibusdam autem hic sapiente voluptates, suscipit ratione magnam! Nihil aspernatur deserunt, accusantium commodi suscipit illo,.",
           date: "25 Jan",
         },
       ],
@@ -106,12 +106,12 @@ const rowData = [
         date: "20 Jan",
         image:"https://picsum.photos/seed/picsum/200/300"
       },
-      details: "This error occurs because React encountered an object in a location where it expected a renderable value (such as a string, number, or component). The issue here lies in how remark.text or other similar parts are handled when rendering inside JSX.",
+      details: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam consectetur obcaecati quibusdam autem hic sapiente voluptates, suscipit ratione magnam! Nihil aspernatur deserunt, accusantium commodi suscipit illo,.",
       attachments:"https://picsum.photos/seed/picsum/200/300",
       remarks: [
         {
           author: { name: "Syed", image: "https://picsum.photos/seed/picsum/200/300" },
-          text: "This error occurs because React encountered an object in a location where it expected a renderable value (such as a string, number, or component).",
+          text: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam consectetur obcaecati quibusdam autem hic sapiente voluptates, suscipit ratione magnam! Nihil aspernatur deserunt, accusantium commodi suscipit illo,.",
           date: "22 Jan",
         },
       
