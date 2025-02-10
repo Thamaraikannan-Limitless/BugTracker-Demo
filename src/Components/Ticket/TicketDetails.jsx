@@ -44,9 +44,9 @@ const TicketDetails = ({ ticket, onBack }) => {
       {/* Responsive Content Container */}
       <div className="flex flex-col lg:flex-row gap-8 mt-6">
         {/* Progress Section */}
-        <div className="relative lg:w-[450px] h-[500px] bg-gray-100  py-8 rounded-xl">
+        <div className="relative lg:w-[450px] h-[500px] bg-gray-100  rounded-xl">
           {progressStages.map((stage, index) => (
-            <div key={index} className="relative flex gap-0 items-start mb-10">
+            <div key={index} className="relative flex gap-0 items-start  mt-12 ">
               {/* Circle Indicator */}
               <div className="relative z-10 px-4 ml-4 md:ml-[37%] lg:ml-12">
                 {stage.user ? (
@@ -60,7 +60,7 @@ const TicketDetails = ({ ticket, onBack }) => {
                 {/* Line Indicator */}
                 {index < progressStages.length - 1 && (
                   <div
-                    className={`absolute top-6 left-[30px] md:left-[48%] lg:left-[28px] h-[100px] w-[2px] ${
+                    className={`absolute top-6 left-[30px] md:left-[48%] lg:left-[28px] h-[110px] w-[2px] ${
                       progressStages[index + 1].user
                         ? "bg-green-500"
                         : "bg-gray-400"
@@ -70,7 +70,7 @@ const TicketDetails = ({ ticket, onBack }) => {
               </div>
 
               {/* Stage Details */}
-              <div className="px-3 w-[150px] h-[80px]">
+              <div className="px-2 w-[200px] h-[68px] ">
                 <p className="font-semibold  text-[#9F9F9F] text-[10px] pb-1">
                   {stage.label}
                 </p>
@@ -97,7 +97,7 @@ const TicketDetails = ({ ticket, onBack }) => {
                 ) : (
                   <p className="text-gray-400">-</p>
                 )}
-              </div>
+              </div >
             </div>
           ))}
         </div>
