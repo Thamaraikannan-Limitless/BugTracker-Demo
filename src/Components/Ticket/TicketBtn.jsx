@@ -30,7 +30,7 @@ const TicketBtn = () => {
           <h1 className="text-2xl font-bold">Tickets</h1>
           <button
             onClick={() => setShowForm(true)}
-            className="bg-[#034C41] text-white cursor-pointer font-bold text-[14px] px-4 py-2 h-[37px] w-[125px] rounded-full hover:bg-[#026f63] transition"
+            className="bg-[#034C41] text-white cursor-pointer font-bold text-sm px-4 py-2 h-[37px] w-[125px] rounded-full hover:bg-[#026f63] transition"
           >
             New Ticket
           </button>
@@ -48,7 +48,7 @@ const TicketBtn = () => {
       {/* Form Section - Render conditionally */}
       <div
         ref={formRef}
-        className={`fixed md:top-[70px] top-[50px] right-0 h-full max-h-screen md:w-[480px] bg-[#EDEDED] z-20 md:w-[380px] shadow-md transform ${
+        className={`fixed md:top-[72px] top-[56px] right-0 h-full max-h-screen md:w-[480px] bg-[#EDEDED] z-20 w-[380px] shadow-md transform ${
           showForm ? "translate-x-0" : "translate-x-full"
         } transition-transform duration-500 ease-in-out overflow-y-auto`}
       >

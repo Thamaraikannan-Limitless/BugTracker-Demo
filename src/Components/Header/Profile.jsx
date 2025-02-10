@@ -17,19 +17,19 @@ const Profile = () => {
     <div className="relative">
       {/* Profile Icon */}
       <div
-        className="flex items-center gap-x-10 cursor-pointer"
+        className="flex items-center gap-x-9 cursor-pointer"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <div className="flex items-center gap-x-4 ">
+        <div className="flex items-center gap-x-2 ">
           <img
             src="https://placehold.co/60x60"
             alt="Profile"
             className="w-12 h-12 rounded-full"
           />
-          <div>
-            <h5 className=" text-white text-base">{user?.username}</h5>
-            <p className=" text-white text-base font-light">welcome</p>
-          </div>
+          <div className="text-white ">
+  <h6 className="text-xs font-bold leading-none pt-0">{user?.username} <span className="text-xs font-extralight block leading-0 pt-1 mt-1">UI/UX Designer</span></h6>
+  
+</div>
         </div>
 
         <IoIosArrowDown className="w-5 text-white ml-2" />
