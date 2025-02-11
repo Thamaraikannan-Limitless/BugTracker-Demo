@@ -75,6 +75,9 @@ section {
     margin: 10px 0 !important;
   }
 }
+.react-datepicker__input-container input{
+  width: 100px;
+}
 /* .ag-paging-panel {
     flex-wrap: wrap;
     display: flex;
