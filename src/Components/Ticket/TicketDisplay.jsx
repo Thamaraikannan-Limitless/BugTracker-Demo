@@ -1,156 +1,167 @@
+import { useState } from "react";
 
-import { useState } from 'react';
-
-import Header from '../Header/Header';
-import TicketDetails from './TicketDetails';
-import TicketTable from '../TicketGrid/TicketTable';
-import TicketBtn from './TicketBtn';
+import Header from "../Header/Header";
+import TicketDetails from "./TicketDetails";
+import TicketTable from "../TicketGrid/TicketTable";
+import TicketBtn from "./TicketBtn";
 const rowData = [
-    {
-      id: 1,
-      priority: "High",
-      ticket: "TK000001",
-      project: "Project 1",
-      createdOn: "20 Jan",
-      assignedOn: "21 Jan",
-      completedOn: "28 Jan",
-      status: "Completed",
-      timeToAllocate: "2 days (16 hrs)",
-      timeToFinish: "2 days (16 hrs)",
-      
-      createdBy: {
-        name: "Kannan",
-        date: "20 Jan",
-        image:"https://picsum.photos/seed/picsum/200/300"
-      },
-      assignedBy: {
-        name: "Kannan",
-        date: "21 Jan",
-        image:"https://picsum.photos/seed/picsum/200/300"
-      },
-      assignedTo: {
-        name: "Syed",
-        date: "21 Jan",
-        image:"https://picsum.photos/seed/picsum/200/300"
-      },
-      retestBy: {
-        name: "Jasper",
-        date: "28 Jan",
-        image:"https://picsum.photos/seed/picsum/200/300"
-      },
-      details: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam consectetur obcaecati quibusdam autem hic sapiente voluptates, suscipit ratione magnam! Nihil aspernatur deserunt, accusantium commodi suscipit illo, doloremque delectus sint atque consequatur consectetur? Tenetur modi ea non iste ipsum temporibus magnam, mollitia expedita minima porro rem, inventore tempora illo odio dicta?",
-      attachments:"https://picsum.photos/seed/picsum/200/300",
-      remarks: [
-        {
-          author: { name: "Syed", image: "https://picsum.photos/seed/picsum/200/300" },
-          text: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam consectetur obcaecati quibusdam autem hic sapiente voluptates, suscipit ratione magnam! Nihil aspernatur deserunt, accusantium commodi suscipit illo,.",
-          date: "22 Jan",
-        },
-        {
-          author: { name: "Kannan", image: "https://picsum.photos/seed/picsum/200/300" },
-          text: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam consectetur obcaecati quibusdam autem hic sapiente voluptates, suscipit ratione magnam! Nihil aspernatur deserunt, accusantium commodi suscipit illo,.",
-          date: "25 Jan",
-        },
-      ],
+  {
+    id: 1,
+    priority: "High",
+    ticket: "TK000001",
+    project: "Project 1",
+    createdOn: "20 Jan",
+    assignedOn: "21 Jan",
+    completedOn: "28 Jan",
+    status: "Completed",
+    timeToAllocate: "2 days (16 hrs)",
+    timeToFinish: "2 days (16 hrs)",
+
+    createdBy: {
+      name: "Kannan",
+      date: "20 Jan",
+      image: "https://picsum.photos/seed/picsum/200/300",
     },
-    {
-      id: 2,
-      priority: "Low",
-      ticket: "TK000001",
-      project: "Project 1",
-      createdOn: "20 Jan",
-      assignedOn: "21 Jan",
-      completedOn: "28 Jan",
-      status: "Assigned",
-      timeToAllocate: "2 days (16 hrs)",
-      timeToFinish: "2 days (16 hrs)",
-      createdBy: {
-        name: "Kannan ",
-        date: "20 Jan",
-        image:"https://picsum.photos/seed/picsum/200/300"
-      },
-      assignedBy: {
-        name: "Kannan",
-        date: "21 Jan",
-        image:"https://picsum.photos/seed/picsum/200/300"
-      },
-      assignedTo: {
-        name: "Syed",
-        date: "21 Jan",
-        image:"https://picsum.photos/seed/picsum/200/300"
-      },
-      details: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam consectetur obcaecati quibusdam autem hic sapiente voluptates, suscipit ratione magnam! Nihil aspernatur deserunt, accusantium commodi suscipit illo, doloremque delectus sint atque consequatur consectetur? Tenetur modi ea non iste ipsum temporibus magnam, mollitia expedita minima porro rem, inventore tempora illo odio dicta?",
-      attachments:"https://picsum.photos/seed/picsum/200/300",
-      remarks: [
-     
-        {
-          author: { name: "Kannan", image: "https://picsum.photos/seed/picsum/200/300" },
-          text: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam consectetur obcaecati quibusdam autem hic sapiente voluptates, suscipit ratione magnam! Nihil aspernatur deserunt, accusantium commodi suscipit illo,.",
-          date: "25 Jan",
-        },
-      ],
+    assignedBy: {
+      name: "Kannan",
+      date: "21 Jan",
+      image: "https://picsum.photos/seed/picsum/200/300",
     },
-    {
-      id: 3,
-      priority: "Medium",
-      ticket: "TK000001",
-      project: "Project 1",
-      createdOn: "20 Jan",
-      assignedOn: "21 Jan",
-      completedOn: "28 Jan",
-      status: "Created",
-      timeToAllocate: "2 days (16 hrs)",
-      timeToFinish: "2 days (16 hrs)",
-      createdBy: {
-        name: "Kannan",
-        date: "20 Jan",
-        image:"https://picsum.photos/seed/picsum/200/300"
-      },
-      details: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam consectetur obcaecati quibusdam autem hic sapiente voluptates, suscipit ratione magnam! Nihil aspernatur deserunt, accusantium commodi suscipit illo,.",
-      attachments:"https://picsum.photos/seed/picsum/200/300",
-      remarks: [
-        {
-          author: { name: "Syed", image: "https://picsum.photos/seed/picsum/200/300" },
-          text: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam consectetur obcaecati quibusdam autem hic sapiente voluptates, suscipit ratione magnam! Nihil aspernatur deserunt, accusantium commodi suscipit illo,.",
-          date: "22 Jan",
-        },
-      
-      ],
+    assignedTo: {
+      name: "Syed",
+      date: "21 Jan",
+      image: "https://picsum.photos/seed/picsum/200/300",
     },
-  ];
+    retestBy: {
+      name: "Jasper",
+      date: "28 Jan",
+      image: "https://picsum.photos/seed/picsum/200/300",
+    },
+    details:
+      "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam consectetur obcaecati quibusdam autem hic sapiente voluptates, suscipit ratione magnam! Nihil aspernatur deserunt, accusantium commodi suscipit illo, doloremque delectus sint atque consequatur consectetur? Tenetur modi ea non iste ipsum temporibus magnam, mollitia expedita minima porro rem, inventore tempora illo odio dicta?",
+    attachments: "https://picsum.photos/seed/picsum/200/300",
+    remarks: [
+      {
+        author: {
+          name: "Syed",
+          image: "https://picsum.photos/seed/picsum/200/300",
+        },
+        text: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam consectetur obcaecati quibusdam autem hic sapiente voluptates, suscipit ratione magnam! Nihil aspernatur deserunt, accusantium commodi suscipit illo,.",
+        date: "22 Jan",
+      },
+      {
+        author: {
+          name: "Kannan",
+          image: "https://picsum.photos/seed/picsum/200/300",
+        },
+        text: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam consectetur obcaecati quibusdam autem hic sapiente voluptates, suscipit ratione magnam! Nihil aspernatur deserunt, accusantium commodi suscipit illo,.",
+        date: "25 Jan",
+      },
+    ],
+  },
+  {
+    id: 2,
+    priority: "Low",
+    ticket: "TK000001",
+    project: "Project 1",
+    createdOn: "20 Jan",
+    assignedOn: "21 Jan",
+    completedOn: "28 Jan",
+    status: "Assigned",
+    timeToAllocate: "2 days (16 hrs)",
+    timeToFinish: "2 days (16 hrs)",
+    createdBy: {
+      name: "Kannan ",
+      date: "20 Jan",
+      image: "https://picsum.photos/seed/picsum/200/300",
+    },
+    assignedBy: {
+      name: "Kannan",
+      date: "21 Jan",
+      image: "https://picsum.photos/seed/picsum/200/300",
+    },
+    assignedTo: {
+      name: "Syed",
+      date: "21 Jan",
+      image: "https://picsum.photos/seed/picsum/200/300",
+    },
+    details:
+      "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam consectetur obcaecati quibusdam autem hic sapiente voluptates, suscipit ratione magnam! Nihil aspernatur deserunt, accusantium commodi suscipit illo, doloremque delectus sint atque consequatur consectetur? Tenetur modi ea non iste ipsum temporibus magnam, mollitia expedita minima porro rem, inventore tempora illo odio dicta?",
+    attachments: "https://picsum.photos/seed/picsum/200/300",
+    remarks: [
+      {
+        author: {
+          name: "Kannan",
+          image: "https://picsum.photos/seed/picsum/200/300",
+        },
+        text: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam consectetur obcaecati quibusdam autem hic sapiente voluptates, suscipit ratione magnam! Nihil aspernatur deserunt, accusantium commodi suscipit illo,.",
+        date: "25 Jan",
+      },
+    ],
+  },
+  {
+    id: 3,
+    priority: "Medium",
+    ticket: "TK000001",
+    project: "Project 1",
+    createdOn: "20 Jan",
+    assignedOn: "21 Jan",
+    completedOn: "28 Jan",
+    status: "Created",
+    timeToAllocate: "2 days (16 hrs)",
+    timeToFinish: "2 days (16 hrs)",
+    createdBy: {
+      name: "Kannan",
+      date: "20 Jan",
+      image: "https://picsum.photos/seed/picsum/200/300",
+    },
+    details:
+      "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam consectetur obcaecati quibusdam autem hic sapiente voluptates, suscipit ratione magnam! Nihil aspernatur deserunt, accusantium commodi suscipit illo,.",
+    attachments: "https://picsum.photos/seed/picsum/200/300",
+    remarks: [
+      {
+        author: {
+          name: "Syed",
+          image: "https://picsum.photos/seed/picsum/200/300",
+        },
+        text: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam consectetur obcaecati quibusdam autem hic sapiente voluptates, suscipit ratione magnam! Nihil aspernatur deserunt, accusantium commodi suscipit illo,.",
+        date: "22 Jan",
+      },
+    ],
+  },
+];
 const TicketDisplay = () => {
- 
-    const [selectedTicket, setSelectedTicket] = useState(null);
+  const [selectedTicket, setSelectedTicket] = useState(null);
 
-    const handleTicketSelect = (ticketId) => {
-        const ticket = rowData.find((t) => t.id === ticketId);
-        setSelectedTicket(ticket);
-    };
+  const handleTicketSelect = (ticketId) => {
+    const ticket = rowData.find((t) => t.id === ticketId);
+    setSelectedTicket(ticket);
+  };
 
-    const resetSelectedTicket = () => {
-        setSelectedTicket(null);
-    };
+  const resetSelectedTicket = () => {
+    setSelectedTicket(null);
+  };
 
-    return (
-        <>
-            <Header onReset={resetSelectedTicket} />
-            {!selectedTicket && <TicketBtn />}
-            <div className="py-2">
-                <section>
-                    {selectedTicket ? (
-                        <TicketDetails
-                            ticket={selectedTicket}
-                            onBack={() => setSelectedTicket(null)}
-                        />
-                    ) : (
-                        <TicketTable
-                            tickets={rowData}
-                            onSelectTicket={handleTicketSelect}
-                        />
-                    )}
-                </section>
-            </div>
-        </>
-    );
-}
-    export default TicketDisplay;
+  return (
+    <>
+      <Header onReset={resetSelectedTicket} />
+      {!selectedTicket && <TicketBtn />}
+      <div className="py-2">
+        <section>
+          {selectedTicket ? (
+            <TicketDetails
+              ticket={selectedTicket}
+              onBack={() => setSelectedTicket(null)}
+            />
+          ) : (
+            <TicketTable
+              tickets={rowData}
+              onSelectTicket={handleTicketSelect}
+            />
+          )}
+        </section>
+      </div>
+    </>
+  );
+};
+export default TicketDisplay;
