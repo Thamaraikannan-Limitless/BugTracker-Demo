@@ -134,15 +134,15 @@ const TicketDetails = ({ ticket, onBack }) => {
               {ticket.remarks.map((remark, i) => (
                 <div
                   key={i}
-                  className="mt-2 flex flex-col md:flex-row md:gap-x-8 items-center rounded-lg"
+                  className="mt-4 flex flex-row items-center mb-10 rounded-lg"
                 >
-                  <div className="flex items-center gap-4 lg:flex-row flex-col mb-4 py-3">
+                  <div className="flex items-center gap-4 flex-row  mb-4 py-3">
                     <img
                       src={remark.author.image}
                       alt="User"
                       className="w-9 h-9 max-w-9 rounded-full object-cover"
                     />
-                    <div className="mt-0 md:ml-14 ml-14 lg:ml-0 text-left w-[100px]">
+                    <div className="mt-0  lg:ml-0 text-left w-[100px]">
                       <p className="text-sm font-semibold">
                         {remark.author?.name}
                       </p>
@@ -151,7 +151,7 @@ const TicketDetails = ({ ticket, onBack }) => {
                       </p>
                     </div>
                   </div>
-                  <p className="text-black">{remark.text}</p>
+                  <p className="text-black text-left">{remark.text}</p>
                 </div>
               ))}
             </div>
@@ -216,18 +216,4 @@ TicketDetails.propTypes = {
 };
 
 export default TicketDetails;
-// import React from 'react'
 
-// const TicketDetails = ({ticket}) => {
-//   return (
-//     <div>
-//       {ticket.ticket}
-//     </div>
-//   )
-// }
-// TicketDetails.propTypes = {
-//   ticket: PropTypes.shape({
-//     ticket: PropTypes.string.isRequired,
-//   })
-// }
-// export default TicketDetails
