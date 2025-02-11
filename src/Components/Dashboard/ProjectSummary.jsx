@@ -2,13 +2,13 @@ import PropTypes from "prop-types";
 
 const ProjectSummary = ({ projects }) => {
   return (
-    <div className="p-6 bg-gray-100  rounded-2xl">
-      <h2 className="text-[14px] font-bold text-gray-800 mb-4">
-        Summary of Ticket (Last 30 days)
+    <div className="p-6 bg-[#F5F5F5]  rounded-tl-[60px] rounded-br-[60px]">
+      <h2 className="text-[14px] font-[600] text-black mb-4">
+        Summary of Ticket<span className="font-[400]">(Last 30 days)</span> 
       </h2>
 
       {/* Titles Row */}
-      <div className="grid grid-cols-4 gap-4 bg-gray-100 md:p-4 p-2 rounded-t-xl md:text-[12px] text-[10px] font-semibold text-gray-700">
+      <div className="grid grid-cols-4 gap-4 bg-gray-100 md:p-4 p-2 rounded-t-xl  text-[10px] font-[400] text-black">
         <span>Project Name</span>
         <span className="text-center">Created</span>
         <span className="text-center">Assigned</span>
@@ -20,14 +20,14 @@ const ProjectSummary = ({ projects }) => {
         {projects.map((project, index) => (
           <div
             key={index}
-            className="grid grid-cols-4  gap-4  text-[14px] bg-white  md:p-4 p-2 rounded-xl shadow-sm hover:bg-gray-100"
+            className="grid grid-cols-4  gap-4 mb-4  text-[12px] bg-white  p-3 rounded-xl shadow-sm hover:bg-gray-100"
           >
-            <span className="font-medium text-gray-600">{project.name}</span>
-            <span className="text-center text-gray-600">{project.created}</span>
-            <span className="text-center text-gray-600">
+            <span className="font-medium text-black">{project.name}</span>
+            <span className="text-center text-black">{project.created}</span>
+            <span className="text-center text-black">
               {project.assigned}
             </span>
-            <span className="text-center text-gray-600">
+            <span className="text-center text-black">
               {project.completed}
             </span>
           </div>

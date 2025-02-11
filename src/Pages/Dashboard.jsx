@@ -1,4 +1,5 @@
 import DeveloperSummary from "../Components/Dashboard/DeveloperSummary";
+
 import ProjectSummary from "../Components/Dashboard/ProjectSummary";
 import Header from "../Components/Header/Header";
 
@@ -10,9 +11,9 @@ const data = {
     { name: "Project 3", created: 76, assigned: 67, completed: 48 },
   ],
   developers: [
-    { name: "Kannan", assigned: 67, completed: 48 },
-    { name: "Kannan", assigned: 67, completed: 48 },
-    { name: "Kannan", assigned: 67, completed: 48 },
+    { name: "Kannan", assigned: 67, completed: 48 ,reoccur:37},
+    { name: "Kannan", assigned: 67, completed: 48 ,reoccur:37},
+    { name: "Kannan", assigned: 67, completed: 48 ,reoccur:37},
   ],
 };
 
@@ -26,6 +27,7 @@ const Dashboard = () => {
             <ProjectSummary projects={data.projects} />
             <DeveloperSummary developers={data.developers} />
           </div>
+         
         </section>
       </div>
     </>

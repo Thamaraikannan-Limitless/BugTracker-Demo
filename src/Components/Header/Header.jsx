@@ -41,7 +41,7 @@ const Header = ({ onReset }) => {
             <NavLink
               to="/ticket"
               onClick={onReset}
-              className="relative text-white hover:text-gray-200 after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-[3px] after:bg-white after:transition-all hover:after:w-full"
+              className="relative text-white hover:text-gray-200 after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-[2px] after:bg-white after:transition-all hover:after:w-full"
             >
               Tickets
             </NavLink>
@@ -73,7 +73,7 @@ const Header = ({ onReset }) => {
               <NavLink
                 to="/dashboard"
                 onClick={toggleMenu}
-                className="relative hover:text-gray-200 after:absolute after:left-0 after:bottom-[-4px] after:w-0 after:h-[2px] after:bg-white after:transition-all hover:after:w-full"
+                className="relative hover:text-gray-200 after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-[2px] after:bg-white after:transition-all hover:after:w-full"
               >
                 DashBoard
               </NavLink>
@@ -83,7 +83,7 @@ const Header = ({ onReset }) => {
                   onReset(); // Call the reset function
                   toggleMenu(); // Call the toggle menu function
                 }}
-                className="relative hover:text-gray-200 after:absolute after:left-0 after:bottom-[-4px] after:w-0 after:h-[2px] after:bg-white after:transition-all hover:after:w-full"
+                className="relative hover:text-gray-200 after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-[2px] after:bg-white after:transition-all hover:after:w-full"
               >
                 Tickets
               </NavLink>
