@@ -8,57 +8,58 @@ import PropTypes from "prop-types";
 // AG-Grid module register
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-const statusCellRenderer = (params) => {
-  const statusColors = {
-    Created: "bg-yellow-500 text-white",
-    Assigned: "bg-orange-500 text-white",
-    ForRetest: "bg-red-500 text-white",
-    Completed: "bg-green-500 text-white",
-    NotDone: "bg-[#6141AC] text-white",
-  };
-
-  return (
-    <span
-      className={`px-2 py-1 rounded ${
-        statusColors[params.value] || "bg-gray-300"
-      }`}
-    >
-      {params.value}
-    </span>
-  );
-};
-
-const priorityIndicatorRenderer = (params) => {
-  const priorityColors = {
-    High: "bg-red-500",
-    Medium: "bg-orange-500",
-    Low: "bg-yellow-500",
-  };
-
-  return (
-    <span
-      className={`w-3 h-3 inline-block rounded-full mr-1 ${
-        priorityColors[params.value] || "bg-gray-300"
-      }`}
-    ></span>
-  );
-};
-
-const MoreOptions = (params) => {
-  if (!params || !params.data) return null;
-  return (
-    <a
-      href={`#${params.data.ticket}-options`}
-      className="cursor-pointer text-sm"
-    >
-      <FiMoreVertical className="cursor-pointer mt-4" />
-    </a>
-  );
-};
-
-const filters = ["Projects", "Priority", "Status", "Developer", "Tester"];
-
 const TicketTable = ({ tickets, onSelectTicket }) => {
+  const [paginationPageSize, setPaginationPageSize] = useState(10);
+  const statusCellRenderer = (params) => {
+    const statusColors = {
+      Created: "bg-[#ECBF50] text-white",
+      Assigned: "bg-[#E5927A] text-white",
+      ForRetest: "bg-[#FF0000] text-white",
+      Completed: "bg-[#00C875] text-white",
+      NotDone: "bg-[#6141AC] text-white",
+    };
+
+    return (
+      <span
+        className={`px-2 py-1 rounded ${
+          statusColors[params.value] || "bg-gray-300"
+        }`}
+      >
+        {params.value}
+      </span>
+    );
+  };
+
+  const priorityIndicatorRenderer = (params) => {
+    const priorityColors = {
+      High: "bg-[#E2445C]",
+      Medium: "bg-[#FDAB3D]",
+      Low: "bg-[#DBC72D]",
+    };
+
+    return (
+      <span
+        className={`w-3 h-3 inline-block rounded-full mr-1 ${
+          priorityColors[params.value] || "bg-gray-300"
+        }`}
+      ></span>
+    );
+  };
+
+  const MoreOptions = (params) => {
+    if (!params || !params.data) return null;
+    return (
+      <a
+        href={`#${params.data.ticket}-options`}
+        className="cursor-pointer text-sm"
+      >
+        <FiMoreVertical className="cursor-pointer mt-4" />
+      </a>
+    );
+  };
+
+  const filters = ["Projects", "Priority", "Status", "Developer", "Tester"];
+
   const [activeTab, setActiveTab] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -78,7 +79,7 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
           {priorityIndicatorRenderer({ value: params.data.priority })}
           <a
             href={`#${params.value}`}
-            className="text-blue-500 underline cursor-pointer"
+            className="text-blue-500 ml-2 cursor-pointer font-semibold text-[#1358D0]"
             onClick={() => onSelectTicket(params.data.id)}
           >
             {params.value}
@@ -157,14 +158,14 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
   };
 
   return (
-    <div className="w-full py-2 overflow-x-auto">
-      <div className="flex space-x-8 mb-2 flex-wrap border-b-[1px] text-[16px] border-[#EDEDED]">
+    <div className="w-full overflow-x-auto">
+      <div className="flex space-x-8 mb-2 flex-wrap  border-b-[1px] text-[16px] font-semibold border-[#EDEDED]">
         {["All", "Created", "Assigned", "Completed"].map((tab) => (
           <div
             key={tab}
             className={`cursor-pointer pb-2 ${
               activeTab === tab
-                ? "border-b-2 border-black font-semibold"
+                ? "border-b-2 border-black"
                 : "hover:border-b-2 hover:border-gray-400"
             }`}
             onClick={() => setActiveTab(tab)}
@@ -174,15 +175,22 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
         ))}
       </div>
 
-      <div className="flex flex-wrap text-[14px] space-x-4 mb-2">
-        {filters.map((filter) => (
-          <div key={filter} className="flex items-center space-x-0 ">
-            <label className="mr-2">{filter}: </label>
+      <div className="flex flex-wrap text-[14px] font-medium gap-4 mb-2">
+        {filters.map((filter, index) => (
+          <div
+            key={filter}
+            className="flex items-center space-x-2 pr-2 relative"
+          >
+            <label className="mr-2 font-normal">{filter}: </label>
             <select className="pr-0 pl-0">
               <option>All</option>
               <option>Option 1</option>
               <option>Option 2</option>
             </select>
+
+            {index !== filters.length - 1 && (
+              <div className="absolute right-2 top-1/4 h-4 border-r-2 border-gray-300"></div>
+            )}
           </div>
         ))}
         <div className="ml-auto flex items-center border border-[#9F9F9F] rounded-xl px-2 py-1 ">
@@ -197,20 +205,23 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
         </div>
       </div>
 
-      <div className="ag-theme-quartz h-[600px] w-full text-[] overflow-x-auto">
+      <div className="ag-theme-quartz h-[460px] w-full  overflow-x-auto">
         <AgGridReact
           rowData={filteredData}
           columnDefs={columnDefs}
           defaultColDef={defaultColDef}
-          // domLayout="autoHeight"
           pagination={true}
+          paginationPageSize={paginationPageSize}
           paginationPageSizeSelector={[10, 25, 50, 100]}
-          // paginationPageSize={paginationPageSize}
+          onPaginationChanged={(params) => {
+            setPaginationPageSize(params.api.paginationGetPageSize());
+          }}
         />
       </div>
     </div>
   );
 };
+
 TicketTable.propTypes = {
   tickets: PropTypes.arrayOf(
     PropTypes.shape({
