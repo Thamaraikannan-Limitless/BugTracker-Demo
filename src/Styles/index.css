@@ -93,3 +93,18 @@ section {
     margin: 10px 0 !important;
   }
 }
+/* .ag-paging-panel {
+    flex-wrap: wrap;
+    display: flex;
+    justify-content: center !important;
+    gap: 8px;
+  }
+
+  .ag-paging-panel > * {
+    flex: 1 1 100%;
+    text-align: center;
+  }
+
+  .ag-paging-page-summary-panel,
+  .ag-paging-button {
+    /* font-size: 14px; */
