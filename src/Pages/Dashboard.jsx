@@ -100,6 +100,15 @@ const ticketData = [
     retest: 3,
   },
 ];
+const developerData = [
+  { date: "2025-FEB-10", assigned: 8, completed: 8, reoccur: 2, retest: 2 },
+  { date: "2025-FEB-11", assigned: 6, completed: 6, reoccur: 1, retest: 2 },
+  { date: "2025-FEB-12", assigned: 7, completed: 7, reoccur: 3, retest: 2 },
+  { date: "2025-FEB-13", assigned: 6, completed: 6, reoccur: 2, retest: 1 },
+  { date: "2025-FEB-14", assigned: 5, completed: 5, reoccur: 1, retest: 1 },
+];
+
+
 
 const Dashboard = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -114,14 +123,17 @@ const Dashboard = () => {
           </div>
           <div className=" bg-[#F5F5F5] rounded-tl-[60px] rounded-br-[60px]">
             <h1 className="text-2xl font-[400] mb-4 py-8 px-6">OSEL Signage</h1>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-9 md:px-7">
+            <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-4 mb-9 gap-y-10 md:px-4">
               <TicketSummary
                 ticketData={ticketData}
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
               />
-             <DeveloperWise/>
-      
+              <DeveloperWise
+                developerData={developerData}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+              />
             </div>
           </div>
         </section>
