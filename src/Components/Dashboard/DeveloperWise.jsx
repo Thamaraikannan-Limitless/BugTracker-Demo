@@ -8,9 +8,12 @@ const formatDate = (dateString) => {
   return format(new Date(dateString), "MMM-dd-EEE"); // Example output: Feb-03-Mon
 };
 
-const SummaryTable = ({ data, columns, nameChange }) => {
+const SummaryTable = ({ data, columns, nameChange, startDate, endDate }) => {
   const totals = columns.reduce((acc, col) => {
-    acc[col.toLowerCase()] = data.reduce((sum, item) => sum + item[col.toLowerCase()], 0);
+    acc[col.toLowerCase()] = data.reduce(
+      (sum, item) => sum + item[col.toLowerCase()],
+      0
+    );
     return acc;
   }, {});
 
@@ -29,7 +32,7 @@ const SummaryTable = ({ data, columns, nameChange }) => {
         <thead>
           <tr>
             <th className="pt-2 text-xs pb-2 w-[30%] text-[#9F9F9F] font-[600]">
-              FEB-10-FEB-14
+              {format(startDate, "MMM-dd")} - {format(endDate, "MMM-dd")}
             </th>
             {columns.map((col) => (
               <th
@@ -83,6 +86,8 @@ SummaryTable.propTypes = {
   ).isRequired,
   columns: PropTypes.arrayOf(PropTypes.string).isRequired,
   nameChange: PropTypes.string.isRequired,
+  startDate: PropTypes.instanceOf(Date).isRequired,
+  endDate: PropTypes.instanceOf(Date).isRequired,
 };
 
 const DeveloperWise = ({ developerData }) => {
@@ -102,30 +107,31 @@ const DeveloperWise = ({ developerData }) => {
   const filterTicketData = () => {
     const today = new Date();
     let filteredData = [];
+    let startDate, endDate;
 
     if (dateOption === "This Week") {
-      const startOfWeekDate = startOfWeek(today);
-      const endOfWeekDate = endOfWeek(today);
+      startDate = startOfWeek(today);
+      endDate = endOfWeek(today);
       filteredData = developerData.filter((item) => {
         const itemDate = new Date(item.date);
-        return itemDate >= startOfWeekDate && itemDate <= endOfWeekDate;
+        return itemDate >= startDate && itemDate <= endDate;
       });
     } else if (dateOption === "Previous Week") {
-      const previousWeekStart = startOfWeek(subWeeks(today, 1));
-      const previousWeekEnd = endOfWeek(previousWeekStart);
+       startDate = startOfWeek(subWeeks(today, 1));
+       endDate = endOfWeek(startDate);
       filteredData = developerData.filter((item) => {
         const itemDate = new Date(item.date);
-        return itemDate >= previousWeekStart && itemDate <= previousWeekEnd;
+        return itemDate >= startDate && itemDate <= endDate;
       });
     } else if (dateOption === "Custom Week") {
-      const startDate = startOfWeek(selectedWeek);
-      const endDate = endOfWeek(selectedWeek);
+      startDate = startOfWeek(selectedWeek);
+      endDate = endOfWeek(selectedWeek);
       filteredData = developerData.filter((item) => {
         const itemDate = new Date(item.date);
         return itemDate >= startDate && itemDate <= endDate;
       });
     }
-    return filteredData;
+    return  { filteredData, startDate, endDate };
   };
   const handleNameChange = (e) => {
     setName(e.target.value);
@@ -143,7 +149,7 @@ const DeveloperWise = ({ developerData }) => {
     setShowCalendar(false);
   };
 
-  const filteredData = filterTicketData();
+  const  { filteredData, startDate, endDate } = filterTicketData();
 
   return (
     <div className="bg-white p-6 rounded-xl relative">
@@ -161,20 +167,25 @@ const DeveloperWise = ({ developerData }) => {
               <option value="Thamarai">Thamarai</option>
             </select>
           </div>
-        <div className="flex md:gap-4 gap-2 pr-3 py-4 md:py-0">
-          <select
-            value={dateOption}
-            onChange={(e) => handleDateOptionChange(e.target.value)}
-            className="p-2 border-[#EAEEF7] border rounded-md text-xs"
-          >
-            <option value="This Week">This Week</option>
-            <option value="Previous Week">Previous Week</option>
-            <option value="Custom Week">Custom Week</option>
-          </select>
+          <div className="flex md:gap-4 gap-2 pr-3 py-4 md:py-0">
+            <select
+              value={dateOption}
+              onChange={(e) => handleDateOptionChange(e.target.value)}
+              className="p-2 border-[#EAEEF7] border rounded-md text-xs"
+            >
+              <option value="This Week">This Week</option>
+              <option value="Previous Week">Previous Week</option>
+              <option value="Custom Week">Custom Week</option>
+            </select>
+          </div>
         </div>
       </div>
-     </div>
-      {showCalendar && <div className="fixed inset-0 bg-black opacity-50 z-40" onClick={handleOverlayClick}></div>}
+      {showCalendar && (
+        <div
+          className="fixed inset-0 bg-black opacity-50 z-40"
+          onClick={handleOverlayClick}
+        ></div>
+      )}
 
       {showCalendar && (
         <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded-md shadow-lg z-50">
@@ -192,6 +203,8 @@ const DeveloperWise = ({ developerData }) => {
         data={filteredData}
         columns={["Assigned", "Completed", "Reoccur", "Retest"]}
         nameChange={nameChange}
+        startDate={startDate}
+        endDate={endDate}
       />
     </div>
   );
@@ -206,6 +219,5 @@ DeveloperWise.propTypes = {
       retest: PropTypes.number,
     })
   ).isRequired,
- 
 };
 export default DeveloperWise;

@@ -8,7 +8,7 @@ const formatDate = (dateString) => {
   return format(new Date(dateString), "MMM-dd-EEE"); // Example output: Feb-03-Mon
 };
 
-const SummaryTable = ({ data, columns }) => {
+const SummaryTable = ({ data, columns,startDate,endDate }) => {
   const totals = columns.reduce((acc, col) => {
     acc[col.toLowerCase()] = data.reduce((sum, item) => sum + item[col.toLowerCase()], 0);
     return acc;
@@ -18,7 +18,7 @@ const SummaryTable = ({ data, columns }) => {
     <table className="w-full text-left border-collapse">
       <thead>
         <tr>
-          <th className="pt-2 pl-2 text-xs pb-2 text-[#9F9F9F] font-[600]">FEB-10-FEB-14</th>
+          <th className="pt-2 pl-2 text-xs pb-2 text-[#9F9F9F] font-[600]">{format(startDate, "MMM-dd")} - {format(endDate, "MMM-dd")}</th>
           {columns.map((col) => (
             <th key={col} className="text-xs font-[600] text-[#9F9F9F]">
               {col}
@@ -62,6 +62,9 @@ SummaryTable.propTypes = {
     })
   ).isRequired,
   columns: PropTypes.arrayOf(PropTypes.string).isRequired,
+  startDate: PropTypes.instanceOf(Date).isRequired,
+  endDate:PropTypes.instanceOf(Date).isRequired
+  
 };
 
 const TicketSummary = ({ ticketData }) => {
@@ -78,31 +81,31 @@ const TicketSummary = ({ ticketData }) => {
   const filterTicketData = () => {
     const today = new Date();
     let filteredData = [];
-
+    let startDate, endDate;
     if (dateOption === "This Week") {
-      const startOfWeekDate = startOfWeek(today);
-      const endOfWeekDate = endOfWeek(today);
+      startDate = startOfWeek(today);
+      endDate = endOfWeek(today);
       filteredData = ticketData.filter(item => {
         const itemDate = new Date(item.date);
-        return itemDate >= startOfWeekDate && itemDate <= endOfWeekDate;
+        return itemDate >= startDate && itemDate <= endDate;
       });
     } else if (dateOption === "Previous Week") {
-      const previousWeekStart = startOfWeek(subWeeks(today, 1));
-      const previousWeekEnd = endOfWeek(previousWeekStart);
+      startDate = startOfWeek(subWeeks(today, 1));
+      endDate = endOfWeek( startDate );
       filteredData = ticketData.filter(item => {
         const itemDate = new Date(item.date);
-        return itemDate >= previousWeekStart && itemDate <= previousWeekEnd;
+        return itemDate >=startDate && itemDate <= endDate;
       });
     } else if (dateOption === "Custom Week") {
-      const startDate = startOfWeek(selectedWeek);
-      const endDate = endOfWeek(selectedWeek);
+       startDate = startOfWeek(selectedWeek);
+       endDate = endOfWeek(selectedWeek);
       filteredData = ticketData.filter(item => {
         const itemDate = new Date(item.date);
         return itemDate >= startDate && itemDate <= endDate;
       });
     }
 
-    return filteredData;
+    return { filteredData, startDate, endDate };
   };
 
   const handleDateOptionChange = (option) => {
@@ -118,7 +121,7 @@ const TicketSummary = ({ ticketData }) => {
     setShowCalendar(false);
   };
 
-  const filteredData = filterTicketData();
+  const { filteredData, startDate, endDate } = filterTicketData();
 
   return (
     <div className="bg-white p-6 rounded-xl relative">
@@ -154,6 +157,8 @@ const TicketSummary = ({ ticketData }) => {
       <SummaryTable
         data={filteredData}
         columns={["Created", "Assigned", "Completed", "Reoccur", "Retest"]}
+        startDate={startDate}
+        endDate={endDate}
       />
     </div>
   );
