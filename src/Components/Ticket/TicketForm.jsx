@@ -95,13 +95,13 @@ const TicketForm = ({ onClose }) => {
         name="project"
         value={formData.project}
         onChange={handleChange}
-        className="border border-gray-400 w-full p-2 mb-5 rounded-md"
+        className={`" border border-gray-400 w-full p-2  rounded-md ${errors.project ? " mb-3 " : " mb-5 "}"`}
       >
         <option value="">Select Project</option>
         <option>Project A</option>
         <option>Project B</option>
       </select>
-      {errors.project && <span className="text-red-500 text-sm">{errors.project}</span>}
+      {errors.project && <p className="text-red-500 text-sm mb-2 ">{errors.project}</p>}
 
       <div className="md:flex md:justify-between gap-x-15">
         {/* Ticket Number */}
@@ -112,10 +112,10 @@ const TicketForm = ({ onClose }) => {
             name="ticketNumber"
             value={formData.ticketNumber}
             onChange={handleChange}
-            className="border border-gray-400 w-full p-2 mb-5 rounded-md"
+            className={`" border border-gray-400 w-full p-2  rounded-md ${errors.ticketNumber ? " mb-3 " : " mb-5 "}"`}
             placeholder="Enter Ticket Number"
           />
-          {errors.ticketNumber && <p className="text-red-500 text-sm">{errors.ticketNumber}</p>}
+          {errors.ticketNumber && <p className="text-red-500 text-sm mb-2">{errors.ticketNumber}</p>}
         </div>
 
         {/* Ticket Date */}
@@ -126,9 +126,9 @@ const TicketForm = ({ onClose }) => {
             name="ticketDate"
             value={formData.ticketDate}
             onChange={handleChange}
-            className="border border-gray-400 w-full p-2 mb-5 rounded-md"
+            className={`" border border-gray-400 w-full p-2  rounded-md ${errors.ticketDate ? " mb-3 " : " mb-5 "}"`}
           />
-          {errors.ticketDate && <p className="text-red-500 text-sm">{errors.ticketDate}</p>}
+          {errors.ticketDate && <p className="text-red-500 text-sm mb-2 ">{errors.ticketDate}</p>}
         </div>
       </div>
 
@@ -139,11 +139,11 @@ const TicketForm = ({ onClose }) => {
         name="bugDetails"
         value={formData.bugDetails}
         onChange={handleChange}
-        className="border border-gray-400 w-full p-2 mb-5 rounded-md"
+        className={`" border border-gray-400 w-full p-2  rounded-md ${errors.bugDetails ? " mb-3 " : " mb-5 "}"`}
         placeholder="Describe the bug..."
         rows="3"
       ></textarea>
-      {errors.bugDetails && <p className="text-red-500 text-sm">{errors.bugDetails}</p>}
+      {errors.bugDetails && <p className="text-red-500 text-sm mb-2">{errors.bugDetails}</p>}
       </div>
      
       {/* Priority Selection */}
@@ -157,14 +157,14 @@ const TicketForm = ({ onClose }) => {
               name="priority"
               value={level}
               onChange={handleChange}
-              className="mr-2"
+              className={`"mr-2 ${errors.priority ? " mb-3 " : " mb-5 "}"`}
               checked={formData.priority === level}
             />
             {level}
           </label>
         ))}
       </div>
-      {errors.priority && <p className="text-red-500 text-sm">{errors.priority}</p>}
+      {errors.priority && <p className="text-red-500 text-sm mb-2">{errors.priority}</p>}
       </div>
       {/* Attach Screenshot Section */}
       <div
@@ -173,7 +173,7 @@ const TicketForm = ({ onClose }) => {
       >
         <p className="text-[#034C41] ">Attach Screenshots</p>
       </div>
-      {errors.screenshots && <p className="text-red-500 text-sm">{errors.screenshots}</p>}
+      {errors.screenshots && <p className="text-red-500 text-sm mb-2">{errors.screenshots}</p>}
 
       {/* Image Previews with Delete Icons */}
       <div className="flex flex-wrap gap-2">
