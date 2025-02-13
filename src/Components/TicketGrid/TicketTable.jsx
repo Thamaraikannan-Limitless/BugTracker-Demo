@@ -66,33 +66,15 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
           <FiMoreVertical className="cursor-pointer mt-4" />
         </button>
         {isOpen && (
-          <div className="absolute right-full mr-2 top-0 bg-white border border-gray-300 rounded-md shadow-lg z-20 w-40">
+          <div className="fixed right-7 mr-2 top-0 bg-white border border-gray-300 rounded-md shadow-lg z-20 w-40">
             <ul className="text-sm">
-              <li
-                className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                onClick={() => {
-                  setIsOpen(false);
-                  alert(`Viewing ticket: ${params.data.ticket}`);
-                }}
-              >
+              <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
                 View
               </li>
-              <li
-                className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                onClick={() => {
-                  setIsOpen(false);
-                  alert(`Assigning ticket: ${params.data.ticket}`);
-                }}
-              >
+              <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
                 Assign to
               </li>
-              <li
-                className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                onClick={() => {
-                  setIsOpen(false);
-                  alert(`Sending for Retest: ${params.data.ticket}`);
-                }}
-              >
+              <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
                 Send for Retest
               </li>
             </ul>
@@ -118,21 +100,20 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
       cellRenderer: (params) => (
         <div className="flex items-center space-x-1 cursor-pointer">
           {priorityIndicatorRenderer({ value: params.data.priority })}
-          <Tippy content="View-Ticket Details" placement="top" arrow={true}>
-            <a
-              href={`#${params.value}`}
-              className="text-blue-500 ml-2 cursor-pointer font-semibold text-[#1358D0]"
-              onClick={() => onSelectTicket(params.data.id)}
-            >
-              {params.value}
-            </a>
-          </Tippy>
+          <a
+            href={`#${params.value}`}
+            className="text-blue-500 ml-2 cursor-pointer font-semibold text-[#1358D0]"
+            onClick={() => onSelectTicket(params.data.id)}
+          >
+            {params.value}
+          </a>
         </div>
       ),
       sortable: false,
       filter: false,
       flex: 1,
-      minWidth: 150,
+      minWidth: 100,
+      pinned: "left",
     },
     {
       headerName: "PROJECT",
@@ -189,7 +170,8 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
       headerName: "",
       field: "moreOptions",
       cellRenderer: MoreOptions,
-      width: 1,
+      width: 10,
+      pinned: "right",
     },
   ];
 
@@ -309,7 +291,7 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
         </div>
       </div>
 
-      <div className="ag-theme-quartz h-[460px] w-full overflow-x-auto">
+      <div className="ag-theme-quartz h-[450px] w-full overflow-x-auto">
         <AgGridReact
           rowData={filteredData}
           columnDefs={columnDefs}
