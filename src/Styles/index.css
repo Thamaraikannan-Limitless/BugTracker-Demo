@@ -58,8 +58,16 @@ section {
 }
 .ag-row {
   border-bottom: 1px solid #ededed !important;
+  /* z-index: 10 !important; */
+  /* transform: translateY(0);/ */
 }
 
+.ag-theme-quartz .ag-header-cell,
+.ag-theme-quartz .ag-pinned-left-header,
+.ag-theme-quartz .ag-pinned-right-header {
+  border-right: none !important;
+  border-left: none !important;
+}
 .ag-paging-panel {
   padding: 0;
   border: none;
@@ -93,4 +101,3 @@ section {
     margin: 10px 0 !important;
   }
 }
-
