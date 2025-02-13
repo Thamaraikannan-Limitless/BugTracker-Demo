@@ -121,9 +121,9 @@ const Dashboard = () => {
             <ProjectSummary projects={data.projects} />
             <DeveloperSummary developers={data.developers} />
           </div>
-          <div className=" bg-[#F5F5F5] rounded-tl-[60px] rounded-br-[60px]">
+          <div className=" bg-[#F5F5F5] rounded-tl-[60px] rounded-br-[60px] mb-10">
             <h1 className="text-2xl font-[400] mb-4 py-8 px-6">OSEL Signage</h1>
-            <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-4 mb-9 gap-y-10 md:px-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-4 mb-12 gap-y-10 md:px-4">
               <TicketSummary
                 ticketData={ticketData}
                 selectedDate={selectedDate}
