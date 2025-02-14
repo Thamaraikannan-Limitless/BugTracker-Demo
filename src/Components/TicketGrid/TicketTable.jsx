@@ -210,18 +210,27 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
   };
 
   const handleColumnToggle = (field) => {
-    setHiddenColumns((prev) =>
-      prev.includes(field)
-        ? prev.filter((col) => col !== field)
-        : [...prev, field]
-    );
+    setHiddenColumns((prev) => {
+      let updatedColumns;
+
+      if (prev.includes(field)) {
+        updatedColumns = prev.filter((col) => col !== field);
+      } else {
+        updatedColumns = [...prev, field];
+      }
+
+      // If all individual columns are selected, check "All"
+      setSelectAllColumns(updatedColumns.length === 0);
+
+      return updatedColumns;
+    });
   };
 
   const handleSelectAllToggle = () => {
     if (selectAllColumns) {
-      setHiddenColumns([]);
-    } else {
       setHiddenColumns(allColumns.map((col) => col.field));
+    } else {
+      setHiddenColumns([]);
     }
     setSelectAllColumns(!selectAllColumns);
   };
