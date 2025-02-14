@@ -8,6 +8,9 @@ import { CiViewColumn } from "react-icons/ci";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 
+import { FiFilter } from "react-icons/fi";
+import TicketFilterForm from "./TicketFilterForm";
+
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 const TicketTable = ({ tickets, onSelectTicket }) => {
@@ -17,7 +20,8 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
   const [hiddenColumns, setHiddenColumns] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectAllColumns, setSelectAllColumns] = useState(true);
-
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [appliedFilters, setAppliedFilters] = useState({});
   const statusCellRenderer = (params) => {
     const statusColors = {
       Created: "bg-[#ECBF50] text-white",
@@ -54,7 +58,7 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
     );
   };
 
-  const MoreOptions = (params) => {
+  const MoreOptions = () => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -84,7 +88,7 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
     );
   };
 
-  const filters = ["Projects", "Priority", "Status", "Developer", "Tester"];
+  // const filters = ["Projects", "Priority", "Status", "Developer", "Tester"];
 
   const filteredData = tickets.filter(
     (ticket) =>
@@ -111,8 +115,8 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
       ),
       sortable: false,
       filter: false,
-      flex: 1,
-      minWidth: 100,
+      // flex: 1,
+      minWidth: 10,
       pinned: "left",
     },
     {
@@ -202,7 +206,21 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
     }
     setSelectAllColumns(!selectAllColumns);
   };
+  const handleApplyFilters = (filters) => {
+    setAppliedFilters(filters);
+  };
 
+  const clearFilter = (key) => {
+    setAppliedFilters((prevFilters) => {
+      const updatedFilters = { ...prevFilters };
+      delete updatedFilters[key];
+      return updatedFilters;
+    });
+  };
+
+  const clearAllFilters = () => {
+    setAppliedFilters({});
+  };
   return (
     <div className="w-full overflow-x-auto">
       <div className="flex space-x-8 mb-2 flex-wrap border-b-[1px] text-[16px] font-semibold border-[#EDEDED]">
@@ -221,8 +239,41 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
         ))}
       </div>
 
-      <div className="flex flex-wrap text-[14px] font-medium gap-4 mb-2 items-center">
-        {filters.map((filter, index) => (
+      {/* Columnn filters */}
+      <div className="flex flex-wrap text-[14px] gap-4 mb-2 items-center">
+        {/* Applied filter starts */}
+        <div className="flex flex-wrap text-[14px]  gap-4 mb-2 items-center">
+          <span className="font-normal">Applied Filters:</span>
+          {Object.keys(appliedFilters).length > 0 ? (
+            Object.entries(appliedFilters).map(([key, value]) => (
+              <div
+                key={key}
+                className="bg-[#EDEDED] px-3 py-1 rounded flex items-center border border-[#9F9F9F]"
+              >
+                <span className="mr-2 text-xs capitalize">
+                  {key}: {value}
+                </span>
+                <button
+                  onClick={() => clearFilter(key)}
+                  className="text-red-400 font-bold"
+                >
+                  ✕
+                </button>
+              </div>
+            ))
+          ) : (
+            <span className="text-gray-500">No filters applied</span>
+          )}
+          {Object.keys(appliedFilters).length > 0 && (
+            <button
+              onClick={clearAllFilters}
+              className="text-red-600 border border-red-500 px-2 py-1 rounded"
+            >
+              Clear all Filters
+            </button>
+          )}
+        </div>
+        {/* {filters.map((filter, index) => (
           <div
             key={filter}
             className="flex items-center space-x-2 pr-2 relative"
@@ -237,8 +288,10 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
               <div className="absolute right-2 top-1/4 h-4 border-r-2 border-gray-300"></div>
             )}
           </div>
-        ))}
+        ))} */}
 
+        {/* Applied filter ends */}
+        {/* Search */}
         <div className="flex items-center border border-[#9F9F9F] rounded-xl px-2 py-1 ml-auto w-40">
           <FiSearch className="mr-2 text-[#9F9F9F]" />
           <input
@@ -249,7 +302,26 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
+        <div>
+          {/* Filter Icon */}
+          <Tippy content={`Filters`} placement="top" arrow={true}>
+            <div className="flex justify-end">
+              <FiFilter
+                size={21}
+                className="cursor-pointer font-light"
+                onClick={() => setIsFilterOpen(true)}
+              />
+            </div>
+          </Tippy>
 
+          {/* Show Filter Form when isFilterOpen is true */}
+          {isFilterOpen && (
+            <TicketFilterForm
+              onClose={() => setIsFilterOpen(false)}
+              onApplyFilters={handleApplyFilters}
+            />
+          )}
+        </div>
         <div className="relative">
           <div className="flex">
             <Tippy content={`Toggle Column`} placement="top" arrow={true}>
@@ -257,7 +329,7 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
                 className="cursor-pointer"
                 onClick={() => setDropdownOpen(!dropdownOpen)}
               >
-                <CiViewColumn className="text-2xl" />
+                <CiViewColumn className="text-2xl font-bold" />
               </button>
             </Tippy>
           </div>
