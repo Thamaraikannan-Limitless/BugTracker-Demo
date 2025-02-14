@@ -60,16 +60,33 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
   const MoreOptions = (params) => {
     const [isOpen, setIsOpen] = useState(false);
 
+    const handleToggle = (event) => {
+      event.stopPropagation(); // Prevents immediate closing when clicking the button
+      setIsOpen(!isOpen);
+
+      if (!isOpen) {
+        window.addEventListener("click", handleClose);
+      }
+    };
+
+    const handleClose = () => {
+      setIsOpen(false);
+      window.removeEventListener("click", handleClose);
+    };
+
     return (
       <div className="relative">
         <button
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={handleToggle}
           className="cursor-pointer text-sm focus:outline-none"
         >
           <FiMoreVertical className="cursor-pointer mt-4" />
         </button>
         {isOpen && (
-          <div className="fixed right-7 mr-2 top-0 bg-white border border-gray-300 rounded-md shadow-lg z-20 w-40">
+          <div
+            className="fixed right-7 mr-2 top-0 bg-white border border-gray-300 rounded-md shadow-lg z-20 w-40"
+            onClick={(e) => e.stopPropagation()} // Prevents menu from closing when clicking inside
+          >
             <ul className="text-sm">
               <li
                 className="px-4 py-2 border-b border-[#cfcfcf] hover:bg-gray-100 cursor-pointer"
