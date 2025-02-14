@@ -1,16 +1,20 @@
 import { useState, useEffect } from "react";
-import Calendar from "react-calendar"; // Import the calendar
-import "react-calendar/dist/Calendar.css"; // Import calendar styles
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import interactionPlugin from "@fullcalendar/interaction";
 import PropTypes from "prop-types";
 import { format, subWeeks, startOfWeek, endOfWeek } from "date-fns";
 
 const formatDate = (dateString) => {
-  return format(new Date(dateString), "MMM-dd-EEE"); // Example output: Feb-03-Mon
+  return format(new Date(dateString), "MMM-dd-EEE");
 };
 
-const SummaryTable = ({ data, columns,startDate,endDate }) => {
+const SummaryTable = ({ data, columns, startDate, endDate }) => {
   const totals = columns.reduce((acc, col) => {
-    acc[col.toLowerCase()] = data.reduce((sum, item) => sum + item[col.toLowerCase()], 0);
+    acc[col.toLowerCase()] = data.reduce(
+      (sum, item) => sum + item[col.toLowerCase()],
+      0
+    );
     return acc;
   }, {});
 
@@ -18,9 +22,14 @@ const SummaryTable = ({ data, columns,startDate,endDate }) => {
     <table className="w-full text-left border-collapse">
       <thead>
         <tr>
-          <th className="pt-2 pl-2 text-xs pb-2 text-[#9F9F9F] font-[600]">{format(startDate, "MMM-dd")} - {format(endDate, "MMM-dd")}</th>
+          <th className="pt-2 text-xs pb-2 text-[#9F9F9F] font-[600]">
+            {format(startDate, "MMM-dd")} - {format(endDate, "MMM-dd")}
+          </th>
           {columns.map((col) => (
-            <th key={col} className="text-xs font-[600] text-[#9F9F9F]">
+            <th
+              key={col}
+              className="text-xs font-[600] text-[#9F9F9F] whitespace-nowrap"
+            >
               {col}
             </th>
           ))}
@@ -29,9 +38,14 @@ const SummaryTable = ({ data, columns,startDate,endDate }) => {
       <tbody>
         {data.map((item, index) => (
           <tr key={index}>
-            <td className="p-2 border-b text-sm font-semibold border-[#D9D9D9]">{formatDate(item.date)}</td>
+            <td className="pt-2 border-b pb-2 text-sm font-semibold border-[#D9D9D9] whitespace-nowrap">
+              {formatDate(item.date)}
+            </td>
             {columns.map((col) => (
-              <td key={col} className="p-2 border-b border-[#D9D9D9] text-sm font-[400]">
+              <td
+                key={col}
+                className="p-2 border-b border-[#D9D9D9] text-sm font-[400] whitespace-nowrap"
+              >
                 {item[col.toLowerCase()]}
               </td>
             ))}
@@ -40,7 +54,10 @@ const SummaryTable = ({ data, columns,startDate,endDate }) => {
         <tr className="font-[600]">
           <td className="p-2 border-b border-[#D9D9D9]"></td>
           {columns.map((col) => (
-            <td key={col} className="p-2 border-b border-[#D9D9D9]">
+            <td
+              key={col}
+              className="p-2 border-b border-[#D9D9D9] whitespace-nowrap"
+            >
               {totals[col.toLowerCase()]}
             </td>
           ))}
@@ -54,83 +71,72 @@ SummaryTable.propTypes = {
   data: PropTypes.arrayOf(
     PropTypes.shape({
       date: PropTypes.string.isRequired,
-      created: PropTypes.number,
-      assigned: PropTypes.number,
-      completed: PropTypes.number,
-      reoccur: PropTypes.number,
-      retest: PropTypes.number,
+      assigned: PropTypes.number.isRequired,
+      completed: PropTypes.number.isRequired,
+      reoccur: PropTypes.number.isRequired,
+      retest: PropTypes.number.isRequired,
     })
   ).isRequired,
   columns: PropTypes.arrayOf(PropTypes.string).isRequired,
   startDate: PropTypes.instanceOf(Date).isRequired,
-  endDate:PropTypes.instanceOf(Date).isRequired
-  
+  endDate: PropTypes.instanceOf(Date).isRequired,
 };
 
 const TicketSummary = ({ ticketData }) => {
   const [dateOption, setDateOption] = useState("This Week");
   const [selectedWeek, setSelectedWeek] = useState(new Date());
+  const [startDate, setStartDate] = useState(startOfWeek(new Date()));
+  const [endDate, setEndDate] = useState(endOfWeek(new Date()));
   const [showCalendar, setShowCalendar] = useState(false);
+  const [firstClickDate, setFirstClickDate] = useState(null);
 
   useEffect(() => {
-    if (dateOption === "Custom Week") {
+    if (dateOption === "This Week") {
+      setStartDate(startOfWeek(new Date()));
+      setEndDate(endOfWeek(new Date()));
+    } else if (dateOption === "Previous Week") {
+      setStartDate(startOfWeek(subWeeks(new Date(), 1)));
+      setEndDate(endOfWeek(subWeeks(new Date(), 1)));
+    } else if (dateOption === "Custom Week") {
       setShowCalendar(true);
     }
   }, [dateOption]);
 
-  const filterTicketData = () => {
-    const today = new Date();
-    let filteredData = [];
-    let startDate, endDate;
-    if (dateOption === "This Week") {
-      startDate = startOfWeek(today);
-      endDate = endOfWeek(today);
-      filteredData = ticketData.filter(item => {
-        const itemDate = new Date(item.date);
-        return itemDate >= startDate && itemDate <= endDate;
-      });
-    } else if (dateOption === "Previous Week") {
-      startDate = startOfWeek(subWeeks(today, 1));
-      endDate = endOfWeek( startDate );
-      filteredData = ticketData.filter(item => {
-        const itemDate = new Date(item.date);
-        return itemDate >=startDate && itemDate <= endDate;
-      });
-    } else if (dateOption === "Custom Week") {
-       startDate = startOfWeek(selectedWeek);
-       endDate = endOfWeek(selectedWeek);
-      filteredData = ticketData.filter(item => {
-        const itemDate = new Date(item.date);
-        return itemDate >= startDate && itemDate <= endDate;
-      });
+  const handleWeekChange = (info) => {
+    const clickedDate = new Date(info.date);
+    if (clickedDate > new Date()) return;
+
+    if (firstClickDate === null) {
+      setFirstClickDate(clickedDate);
+      setStartDate(startOfWeek(clickedDate));
+      setEndDate(endOfWeek(clickedDate));
+    } else {
+      setSelectedWeek(clickedDate);
+      setShowCalendar(false);
+      setFirstClickDate(null);
     }
-
-    return { filteredData, startDate, endDate };
   };
 
-  const handleDateOptionChange = (option) => {
-    setDateOption(option);
+  const closeCalendar = (e) => {
+    if (e.target.id === "calendar-overlay") {
+      setShowCalendar(false);
+      setFirstClickDate(null);
+    }
   };
 
-  const handleWeekChange = (date) => {
-    setSelectedWeek(date);
-    setShowCalendar(false); // Close the calendar after selection
-  };
-
-  const handleOverlayClick = () => {
-    setShowCalendar(false);
-  };
-
-  const { filteredData, startDate, endDate } = filterTicketData();
+  const filteredData = ticketData.filter((item) => {
+    const itemDate = new Date(item.date);
+    return itemDate >= startDate && itemDate <= endDate;
+  });
 
   return (
     <div className="bg-white p-6 rounded-xl relative">
-      <div className="flex justify-between items-center flex-row   mb-4">
-        <h2 className="text-[16px] pl-3 font-semibold">Ticket Summary</h2>
-        <div className="flex md:gap-4 gap-2 pr-3 py-4 md:py-0">
+      <div className="flex justify-between items-center flex-row mb-4">
+        <h2 className="text-[16px] pl-3 font-semibold">TicketSummary</h2>
+        <div className="flex gap-x-2">
           <select
             value={dateOption}
-            onChange={(e) => handleDateOptionChange(e.target.value)}
+            onChange={(e) => setDateOption(e.target.value)}
             className="p-2 border-[#EAEEF7] border rounded-md text-xs"
           >
             <option value="This Week">This Week</option>
@@ -140,17 +146,37 @@ const TicketSummary = ({ ticketData }) => {
         </div>
       </div>
 
-      {showCalendar && <div className="fixed inset-0 bg-black opacity-50 z-40" onClick={handleOverlayClick}></div>}
-
       {showCalendar && (
-        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded-md shadow-lg z-50">
-          <Calendar
-            onChange={handleWeekChange}
-            value={selectedWeek}
-            view="month"
-            maxDate={new Date()} // Disable future weeks
-            tileDisabled={({ date }) => date > new Date()} // Disable tiles for future dates
-          />
+        <div
+          id="calendar-overlay"
+          className="form-overlay flex justify-center items-center z-50"
+          onClick={closeCalendar}
+        >
+          <div className="bg-white w-[400px] h-[400px] p-6 shadow-lg relative">
+            <button
+              onClick={() => setShowCalendar(false)}
+              className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-md text-xs"
+            >
+              X
+            </button>
+            <h3 className="text-center text-lg font-semibold mb-3">
+              Select a Week
+            </h3>
+            <FullCalendar
+              plugins={[dayGridPlugin, interactionPlugin]}
+              initialView="dayGridMonth"
+              selectable={true}
+              dateClick={handleWeekChange}
+              dayCellClassNames={({ date }) => {
+                const today = new Date();
+                if (date > today) return "opacity-50 pointer-events-none";
+                return date >= startDate && date <= endDate
+                  ? "bg-yellow-300 rounded-md"
+                  : "";
+              }}
+              dayHeaderContent={() => ""} // Remove today label
+            />
+          </div>
         </div>
       )}
 
@@ -168,11 +194,11 @@ TicketSummary.propTypes = {
   ticketData: PropTypes.arrayOf(
     PropTypes.shape({
       date: PropTypes.string.isRequired,
-      created: PropTypes.number,
-      assigned: PropTypes.number,
-      completed: PropTypes.number,
-      reoccur: PropTypes.number,
-      retest: PropTypes.number,
+      created: PropTypes.number.isRequired,
+      assigned: PropTypes.number.isRequired,
+      completed: PropTypes.number.isRequired,
+      reoccur: PropTypes.number.isRequired,
+      retest: PropTypes.number.isRequired,
     })
   ).isRequired,
 };

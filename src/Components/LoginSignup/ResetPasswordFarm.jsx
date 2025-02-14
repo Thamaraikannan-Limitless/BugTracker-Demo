@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { IoMail } from "react-icons/io5";
-
+import PropType from "prop-types"
 const ResetPasswordForm = ({ setResetPassword }) => {
   const [email, setEmail] = useState("");
   const [success, setSuccess] = useState(false);
@@ -59,6 +59,10 @@ const ResetPasswordForm = ({ setResetPassword }) => {
       </p>
     </>
   );
+};
+
+ResetPasswordForm.propTypes = {
+  setResetPassword: PropType.func.isRequired,
 };
 
 export default ResetPasswordForm;

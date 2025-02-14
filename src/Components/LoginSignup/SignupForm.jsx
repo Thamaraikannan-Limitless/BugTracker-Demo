@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { FaUser, FaLock, FaEnvelope } from "react-icons/fa";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import useSignupAuthStore from "../../Store/useSignupAuthStore";
-
+import PropType from "prop-types";
 const SignupForm = ({ setIsLogin }) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -219,6 +219,10 @@ const SignupForm = ({ setIsLogin }) => {
       </p>
     </div>
   );
+};
+
+SignupForm.propTypes = {
+  setIsLogin: PropType.func.isRequired,
 };
 
 export default SignupForm;
