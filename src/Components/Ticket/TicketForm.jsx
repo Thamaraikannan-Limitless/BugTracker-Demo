@@ -90,10 +90,12 @@ const TicketForm = ({ onClose }) => {
 
   return (
     <div className="p-6 max-h-[90vh] overflow-y-auto">
+
       <h2 className="text-2xl font-semibold mb-5">Create a New Ticket</h2>
 
       {/* Project Selection */}
       <label className="block mb-2 text-sm font-[400] text-gray-700">
+
         Project <span className="text-red-600">*</span>
       </label>
       <select
@@ -101,7 +103,9 @@ const TicketForm = ({ onClose }) => {
         value={formData.project}
         onChange={handleChange}
         className={`" border border-gray-400 w-full p-2  rounded-md ${
+
           errors.project ? " mb-1 " : " mb-5 "
+
         }"`}
       >
         <option value="">Select Project</option>
@@ -115,7 +119,9 @@ const TicketForm = ({ onClose }) => {
       <div className="md:flex md:justify-between gap-x-15">
         {/* Ticket Number */}
         <div>
+
           <label className="block mb-2 text-sm font-[400] text-gray-700">
+
             Ticket Number <span className="text-red-600">*</span>
           </label>
           <input
@@ -135,7 +141,9 @@ const TicketForm = ({ onClose }) => {
 
         {/* Ticket Date */}
         <div>
+
           <label className="block mb-2 text-sm font-[400] text-gray-700">
+
             Ticket Date <span className="text-red-600">*</span>
           </label>
           <input
@@ -145,6 +153,7 @@ const TicketForm = ({ onClose }) => {
             onChange={handleChange}
             className={`" border border-gray-400 w-full p-2  rounded-md ${
               errors.ticketDate ? " mb-1 " : " mb-5 "
+
             }"`}
           />
           {errors.ticketDate && (
@@ -156,6 +165,7 @@ const TicketForm = ({ onClose }) => {
       {/* Bug Details */}
       <div>
         <label className="block mb-2 text-sm font-[400] text-gray-700">
+
           Bug Details <span className="text-red-600">*</span>
         </label>
         <textarea
@@ -186,15 +196,18 @@ const TicketForm = ({ onClose }) => {
                 name="priority"
                 value={level}
                 onChange={handleChange}
+
                 className={`"mr-2 ${errors.priority ? " mb-1 " : " mb-5 "}"`}
                 checked={formData.priority === level}
               />
               <span className="ml-2">{level}</span>
+
             </label>
           ))}
         </div>
         {errors.priority && (
           <p className="text-red-500 text-sm mb-2 ">{errors.priority}</p>
+
         )}
       </div>
       {/* Attach Screenshot Section */}
