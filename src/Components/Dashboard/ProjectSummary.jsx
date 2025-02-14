@@ -4,7 +4,7 @@ const ProjectSummary = ({ projects }) => {
   return (
     <div className="p-6 bg-[#F5F5F5]  rounded-tl-[60px] rounded-br-[60px]">
       <h2 className="text-[14px] font-[600] text-black mb-4">
-        Summary of Ticket<span className="font-[400]">(Last 30 days)</span> 
+        Summary of Ticket<span className="font-[400]">(Last 30 days)</span>
       </h2>
 
       {/* Titles Row */}
@@ -24,12 +24,8 @@ const ProjectSummary = ({ projects }) => {
           >
             <span className="font-medium text-black">{project.name}</span>
             <span className="text-center text-black">{project.created}</span>
-            <span className="text-center text-black">
-              {project.assigned}
-            </span>
-            <span className="text-center text-black">
-              {project.completed}
-            </span>
+            <span className="text-center text-black">{project.assigned}</span>
+            <span className="text-center text-black">{project.completed}</span>
           </div>
         ))}
       </div>

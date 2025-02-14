@@ -46,7 +46,10 @@ const TicketDetails = ({ ticket, onBack }) => {
         {/* Progress Section */}
         <div className="relative lg:w-[450px] h-[500px] bg-gray-100  rounded-xl">
           {progressStages.map((stage, index) => (
-            <div key={index} className="relative flex gap-0 items-start  mt-12 ">
+            <div
+              key={index}
+              className="relative flex gap-0 items-start  mt-12 "
+            >
               {/* Circle Indicator */}
               <div className="relative z-10 px-4 ml-4 md:ml-[37%] lg:ml-12">
                 {stage.user ? (
@@ -97,7 +100,7 @@ const TicketDetails = ({ ticket, onBack }) => {
                 ) : (
                   <p className="text-gray-400">-</p>
                 )}
-              </div >
+              </div>
             </div>
           ))}
         </div>
@@ -216,4 +219,3 @@ TicketDetails.propTypes = {
 };
 
 export default TicketDetails;
-

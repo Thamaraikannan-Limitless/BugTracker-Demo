@@ -101,3 +101,79 @@ section {
     margin: 10px 0 !important;
   }
 }
+/* calendar gird */
+.fc .fc-daygrid-day-top {
+  display: inline-block;
+}
+.fc .fc-daygrid-day-events {
+  margin: 0;
+}
+.fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events {
+  min-height: 0.5em;
+}
+.fc-today-button {
+  display: none !important;
+}
+.fc .fc-toolbar-title {
+  font-size: 1.2em;
+  margin: 0px;
+}
+.fc-scrollgrid-sync-table {
+  height: 150px !important;
+}
+
+ .fc-scrollgrid-sync-inner{
+  text-align:center;
+}
+/* Active Link styles */
+.nav-link.active {
+  font-weight: bold;
+  color: white;
+}
+
+/* Underline effect */
+.nav-link.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 2px;
+  background-color: white;
+}
+
+/* Developer wise profile section */
+@media (max-width: 2560px) {
+  .dev-profile-section img {
+    margin-left: 22px;
+  }
+}
+@media (max-width: 1440px) {
+  .dev-profile-section img {
+    margin-left: 20px;
+  }
+}
+@media (max-width: 1024px) {
+  .dev-profile-section {
+    width: 100px;
+  }
+  .dev-profile-section img {
+    margin-left: 0px;
+  }
+}
+@media (max-width: 768px) {
+  .dev-profile-section {
+    width: 180px;
+  }
+  .dev-profile-section img {
+    margin-left: 32px;
+  }
+}
+@media (max-width: 760px) {
+  .dev-profile-section {
+    width: 80px;
+  }
+  .dev-profile-section img {
+    margin-left: 4px;
+  }
+}

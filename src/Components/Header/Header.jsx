@@ -34,14 +34,22 @@ const Header = ({ onReset }) => {
           <nav className="flex flex-row gap-x-10 text-xs">
             <NavLink
               to="/dashboard"
-              className="relative text-white hover:text-gray-200 after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-[2px] after:bg-white after:transition-all hover:after:w-full"
+              className={({ isActive }) =>
+                `relative text-white hover:text-gray-200 after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-[2px] after:bg-white after:transition-all hover:after:w-full ${
+                  isActive ? "nav-link active" : "nav-link"
+                }`
+              }
             >
               DashBoard
             </NavLink>
             <NavLink
               to="/ticket"
               onClick={onReset}
-              className="relative text-white hover:text-gray-200 after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-[2px] after:bg-white after:transition-all hover:after:w-full"
+              className={({ isActive }) =>
+                `relative text-white hover:text-gray-200 after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-[2px] after:bg-white after:transition-all hover:after:w-full ${
+                  isActive ? "nav-link active" : "nav-link"
+                }`
+              }
             >
               Tickets
             </NavLink>
@@ -73,7 +81,11 @@ const Header = ({ onReset }) => {
               <NavLink
                 to="/dashboard"
                 onClick={toggleMenu}
-                className="relative hover:text-gray-200 after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-[2px] after:bg-white after:transition-all hover:after:w-full"
+                className={({ isActive }) =>
+                  `relative text-white hover:text-gray-200 after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-[2px] after:bg-white after:transition-all hover:after:w-full ${
+                    isActive ? "nav-link active" : "nav-link"
+                  }`
+                }
               >
                 DashBoard
               </NavLink>
@@ -83,7 +95,11 @@ const Header = ({ onReset }) => {
                   onReset(); // Call the reset function
                   toggleMenu(); // Call the toggle menu function
                 }}
-                className="relative hover:text-gray-200 after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-[2px] after:bg-white after:transition-all hover:after:w-full"
+                className={({ isActive }) =>
+                  `relative hover:text-gray-200 after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-[2px] after:bg-white after:transition-all hover:after:w-full ${
+                    isActive ? "nav-link active" : "nav-link"
+                  }`
+                }
               >
                 Tickets
               </NavLink>

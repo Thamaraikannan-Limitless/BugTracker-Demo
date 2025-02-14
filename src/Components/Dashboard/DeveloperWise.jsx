@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import Calendar from "react-calendar"; // Import the calendar
-import "react-calendar/dist/Calendar.css";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import interactionPlugin from "@fullcalendar/interaction";
 import PropTypes from "prop-types";
 import { format, subWeeks, startOfWeek, endOfWeek } from "date-fns";
 
 const formatDate = (dateString) => {
-  return format(new Date(dateString), "MMM-dd-EEE"); // Example output: Feb-03-Mon
+  return format(new Date(dateString), "MMM-dd-EEE");
 };
 
 const SummaryTable = ({ data, columns, nameChange, startDate, endDate }) => {
@@ -18,26 +19,26 @@ const SummaryTable = ({ data, columns, nameChange, startDate, endDate }) => {
   }, {});
 
   return (
-    <div className="flex  gap-x-10  ">
-      <div className="md:w-[80px] w-[100px] text-center pt-2">
+    <div className="flex gap-x-10 flex-col md:flex-row">
+      <div className="md:w-[150px] w-[80px] text-center pt-2 dev-profile-section ">
         <img
-          className="w-18 h-18  max-w-[120%] rounded-full"
+          className="w-18 h-18 max-w-[120%] rounded-full"
           src="https://picsum.photos/seed/picsum/200/300"
           alt=""
         />
         <h4 className="pt-2 text-xs font-semibold">{nameChange}</h4>
-        <p className="text-xs  font-light">Developer</p>
+        <p className="text-xs font-light">Developer</p>
       </div>
-      <table className="w-full   text-left border-collapse">
+      <table className="w-full text-left border-collapse">
         <thead>
           <tr>
-            <th className="pt-2 text-xs pb-2 w-[30%] text-[#9F9F9F] font-[600]">
+            <th className="pt-2 text-xs pb-2 text-[#9F9F9F] font-[600]">
               {format(startDate, "MMM-dd")} - {format(endDate, "MMM-dd")}
             </th>
             {columns.map((col) => (
               <th
                 key={col}
-                className="lg:w-[14%] md:p-[2px] text-xs font-[600] text-[#9F9F9F]"
+                className="text-xs font-[600] text-[#9F9F9F] whitespace-nowrap"
               >
                 {col}
               </th>
@@ -47,13 +48,13 @@ const SummaryTable = ({ data, columns, nameChange, startDate, endDate }) => {
         <tbody>
           {data.map((item, index) => (
             <tr key={index}>
-              <td className="pt-2 border-b pb-2 text-sm font-semibold border-[#D9D9D9]">
+              <td className="pt-2 border-b pb-2 text-sm font-semibold border-[#D9D9D9] whitespace-nowrap">
                 {formatDate(item.date)}
               </td>
               {columns.map((col) => (
                 <td
                   key={col}
-                  className="p-2 border-b border-[#D9D9D9] text-sm font-[400]"
+                  className="p-2 border-b border-[#D9D9D9] text-sm font-[400] whitespace-nowrap"
                 >
                   {item[col.toLowerCase()]}
                 </td>
@@ -63,7 +64,10 @@ const SummaryTable = ({ data, columns, nameChange, startDate, endDate }) => {
           <tr className="font-[600]">
             <td className="p-2 border-b border-[#D9D9D9]"></td>
             {columns.map((col) => (
-              <td key={col} className="p-2 border-b border-[#D9D9D9]">
+              <td
+                key={col}
+                className="p-2 border-b border-[#D9D9D9] whitespace-nowrap"
+              >
                 {totals[col.toLowerCase()]}
               </td>
             ))}
@@ -78,10 +82,10 @@ SummaryTable.propTypes = {
   data: PropTypes.arrayOf(
     PropTypes.shape({
       date: PropTypes.string.isRequired,
-      assigned: PropTypes.number,
-      completed: PropTypes.number,
-      reoccur: PropTypes.number,
-      retest: PropTypes.number,
+      assigned: PropTypes.number.isRequired,
+      completed: PropTypes.number.isRequired,
+      reoccur: PropTypes.number.isRequired,
+      retest: PropTypes.number.isRequired,
     })
   ).isRequired,
   columns: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -93,109 +97,108 @@ SummaryTable.propTypes = {
 const DeveloperWise = ({ developerData }) => {
   const [dateOption, setDateOption] = useState("This Week");
   const [selectedWeek, setSelectedWeek] = useState(new Date());
-  const [showCalendar, setShowCalendar] = useState(false);
   const [nameChange, setName] = useState("");
+  const [startDate, setStartDate] = useState(startOfWeek(new Date()));
+  const [endDate, setEndDate] = useState(endOfWeek(new Date()));
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [firstClickDate, setFirstClickDate] = useState(null);
 
   useEffect(() => {
-    if (dateOption === "Custom Week") {
+    if (dateOption === "This Week") {
+      setStartDate(startOfWeek(new Date()));
+      setEndDate(endOfWeek(new Date()));
+    } else if (dateOption === "Previous Week") {
+      setStartDate(startOfWeek(subWeeks(new Date(), 1)));
+      setEndDate(endOfWeek(subWeeks(new Date(), 1)));
+    } else if (dateOption === "Custom Week") {
       setShowCalendar(true);
-    } else {
-      setShowCalendar(false);
     }
   }, [dateOption]);
 
-  const filterTicketData = () => {
-    const today = new Date();
-    let filteredData = [];
-    let startDate, endDate;
+  const handleWeekChange = (info) => {
+    const clickedDate = new Date(info.date);
+    if (clickedDate > new Date()) return;
 
-    if (dateOption === "This Week") {
-      startDate = startOfWeek(today);
-      endDate = endOfWeek(today);
-      filteredData = developerData.filter((item) => {
-        const itemDate = new Date(item.date);
-        return itemDate >= startDate && itemDate <= endDate;
-      });
-    } else if (dateOption === "Previous Week") {
-       startDate = startOfWeek(subWeeks(today, 1));
-       endDate = endOfWeek(startDate);
-      filteredData = developerData.filter((item) => {
-        const itemDate = new Date(item.date);
-        return itemDate >= startDate && itemDate <= endDate;
-      });
-    } else if (dateOption === "Custom Week") {
-      startDate = startOfWeek(selectedWeek);
-      endDate = endOfWeek(selectedWeek);
-      filteredData = developerData.filter((item) => {
-        const itemDate = new Date(item.date);
-        return itemDate >= startDate && itemDate <= endDate;
-      });
+    if (firstClickDate === null) {
+      setFirstClickDate(clickedDate);
+      setStartDate(startOfWeek(clickedDate));
+      setEndDate(endOfWeek(clickedDate));
+    } else {
+      setSelectedWeek(clickedDate);
+      setShowCalendar(false);
+      setFirstClickDate(null);
     }
-    return  { filteredData, startDate, endDate };
-  };
-  const handleNameChange = (e) => {
-    setName(e.target.value);
-  };
-  const handleDateOptionChange = (option) => {
-    setDateOption(option);
   };
 
-  const handleWeekChange = (date) => {
-    setSelectedWeek(date);
-    setShowCalendar(false);
+  const closeCalendar = (e) => {
+    if (e.target.id === "calendar-overlay") {
+      setShowCalendar(false);
+      setFirstClickDate(null);
+    }
   };
 
-  const handleOverlayClick = () => {
-    setShowCalendar(false);
-  };
-
-  const  { filteredData, startDate, endDate } = filterTicketData();
+  const filteredData = developerData.filter((item) => {
+    const itemDate = new Date(item.date);
+    return itemDate >= startDate && itemDate <= endDate;
+  });
 
   return (
     <div className="bg-white p-6 rounded-xl relative">
-      <div className="flex justify-between items-center flex-row  mb-4">
+      <div className="flex justify-between items-center flex-row mb-4">
         <h2 className="text-[16px] pl-3 font-semibold">Developer Wise</h2>
         <div className="flex gap-x-2">
-          <div className="py-4 md:py-0">
-            <select
-              onChange={handleNameChange}
-              className="p-2 border rounded-md border-[#EAEEF7] text-xs"
-            >
-              <option value="">Select</option>
-              <option value="Kannan">Kannan</option>
-              <option value="Krishna">Krishna</option>
-              <option value="Thamarai">Thamarai</option>
-            </select>
-          </div>
-          <div className="flex md:gap-4 gap-2 pr-3 py-4 md:py-0">
-            <select
-              value={dateOption}
-              onChange={(e) => handleDateOptionChange(e.target.value)}
-              className="p-2 border-[#EAEEF7] border rounded-md text-xs"
-            >
-              <option value="This Week">This Week</option>
-              <option value="Previous Week">Previous Week</option>
-              <option value="Custom Week">Custom Week</option>
-            </select>
-          </div>
+          <select
+            onChange={(e) => setName(e.target.value)}
+            className="p-2 border rounded-md border-[#EAEEF7] text-xs"
+          >
+            <option value="">Select</option>
+            <option value="Kannan">Kannan</option>
+            <option value="Krishna">Krishna</option>
+            <option value="Thamarai">Thamarai</option>
+          </select>
+          <select
+            value={dateOption}
+            onChange={(e) => setDateOption(e.target.value)}
+            className="p-2 border-[#EAEEF7] border rounded-md text-xs"
+          >
+            <option value="This Week">This Week</option>
+            <option value="Previous Week">Previous Week</option>
+            <option value="Custom Week">Custom Week</option>
+          </select>
         </div>
       </div>
-      {showCalendar && (
-        <div
-          className="fixed inset-0 bg-black opacity-50 z-40"
-          onClick={handleOverlayClick}
-        ></div>
-      )}
 
       {showCalendar && (
-        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded-md shadow-lg z-50">
-          <Calendar
-            onChange={handleWeekChange}
-            value={selectedWeek}
-            view="month"
-            maxDate={new Date()}
-            tileDisabled={({ date }) => date > new Date()}
-          />
+        <div
+          id="calendar-overlay"
+          className="form-overlay flex justify-center items-center z-50"
+          onClick={closeCalendar}
+        >
+          <div className="bg-white w-[400px] h-[400px] p-6  shadow-lg relative">
+            <button
+              onClick={() => setShowCalendar(false)}
+              className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-md text-xs"
+            >
+              X
+            </button>
+            <h3 className="text-center text-lg font-semibold mb-3">
+              Select a Week
+            </h3>
+            <FullCalendar
+              plugins={[dayGridPlugin, interactionPlugin]}
+              initialView="dayGridMonth"
+              selectable={true}
+              dateClick={handleWeekChange}
+              dayCellClassNames={({ date }) => {
+                const today = new Date();
+                if (date > today) return "opacity-50 pointer-events-none";
+                return date >= startDate && date <= endDate
+                  ? "bg-yellow-300 rounded-md"
+                  : "";
+              }}
+              dayHeaderContent={() => ""} // Remove today label
+            />
+          </div>
         </div>
       )}
 
@@ -209,15 +212,17 @@ const DeveloperWise = ({ developerData }) => {
     </div>
   );
 };
+
 DeveloperWise.propTypes = {
   developerData: PropTypes.arrayOf(
     PropTypes.shape({
       date: PropTypes.string.isRequired,
-      assigned: PropTypes.number,
-      completed: PropTypes.number,
-      reoccur: PropTypes.number,
-      retest: PropTypes.number,
+      assigned: PropTypes.number.isRequired,
+      completed: PropTypes.number.isRequired,
+      reoccur: PropTypes.number.isRequired,
+      retest: PropTypes.number.isRequired,
     })
   ).isRequired,
 };
+
 export default DeveloperWise;

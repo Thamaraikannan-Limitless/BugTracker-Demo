@@ -28,7 +28,9 @@ const Profile = () => {
 
   const renderProfileImage = () => {
     if (image) {
-      return <img src={image} alt="Profile" className="w-12 h-12 rounded-full" />;
+      return (
+        <img src={image} alt="Profile" className="w-12 h-12 rounded-full" />
+      );
     }
     return (
       <div className="w-12 h-12 rounded-full flex items-center justify-center bg-gray-300 text-white">
@@ -69,11 +71,11 @@ const Profile = () => {
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <nav className="absolute right-0 bg-white shadow-lg mt-4 w-52 h-10 text-center rounded-md text-black z-10 hover:bg-gray-200">
+        <nav className="absolute right-0 bg-white  mt-4 w-52 h-10 text-center rounded-md text-black z-10 hover:bg-gray-200">
           <ul>
             <li
               onClick={() => logout(navigate)}
-              className="px-2 py-2 bg-green-600 rounded-md text-white cursor-pointer"
+              className="px-2 py-2 bg-gradient-to-r from-[#034C41] to-[#71BF44] rounded-lg shadow-sm shadow-green-600 text-white cursor-pointer"
             >
               Log Out
             </li>

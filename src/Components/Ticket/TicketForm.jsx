@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import PropTypes from "prop-types";
-import { FaTrashAlt } from "react-icons/fa";
+import { RxCrossCircled } from "react-icons/rx";
 
 const TicketForm = ({ onClose }) => {
   const [formData, setFormData] = useState({
@@ -54,11 +54,14 @@ const TicketForm = ({ onClose }) => {
   const validateForm = () => {
     const newErrors = {};
     if (!formData.project) newErrors.project = "Please select a project.";
-    if (!formData.ticketNumber) newErrors.ticketNumber = "Ticket number is required.";
+    if (!formData.ticketNumber)
+      newErrors.ticketNumber = "Ticket number is required.";
     if (!formData.ticketDate) newErrors.ticketDate = "Ticket date is required.";
-    if (!formData.bugDetails) newErrors.bugDetails = "Bug details are required.";
+    if (!formData.bugDetails)
+      newErrors.bugDetails = "Bug details are required.";
     if (!formData.priority) newErrors.priority = "Please select a priority.";
-    if (formData.screenshots.length === 0) newErrors.screenshots = "Please select at least one image.";
+    if (formData.screenshots.length === 0)
+      newErrors.screenshots = "Please select at least one image.";
     return newErrors;
   };
 
@@ -87,93 +90,123 @@ const TicketForm = ({ onClose }) => {
 
   return (
     <div className="p-6 max-h-[90vh] overflow-y-auto">
-  <h2 className="text-xl font-bold mb-5">Create a New Ticket</h2>
+      <h2 className="text-2xl font-semibold mb-5">Create a New Ticket</h2>
 
       {/* Project Selection */}
-      <label className="block mb-2 text-sm font-medium text-gray-700">Project <span className="text-red-600">*</span></label>
+      <label className="block mb-2 text-sm font-[400] text-gray-700">
+        Project <span className="text-red-600">*</span>
+      </label>
       <select
         name="project"
         value={formData.project}
         onChange={handleChange}
-        className={`" border border-gray-400 w-full p-2  rounded-md ${errors.project ? " mb-3 " : " mb-5 "}"`}
+        className={`" border border-gray-400 w-full p-2  rounded-md ${
+          errors.project ? " mb-1 " : " mb-5 "
+        }"`}
       >
         <option value="">Select Project</option>
         <option>Project A</option>
         <option>Project B</option>
       </select>
-      {errors.project && <p className="text-red-500 text-sm mb-2 ">{errors.project}</p>}
+      {errors.project && (
+        <p className="text-red-500 text-sm mb-2 ">{errors.project}</p>
+      )}
 
       <div className="md:flex md:justify-between gap-x-15">
         {/* Ticket Number */}
         <div>
-          <label className="block mb-2 text-sm font-medium text-gray-700">Ticket Number <span className="text-red-600">*</span></label>
+          <label className="block mb-2 text-sm font-[400] text-gray-700">
+            Ticket Number <span className="text-red-600">*</span>
+          </label>
           <input
             type="number"
             name="ticketNumber"
             value={formData.ticketNumber}
             onChange={handleChange}
-            className={`" border border-gray-400 w-full p-2  rounded-md ${errors.ticketNumber ? " mb-3 " : " mb-5 "}"`}
+            className={`" border border-gray-400 w-full p-2  rounded-md ${
+              errors.ticketNumber ? " mb-1 " : " mb-5 "
+            }"`}
             placeholder="Enter Ticket Number"
           />
-          {errors.ticketNumber && <p className="text-red-500 text-sm mb-2">{errors.ticketNumber}</p>}
+          {errors.ticketNumber && (
+            <p className="text-red-500 text-sm mb-2">{errors.ticketNumber}</p>
+          )}
         </div>
 
         {/* Ticket Date */}
         <div>
-          <label className="block mb-2 text-sm font-medium text-gray-700">Ticket Date <span className="text-red-600">*</span></label>
+          <label className="block mb-2 text-sm font-[400] text-gray-700">
+            Ticket Date <span className="text-red-600">*</span>
+          </label>
           <input
             type="date"
             name="ticketDate"
             value={formData.ticketDate}
             onChange={handleChange}
-            className={`" border border-gray-400 w-full p-2  rounded-md ${errors.ticketDate ? " mb-3 " : " mb-5 "}"`}
+            className={`" border border-gray-400 w-full p-2  rounded-md ${
+              errors.ticketDate ? " mb-1 " : " mb-5 "
+            }"`}
           />
-          {errors.ticketDate && <p className="text-red-500 text-sm mb-2 ">{errors.ticketDate}</p>}
+          {errors.ticketDate && (
+            <p className="text-red-500 text-sm mb-2 ">{errors.ticketDate}</p>
+          )}
         </div>
       </div>
 
       {/* Bug Details */}
       <div>
-      <label className="block mb-2 text-sm font-medium text-gray-700">Bug Details <span className="text-red-600">*</span></label>
-      <textarea
-        name="bugDetails"
-        value={formData.bugDetails}
-        onChange={handleChange}
-        className={`" border border-gray-400 w-full p-2  rounded-md ${errors.bugDetails ? " mb-3 " : " mb-5 "}"`}
-        placeholder="Describe the bug..."
-        rows="3"
-      ></textarea>
-      {errors.bugDetails && <p className="text-red-500 text-sm mb-2">{errors.bugDetails}</p>}
+        <label className="block mb-2 text-sm font-[400] text-gray-700">
+          Bug Details <span className="text-red-600">*</span>
+        </label>
+        <textarea
+          name="bugDetails"
+          value={formData.bugDetails}
+          onChange={handleChange}
+          className={`" border border-gray-400 w-full p-2  rounded-md ${
+            errors.bugDetails ? " mb-1 " : " mb-5 "
+          }"`}
+          placeholder="Describe the bug..."
+          rows="3"
+        ></textarea>
+        {errors.bugDetails && (
+          <p className="text-red-500 text-sm mb-2">{errors.bugDetails}</p>
+        )}
       </div>
-     
+
       {/* Priority Selection */}
       <div>
-      <label className="block mb-2  text-sm font-medium text-gray-700">Priority <span className="text-red-600">*</span></label>
-      <div className="flex space-x-4 mb-5">
-        {["High", "Medium", "Low"].map((level) => (
-          <label key={level}>
-            <input
-              type="radio"
-              name="priority"
-              value={level}
-              onChange={handleChange}
-              className={`"mr-2 ${errors.priority ? " mb-3 " : " mb-5 "}"`}
-              checked={formData.priority === level}
-            />
-            {level}
-          </label>
-        ))}
-      </div>
-      {errors.priority && <p className="text-red-500 text-sm mb-2">{errors.priority}</p>}
+        <label className="block mb-2  text-sm font-[400] text-gray-700">
+          Priority <span className="text-red-600">*</span>
+        </label>
+        <div className="flex space-x-5 mb-2">
+          {["High", "Medium", "Low"].map((level) => (
+            <label key={level}>
+              <input
+                type="radio"
+                name="priority"
+                value={level}
+                onChange={handleChange}
+                className={`"mr-2 ${errors.priority ? " mb-1 " : " mb-5 "}"`}
+                checked={formData.priority === level}
+              />
+              <span className="ml-2">{level}</span>
+            </label>
+          ))}
+        </div>
+        {errors.priority && (
+          <p className="text-red-500 text-sm mb-2 ">{errors.priority}</p>
+        )}
       </div>
       {/* Attach Screenshot Section */}
       <div
         onClick={handleScreenshotClick}
-        className="w-2/3 p-2 border-2 border-[#034C41] rounded-lg mb-5 mt-2  cursor-pointer text-center"
+        className="w-2/3 p-2 border-2 border-[#034C41] rounded-lg mb-2 mt-2  cursor-pointer text-center"
       >
         <p className="text-[#034C41] ">Attach Screenshots</p>
       </div>
-      {errors.screenshots && <p className="text-red-500 text-sm mb-2">{errors.screenshots}</p>}
+      {errors.screenshots && (
+        <p className="text-red-500 text-sm mb-2">{errors.screenshots}</p>
+      )}
 
       {/* Image Previews with Delete Icons */}
       <div className="flex flex-wrap gap-2">
@@ -184,12 +217,10 @@ const TicketForm = ({ onClose }) => {
               alt="Screenshot Preview"
               className="w-full h-full object-cover rounded-md"
             />
-            <button
-              onClick={() => handleDeleteImage(index)}
-              className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1"
-            >
-              <FaTrashAlt size={14} />
-            </button>
+           
+             <span  onClick={() => handleDeleteImage(index)}
+              className="absolute top-1 right-1 text-red-800 font-extrabold bg-red-400 rounded-full p-1 cursor-pointer"> <RxCrossCircled size={16}/></span>
+          
           </div>
         ))}
       </div>
@@ -205,7 +236,7 @@ const TicketForm = ({ onClose }) => {
       />
 
       {/* Action Buttons */}
-      <div className="flex  justify-end gap-x-8 mt-4 mb-10">
+      <div className="flex  justify-end gap-x-8 mt-4 mb-7">
         <button
           onClick={onClose}
           className="bg-gray-400 text-white px-4 py-2 rounded-md hover:bg-gray-500 transition"

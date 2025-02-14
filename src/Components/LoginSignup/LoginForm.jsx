@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FaUser, FaLock } from "react-icons/fa";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import useLoginAuthStore from "../../store/useLoginAuthStore";
-
+import PropType from "prop-types";
 const LoginForm = ({ setResetPassword, setIsLogin }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -81,6 +81,10 @@ const LoginForm = ({ setResetPassword, setIsLogin }) => {
       </p>
     </>
   );
+};
+LoginForm.propTypes = {
+  setResetPassword: PropType.func.isRequired,
+  setIsLogin: PropType.func.isRequired,
 };
 
 export default LoginForm;

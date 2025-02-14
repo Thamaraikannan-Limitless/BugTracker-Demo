@@ -4,6 +4,8 @@ import Header from "../Header/Header";
 import TicketDetails from "./TicketDetails";
 import TicketTable from "../TicketGrid/TicketTable";
 import TicketBtn from "./TicketBtn";
+import userImage from "../../assets/alexander-hipp-iEEBWgY_6lA-unsplash.jpg";
+import Screenshot from "../../assets/photo-1566241440091-ec10de8db2e1.jpeg";
 const rowData = [
   {
     id: 1,
@@ -20,31 +22,31 @@ const rowData = [
     createdBy: {
       name: "Kannan",
       date: "20 Jan",
-      image: "https://picsum.photos/seed/picsum/200/300",
+      image: userImage,
     },
     assignedBy: {
       name: "Kannan",
       date: "21 Jan",
-      image: "https://picsum.photos/seed/picsum/200/300",
+      image: userImage,
     },
     assignedTo: {
       name: "Syed",
       date: "21 Jan",
-      image: "https://picsum.photos/seed/picsum/200/300",
+      image: userImage,
     },
     retestBy: {
       name: "Jasper",
       date: "28 Jan",
-      image: "https://picsum.photos/seed/picsum/200/300",
+      image: userImage,
     },
     details:
       "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam consectetur obcaecati quibusdam autem hic sapiente voluptates, suscipit ratione magnam! Nihil aspernatur deserunt, accusantium commodi suscipit illo, doloremque delectus sint atque consequatur consectetur? Tenetur modi ea non iste ipsum temporibus magnam, mollitia expedita minima porro rem, inventore tempora illo odio dicta?",
-    attachments: "https://picsum.photos/seed/picsum/200/300",
+    attachments: Screenshot,
     remarks: [
       {
         author: {
           name: "Syed",
-          image: "https://picsum.photos/seed/picsum/200/300",
+          image: userImage,
         },
         text: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam consectetur obcaecati quibusdam autem hic sapiente voluptates, suscipit ratione magnam! Nihil aspernatur deserunt, accusantium commodi suscipit illo,.",
         date: "22 Jan",
@@ -52,7 +54,7 @@ const rowData = [
       {
         author: {
           name: "Kannan",
-          image: "https://picsum.photos/seed/picsum/200/300",
+          image: userImage,
         },
         text: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam consectetur obcaecati quibusdam autem hic sapiente voluptates, suscipit ratione magnam! Nihil aspernatur deserunt, accusantium commodi suscipit illo,.",
         date: "25 Jan",
@@ -73,26 +75,26 @@ const rowData = [
     createdBy: {
       name: "Kannan ",
       date: "20 Jan",
-      image: "https://picsum.photos/seed/picsum/200/300",
+      image: userImage,
     },
     assignedBy: {
       name: "Kannan",
       date: "21 Jan",
-      image: "https://picsum.photos/seed/picsum/200/300",
+      image: userImage,
     },
     assignedTo: {
       name: "Syed",
       date: "21 Jan",
-      image: "https://picsum.photos/seed/picsum/200/300",
+      image: userImage,
     },
     details:
       "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam consectetur obcaecati quibusdam autem hic sapiente voluptates, suscipit ratione magnam! Nihil aspernatur deserunt, accusantium commodi suscipit illo, doloremque delectus sint atque consequatur consectetur? Tenetur modi ea non iste ipsum temporibus magnam, mollitia expedita minima porro rem, inventore tempora illo odio dicta?",
-    attachments: "https://picsum.photos/seed/picsum/200/300",
+    attachments: Screenshot,
     remarks: [
       {
         author: {
           name: "Kannan",
-          image: "https://picsum.photos/seed/picsum/200/300",
+          image: userImage,
         },
         text: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam consectetur obcaecati quibusdam autem hic sapiente voluptates, suscipit ratione magnam! Nihil aspernatur deserunt, accusantium commodi suscipit illo,.",
         date: "25 Jan",
@@ -113,16 +115,16 @@ const rowData = [
     createdBy: {
       name: "Kannan",
       date: "20 Jan",
-      image: "https://picsum.photos/seed/picsum/200/300",
+      image: userImage,
     },
     details:
       "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam consectetur obcaecati quibusdam autem hic sapiente voluptates, suscipit ratione magnam! Nihil aspernatur deserunt, accusantium commodi suscipit illo,.",
-    attachments: "https://picsum.photos/seed/picsum/200/300",
+    attachments: Screenshot,
     remarks: [
       {
         author: {
           name: "Syed",
-          image: "https://picsum.photos/seed/picsum/200/300",
+          image: userImage,
         },
         text: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam consectetur obcaecati quibusdam autem hic sapiente voluptates, suscipit ratione magnam! Nihil aspernatur deserunt, accusantium commodi suscipit illo,.",
         date: "22 Jan",
