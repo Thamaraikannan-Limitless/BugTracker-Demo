@@ -7,7 +7,6 @@ import PropTypes from "prop-types";
 import { CiViewColumn } from "react-icons/ci";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
-
 import { FiFilter } from "react-icons/fi";
 import TicketFilterForm from "./TicketFilterForm";
 
@@ -58,7 +57,7 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
     );
   };
 
-  const MoreOptions = () => {
+  const MoreOptions = (params) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -73,7 +72,7 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
           <div className="fixed right-7 mr-2 top-0 bg-white border border-gray-300 rounded-md shadow-lg z-20 w-40">
             <ul className="text-sm">
               <li
-                className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                className="px-4 py-2 border-b border-[#cfcfcf] hover:bg-gray-100 cursor-pointer"
                 onClick={() => onSelectTicket(params.data.id)}
               >
                 View
