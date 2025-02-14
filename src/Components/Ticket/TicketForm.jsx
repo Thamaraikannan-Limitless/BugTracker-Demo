@@ -54,11 +54,14 @@ const TicketForm = ({ onClose }) => {
   const validateForm = () => {
     const newErrors = {};
     if (!formData.project) newErrors.project = "Please select a project.";
-    if (!formData.ticketNumber) newErrors.ticketNumber = "Ticket number is required.";
+    if (!formData.ticketNumber)
+      newErrors.ticketNumber = "Ticket number is required.";
     if (!formData.ticketDate) newErrors.ticketDate = "Ticket date is required.";
-    if (!formData.bugDetails) newErrors.bugDetails = "Bug details are required.";
+    if (!formData.bugDetails)
+      newErrors.bugDetails = "Bug details are required.";
     if (!formData.priority) newErrors.priority = "Please select a priority.";
-    if (formData.screenshots.length === 0) newErrors.screenshots = "Please select at least one image.";
+    if (formData.screenshots.length === 0)
+      newErrors.screenshots = "Please select at least one image.";
     return newErrors;
   };
 
@@ -87,84 +90,112 @@ const TicketForm = ({ onClose }) => {
 
   return (
     <div className="p-6 max-h-[90vh] overflow-y-auto">
-  <h2 className="text-xl font-bold mb-5">Create a New Ticket</h2>
+      <h2 className="text-xl font-bold mb-5">Create a New Ticket</h2>
 
       {/* Project Selection */}
-      <label className="block mb-2 text-sm font-medium text-gray-700">Project <span className="text-red-600">*</span></label>
+      <label className="block mb-2 text-sm font-medium text-gray-700">
+        Project <span className="text-red-600">*</span>
+      </label>
       <select
         name="project"
         value={formData.project}
         onChange={handleChange}
-        className={`" border border-gray-400 w-full p-2  rounded-md ${errors.project ? " mb-3 " : " mb-5 "}"`}
+        className={`" border border-gray-400 w-full p-2  rounded-md ${
+          errors.project ? " mb-3 " : " mb-5 "
+        }"`}
       >
         <option value="">Select Project</option>
         <option>Project A</option>
         <option>Project B</option>
       </select>
-      {errors.project && <p className="text-red-500 text-sm mb-2 ">{errors.project}</p>}
+      {errors.project && (
+        <p className="text-red-500 text-sm mb-2 ">{errors.project}</p>
+      )}
 
       <div className="md:flex md:justify-between gap-x-15">
         {/* Ticket Number */}
         <div>
-          <label className="block mb-2 text-sm font-medium text-gray-700">Ticket Number <span className="text-red-600">*</span></label>
+          <label className="block mb-2 text-sm font-medium text-gray-700">
+            Ticket Number <span className="text-red-600">*</span>
+          </label>
           <input
             type="number"
             name="ticketNumber"
             value={formData.ticketNumber}
             onChange={handleChange}
-            className={`" border border-gray-400 w-full p-2  rounded-md ${errors.ticketNumber ? " mb-3 " : " mb-5 "}"`}
+            className={`" border border-gray-400 w-full p-2  rounded-md ${
+              errors.ticketNumber ? " mb-3 " : " mb-5 "
+            }"`}
             placeholder="Enter Ticket Number"
           />
-          {errors.ticketNumber && <p className="text-red-500 text-sm mb-2">{errors.ticketNumber}</p>}
+          {errors.ticketNumber && (
+            <p className="text-red-500 text-sm mb-2">{errors.ticketNumber}</p>
+          )}
         </div>
 
         {/* Ticket Date */}
         <div>
-          <label className="block mb-2 text-sm font-medium text-gray-700">Ticket Date <span className="text-red-600">*</span></label>
+          <label className="block mb-2 text-sm font-medium text-gray-700">
+            Ticket Date <span className="text-red-600">*</span>
+          </label>
           <input
             type="date"
             name="ticketDate"
             value={formData.ticketDate}
             onChange={handleChange}
-            className={`" border border-gray-400 w-full p-2  rounded-md ${errors.ticketDate ? " mb-3 " : " mb-5 "}"`}
+            className={`" border border-gray-400 w-full p-2  rounded-md ${
+              errors.ticketDate ? " mb-3 " : " mb-5 "
+            }"`}
           />
-          {errors.ticketDate && <p className="text-red-500 text-sm mb-2 ">{errors.ticketDate}</p>}
+          {errors.ticketDate && (
+            <p className="text-red-500 text-sm mb-2 ">{errors.ticketDate}</p>
+          )}
         </div>
       </div>
 
       {/* Bug Details */}
       <div>
-      <label className="block mb-2 text-sm font-medium text-gray-700">Bug Details <span className="text-red-600">*</span></label>
-      <textarea
-        name="bugDetails"
-        value={formData.bugDetails}
-        onChange={handleChange}
-        className={`" border border-gray-400 w-full p-2  rounded-md ${errors.bugDetails ? " mb-3 " : " mb-5 "}"`}
-        placeholder="Describe the bug..."
-        rows="3"
-      ></textarea>
-      {errors.bugDetails && <p className="text-red-500 text-sm mb-2">{errors.bugDetails}</p>}
+        <label className="block mb-2 text-sm font-medium text-gray-700">
+          Bug Details <span className="text-red-600">*</span>
+        </label>
+        <textarea
+          name="bugDetails"
+          value={formData.bugDetails}
+          onChange={handleChange}
+          className={`" border border-gray-400 w-full p-2  rounded-md ${
+            errors.bugDetails ? " mb-3 " : " mb-5 "
+          }"`}
+          placeholder="Describe the bug..."
+          rows="3"
+        ></textarea>
+        {errors.bugDetails && (
+          <p className="text-red-500 text-sm mb-2">{errors.bugDetails}</p>
+        )}
       </div>
-     
+
       {/* Priority Selection */}
       <div>
-      <label className="block mb-2  text-sm font-medium text-gray-700">Priority <span className="text-red-600">*</span></label>
-      <div className="flex space-x-4 mb-5">
-        {["High", "Medium", "Low"].map((level) => (
-          <label key={level}>
-            <input
-              type="radio"
-              name="priority"
-              value={level}
-              onChange={handleChange}
-              className={`"mr-2 ${errors.priority ? " mb-3 " : " mb-5 "}"`}
-              checked={formData.priority === level}
-            />
-            {level}
-          </label>
-        ))}
-      </div>
-      {errors.priority && <p className="text-red-500 text-sm mb-2">{errors.priority}</p>}
+        <label className="block mb-2  text-sm font-medium text-gray-700">
+          Priority <span className="text-red-600">*</span>
+        </label>
+        <div className="flex space-x-4 mb-5">
+          {["High", "Medium", "Low"].map((level) => (
+            <label key={level}>
+              <input
+                type="radio"
+                name="priority"
+                value={level}
+                onChange={handleChange}
+                className={`"mr-2 ${errors.priority ? " mb-3 " : " mb-5 "}"`}
+                checked={formData.priority === level}
+              />
+              {level}
+            </label>
+          ))}
+        </div>
+        {errors.priority && (
+          <p className="text-red-500 text-sm mb-2">{errors.priority}</p>
+        )}
       </div>
       {/* Attach Screenshot Section */}
       <div
@@ -173,7 +204,9 @@ const TicketForm = ({ onClose }) => {
       >
         <p className="text-[#034C41] ">Attach Screenshots</p>
       </div>
-      {errors.screenshots && <p className="text-red-500 text-sm mb-2">{errors.screenshots}</p>}
+      {errors.screenshots && (
+        <p className="text-red-500 text-sm mb-2">{errors.screenshots}</p>
+      )}
 
       {/* Image Previews with Delete Icons */}
       <div className="flex flex-wrap gap-2">
