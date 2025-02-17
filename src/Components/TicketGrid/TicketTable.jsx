@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
@@ -21,6 +21,24 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
   const [selectAllColumns, setSelectAllColumns] = useState(true);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [appliedFilters, setAppliedFilters] = useState({});
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+
+    if (dropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownOpen]);
+
   const statusCellRenderer = (params) => {
     const statusColors = {
       Created: "bg-[#ECBF50] text-white",
@@ -61,7 +79,7 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const handleToggle = (event) => {
-      event.stopPropagation(); // Prevents immediate closing when clicking the button
+      event.stopPropagation();
       setIsOpen(!isOpen);
 
       if (!isOpen) {
@@ -86,7 +104,7 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
         {isOpen && (
           <div
             className="fixed right-7 mr-2 top-0 bg-white border border-gray-300 rounded-md shadow-lg z-20 w-40"
-            onClick={(e) => e.stopPropagation()} // Prevents menu from closing when clicking inside
+            onClick={(e) => e.stopPropagation()}
           >
             <ul className="text-sm">
               <li
@@ -107,7 +125,6 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
       </div>
     );
   };
-
   const ticketLinkRenderer = (params) => (
     <div className="flex items-center space-x-1 cursor-pointer">
       {priorityIndicatorRenderer({ value: params.data.priority })}
@@ -151,7 +168,6 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
       cellRenderer: ticketLinkRenderer,
       sortable: false,
       filter: false,
-      // flex: 1,
       minWidth: 10,
       pinned: "left",
     },
@@ -236,7 +252,6 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
         updatedColumns = [...prev, field];
       }
 
-      // If all individual columns are selected, check "All"
       setSelectAllColumns(updatedColumns.length === 0);
 
       return updatedColumns;
@@ -251,6 +266,7 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
     }
     setSelectAllColumns(!selectAllColumns);
   };
+
   const handleApplyFilters = (filters) => {
     setAppliedFilters(filters);
   };
@@ -266,6 +282,7 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
   const clearAllFilters = () => {
     setAppliedFilters({});
   };
+
   return (
     <div className="w-full overflow-x-auto">
       <div className="flex space-x-8 mb-2 flex-wrap border-b-[1px] text-[16px] font-semibold border-[#EDEDED]">
@@ -284,9 +301,7 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
         ))}
       </div>
 
-      {/* Columnn filters */}
       <div className="flex flex-wrap text-[14px] gap-4 mb-2 items-center">
-        {/* Applied filter starts */}
         <div className="flex flex-wrap text-[14px]  gap-4 mb-2 items-center">
           <span className="font-normal">Applied Filters:</span>
           {Object.keys(appliedFilters).length > 0 ? (
@@ -300,7 +315,7 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
                 </span>
                 <button
                   onClick={() => clearFilter(key)}
-                  className="text-red-400 font-bold"
+                  className="text-[#9F9F9F] font-black cursor-pointer"
                 >
                   ✕
                 </button>
@@ -312,31 +327,13 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
           {Object.keys(appliedFilters).length > 0 && (
             <button
               onClick={clearAllFilters}
-              className="text-red-600 border border-red-500 px-2 py-1 rounded"
+              className="text-red-600 border border-red-500 px-2 py-1 rounded cursor-pointer"
             >
               Clear all Filters
             </button>
           )}
         </div>
-        {/* {filters.map((filter, index) => (
-          <div
-            key={filter}
-            className="flex items-center space-x-2 pr-2 relative"
-          >
-            <label className="mr-2 font-normal label-content">{filter}</label>:
-            <select className="pr-0 pl-0">
-              <option>All</option>
-              <option>Option 1</option>
-              <option>Option 2</option>
-            </select>
-            {index !== filters.length - 1 && (
-              <div className="absolute right-2 top-1/4 h-4 border-r-2 border-gray-300"></div>
-            )}
-          </div>
-        ))} */}
 
-        {/* Applied filter ends */}
-        {/* Search */}
         <div className="flex items-center border border-[#9F9F9F] rounded-xl px-2 py-1 ml-auto w-40">
           <FiSearch className="mr-2 text-[#9F9F9F]" />
           <input
@@ -348,7 +345,6 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
           />
         </div>
         <div>
-          {/* Filter Icon */}
           <Tippy content={`Filters`} placement="top" arrow={true}>
             <div className="flex justify-end">
               <FiFilter
@@ -359,15 +355,16 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
             </div>
           </Tippy>
 
-          {/* Show Filter Form when isFilterOpen is true */}
           {isFilterOpen && (
-            <TicketFilterForm
-              onClose={() => setIsFilterOpen(false)}
-              onApplyFilters={handleApplyFilters}
-            />
+            <div className="absolute top-[20px]">
+              <TicketFilterForm
+                onClose={() => setIsFilterOpen(false)}
+                onApplyFilters={handleApplyFilters}
+              />
+            </div>
           )}
         </div>
-        <div className="relative">
+        <div className="relative" ref={dropdownRef}>
           <div className="flex">
             <Tippy content={`Toggle Column`} placement="top" arrow={true}>
               <button
