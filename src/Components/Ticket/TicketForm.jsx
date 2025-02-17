@@ -1,7 +1,8 @@
 import { useState, useRef } from "react";
 import PropTypes from "prop-types";
 import { RxCrossCircled } from "react-icons/rx";
-
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 const TicketForm = ({ onClose }) => {
   const [formData, setFormData] = useState({
     project: "",
@@ -50,6 +51,19 @@ const TicketForm = ({ onClose }) => {
     setErrors((prevErrors) => ({ ...prevErrors, [name]: "" })); // Clear errors on input
   };
 
+  // Show toast notification on successful submission
+  const notify = () => {
+    toast.success("Ticket submitted successfully!", {
+      position: "top-center",  // Position of the toast
+      autoClose: 5000,       // Auto close after  seconds
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "light",
+    });
+  };
+
   // Form validation
   const validateForm = () => {
     const newErrors = {};
@@ -84,13 +98,15 @@ const TicketForm = ({ onClose }) => {
     };
 
     console.log("Form Data Submitted: ", dummyData);
-    alert("Ticket details saved successfully!");
-    onClose(); // Close the form
+    notify(); // Trigger success toast
+    setTimeout(onClose,1000); // Close the form after the toast is displayed
   };
 
+  
   return (
+    <>
     <div className="p-6 max-h-[90vh] overflow-y-auto">
-
+       
       <h2 className="text-2xl font-semibold mb-5">Create a New Ticket</h2>
 
       {/* Project Selection */}
@@ -142,13 +158,14 @@ const TicketForm = ({ onClose }) => {
         {/* Ticket Date */}
         <div>
 
-          <label className="block mb-2 text-sm font-[400] text-gray-700">
+          <label className="block mb-2 text-sm font-[400] text-gray-700" htmlFor="date">
 
             Ticket Date <span className="text-red-600">*</span>
           </label>
           <input
             type="date"
-            name="ticketDate"
+              name="ticketDate"
+              id="date"
             value={formData.ticketDate}
             onChange={handleChange}
             className={`" border border-gray-400 w-full p-2  rounded-md ${
@@ -257,13 +274,19 @@ const TicketForm = ({ onClose }) => {
           Cancel
         </button>
         <button
-          onClick={handleSubmit}
+          onClick={() => {
+            handleSubmit();
+           
+          }
+          }
           className="bg-[#034C41] text-white px-4 py-2 rounded-md hover:bg-[#026f63] transition"
         >
+         
           Save
         </button>
       </div>
-    </div>
+      </div>
+      </>
   );
 };
 

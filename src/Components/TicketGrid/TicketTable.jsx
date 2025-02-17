@@ -92,6 +92,7 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
       window.removeEventListener("click", handleClose);
     };
 
+
     return (
       <div className="relative">
         <button
@@ -124,6 +125,22 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
       </div>
     );
   };
+  const ticketLinkRenderer = (params) => (
+    <div className="flex items-center space-x-1 cursor-pointer">
+      {priorityIndicatorRenderer({ value: params.data.priority })}
+      <a
+        onClick={(e) => {
+          e.preventDefault();
+          onSelectTicket(params.data.id);
+        }}
+        className="ml-2 cursor-pointer font-semibold text-[#1358D0]"
+      >
+        {params.value}
+      </a>
+    </div>
+  );
+
+  // const filters = ["Projects", "Priority", "Status", "Developer", "Tester"];
 
   const filteredData = tickets.filter(
     (ticket) =>
@@ -136,18 +153,19 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
     {
       headerName: "TICKET #",
       field: "ticket",
-      cellRenderer: (params) => (
-        <div className="flex items-center space-x-1 cursor-pointer">
-          {priorityIndicatorRenderer({ value: params.data.priority })}
-          <a
-            href={`#${params.value}`}
-            className="text-blue-500 ml-2 cursor-pointer font-semibold text-[#1358D0]"
-            onClick={() => onSelectTicket(params.data.id)}
-          >
-            {params.value}
-          </a>
-        </div>
-      ),
+      // cellRenderer: (params) => (
+      //   <div className="flex items-center space-x-1 cursor-pointer">
+      //     {priorityIndicatorRenderer({ value: params.data.priority })}
+      //     <a
+      //       href={`#${params.value}`}
+      //       className="text-blue-500 ml-2 cursor-pointer font-semibold text-[#1358D0]"
+      //       onClick={() => onSelectTicket(params.data.id)}
+      //     >
+      //       {params.value}
+      //     </a>
+      //   </div>
+      // ),
+      cellRenderer: ticketLinkRenderer,
       sortable: false,
       filter: false,
       minWidth: 10,

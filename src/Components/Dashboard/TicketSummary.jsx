@@ -3,7 +3,7 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import PropTypes from "prop-types";
-import { format, subWeeks, startOfWeek, endOfWeek } from "date-fns";
+import { format, startOfWeek, endOfWeek } from "date-fns";
 
 const formatDate = (dateString) => {
   return format(new Date(dateString), "MMM-dd-EEE");
@@ -84,19 +84,21 @@ SummaryTable.propTypes = {
 
 const TicketSummary = ({ ticketData }) => {
   const [dateOption, setDateOption] = useState("This Week");
-  const [selectedWeek, setSelectedWeek] = useState(new Date());
   const [startDate, setStartDate] = useState(startOfWeek(new Date()));
   const [endDate, setEndDate] = useState(endOfWeek(new Date()));
   const [showCalendar, setShowCalendar] = useState(false);
-  const [firstClickDate, setFirstClickDate] = useState(null);
+  const [tempStartDate, setTempStartDate] = useState(startOfWeek(new Date()));
+  const [tempEndDate, setTempEndDate] = useState(endOfWeek(new Date()));
 
   useEffect(() => {
     if (dateOption === "This Week") {
       setStartDate(startOfWeek(new Date()));
       setEndDate(endOfWeek(new Date()));
+      setShowCalendar(false);
     } else if (dateOption === "Previous Week") {
-      setStartDate(startOfWeek(subWeeks(new Date(), 1)));
-      setEndDate(endOfWeek(subWeeks(new Date(), 1)));
+      setStartDate(startOfWeek(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)));
+      setEndDate(endOfWeek(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)));
+      setShowCalendar(false);
     } else if (dateOption === "Custom Week") {
       setShowCalendar(true);
     }
@@ -106,21 +108,21 @@ const TicketSummary = ({ ticketData }) => {
     const clickedDate = new Date(info.date);
     if (clickedDate > new Date()) return;
 
-    if (firstClickDate === null) {
-      setFirstClickDate(clickedDate);
-      setStartDate(startOfWeek(clickedDate));
-      setEndDate(endOfWeek(clickedDate));
-    } else {
-      setSelectedWeek(clickedDate);
-      setShowCalendar(false);
-      setFirstClickDate(null);
-    }
+    // Set the temporary week selection
+    setTempStartDate(startOfWeek(clickedDate));
+    setTempEndDate(endOfWeek(clickedDate));
+  };
+
+  const confirmDateSelection = () => {
+    // Update actual state with selected dates
+    setStartDate(tempStartDate);
+    setEndDate(tempEndDate);
+    setShowCalendar(false);
   };
 
   const closeCalendar = (e) => {
     if (e.target.id === "calendar-overlay") {
       setShowCalendar(false);
-      setFirstClickDate(null);
     }
   };
 
@@ -152,7 +154,7 @@ const TicketSummary = ({ ticketData }) => {
           className="form-overlay flex justify-center items-center z-50"
           onClick={closeCalendar}
         >
-          <div className="bg-white w-[400px] h-[400px] p-6 shadow-lg relative">
+          <div className="bg-white w-[400px] h-[450px] p-6 shadow-lg relative">
             <button
               onClick={() => setShowCalendar(false)}
               className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-md text-xs"
@@ -170,12 +172,19 @@ const TicketSummary = ({ ticketData }) => {
               dayCellClassNames={({ date }) => {
                 const today = new Date();
                 if (date > today) return "opacity-50 pointer-events-none";
-                return date >= startDate && date <= endDate
+                return date >= tempStartDate && date <= tempEndDate
                   ? "bg-yellow-300 rounded-md"
                   : "";
               }}
-              dayHeaderContent={() => ""} // Remove today label
             />
+            <div className="flex justify-end mt-4">
+              <button
+                onClick={confirmDateSelection}
+                className="bg-blue-500 text-white px-4 py-2 rounded-md text-sm"
+              >
+                OK
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -191,16 +200,7 @@ const TicketSummary = ({ ticketData }) => {
 };
 
 TicketSummary.propTypes = {
-  ticketData: PropTypes.arrayOf(
-    PropTypes.shape({
-      date: PropTypes.string.isRequired,
-      created: PropTypes.number.isRequired,
-      assigned: PropTypes.number.isRequired,
-      completed: PropTypes.number.isRequired,
-      reoccur: PropTypes.number.isRequired,
-      retest: PropTypes.number.isRequired,
-    })
-  ).isRequired,
+  ticketData: PropTypes.array.isRequired,
 };
 
 export default TicketSummary;

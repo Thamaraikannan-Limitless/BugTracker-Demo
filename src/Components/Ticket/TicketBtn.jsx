@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import TicketForm from "./TicketForm";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const TicketBtn = () => {
   const [showForm, setShowForm] = useState(false);
@@ -24,6 +26,17 @@ const TicketBtn = () => {
 
   return (
     <div className="bg-gray-50 py-3 relative">
+      {/* Toast Container - Now applies globally */}
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="light"
+      />
+
       {/* Header Section */}
       <section>
         <header className="flex justify-between items-center">
@@ -40,7 +53,7 @@ const TicketBtn = () => {
       {/* Overlay Background */}
       {showForm && (
         <div
-          className=" form-overlay"
+          className="form-overlay"
           onClick={() => setShowForm(false)} // Close form when clicking overlay
         ></div>
       )}
