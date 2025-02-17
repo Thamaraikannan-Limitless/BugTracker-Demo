@@ -4,8 +4,7 @@ import logo from "../../assets/logo/limitless-logo.svg";
 import { NavLink } from "react-router-dom";
 import { MdOutlineClose } from "react-icons/md";
 import { IoMenu } from "react-icons/io5";
-import PropTypes from "prop-types";
-const Header = ({ onReset }) => {
+const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => setIsOpen(!isOpen);
@@ -44,7 +43,6 @@ const Header = ({ onReset }) => {
             </NavLink>
             <NavLink
               to="/ticket"
-              onClick={onReset}
               className={({ isActive }) =>
                 `relative text-white hover:text-gray-200 after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-[2px] after:bg-white after:transition-all hover:after:w-full ${
                   isActive ? "nav-link active" : "nav-link"
@@ -91,8 +89,7 @@ const Header = ({ onReset }) => {
               </NavLink>
               <NavLink
                 to="/ticket"
-                onClick={() => {
-                  onReset(); // Call the reset function
+                onClick={() => { 
                   toggleMenu(); // Call the toggle menu function
                 }}
                 className={({ isActive }) =>
@@ -109,10 +106,6 @@ const Header = ({ onReset }) => {
       )}
     </header>
   );
-};
-Header.propTypes = {
-  onReset: PropTypes.func.isRequired,
-  // PropType to ensure the 'onReset' function is provided
 };
 
 export default Header;

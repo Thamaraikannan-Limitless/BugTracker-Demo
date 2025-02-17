@@ -6,7 +6,7 @@ const TicketDetails = ({ ticket, onBack }) => {
     { label: "CREATED BY", user: ticket.createdBy },
     { label: "ASSIGNED BY", user: ticket.assignedBy },
     { label: "ASSIGNED TO", user: ticket.assignedTo },
-    { label: "RESTED BY", user: ticket.retestBy },
+    { label: "RETESTED BY", user: ticket.retestBy },
   ];
 
   return (
@@ -92,7 +92,7 @@ const TicketDetails = ({ ticket, onBack }) => {
                       </p>
                       {
                         <p className="text-xs text-gray-500">
-                          {stage.user.date}
+                          on {stage.user.date}
                         </p>
                       }
                     </div>

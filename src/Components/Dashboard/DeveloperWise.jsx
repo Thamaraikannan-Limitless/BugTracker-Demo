@@ -1,13 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from "react"; // Make sure to import useEffect
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import PropTypes from "prop-types";
 import { format, subWeeks, startOfWeek, endOfWeek } from "date-fns";
-
-const formatDate = (dateString) => {
-  return format(new Date(dateString), "MMM-dd-EEE");
-};
+import userImage from "../../assets/alexander-hipp-iEEBWgY_6lA-unsplash.jpg";
 
 const SummaryTable = ({ data, columns, nameChange, startDate, endDate }) => {
   const totals = columns.reduce((acc, col) => {
@@ -23,8 +20,8 @@ const SummaryTable = ({ data, columns, nameChange, startDate, endDate }) => {
       <div className="md:w-[150px] w-[80px] text-center pt-2 dev-profile-section ">
         <img
           className="w-18 h-18 max-w-[120%] rounded-full"
-          src="https://picsum.photos/seed/picsum/200/300"
-          alt=""
+          src={userImage}
+          alt="User Profile"
         />
         <h4 className="pt-2 text-xs font-semibold">{nameChange}</h4>
         <p className="text-xs font-light">Developer</p>
@@ -49,7 +46,7 @@ const SummaryTable = ({ data, columns, nameChange, startDate, endDate }) => {
           {data.map((item, index) => (
             <tr key={index}>
               <td className="pt-2 border-b pb-2 text-sm font-semibold border-[#D9D9D9] whitespace-nowrap">
-                {formatDate(item.date)}
+                {format(new Date(item.date), "MMM-dd-EEE")}
               </td>
               {columns.map((col) => (
                 <td
@@ -96,20 +93,22 @@ SummaryTable.propTypes = {
 
 const DeveloperWise = ({ developerData }) => {
   const [dateOption, setDateOption] = useState("This Week");
-  const [selectedWeek, setSelectedWeek] = useState(new Date());
   const [nameChange, setName] = useState("");
   const [startDate, setStartDate] = useState(startOfWeek(new Date()));
   const [endDate, setEndDate] = useState(endOfWeek(new Date()));
   const [showCalendar, setShowCalendar] = useState(false);
-  const [firstClickDate, setFirstClickDate] = useState(null);
+  const [tempStartDate, setTempStartDate] = useState(startOfWeek(new Date()));
+  const [tempEndDate, setTempEndDate] = useState(endOfWeek(new Date()));
 
   useEffect(() => {
     if (dateOption === "This Week") {
       setStartDate(startOfWeek(new Date()));
       setEndDate(endOfWeek(new Date()));
+      setShowCalendar(false);
     } else if (dateOption === "Previous Week") {
-      setStartDate(startOfWeek(subWeeks(new Date(), 1)));
-      setEndDate(endOfWeek(subWeeks(new Date(), 1)));
+      setStartDate(startOfWeek(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)));
+      setEndDate(endOfWeek(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)));
+      setShowCalendar(false);
     } else if (dateOption === "Custom Week") {
       setShowCalendar(true);
     }
@@ -119,21 +118,21 @@ const DeveloperWise = ({ developerData }) => {
     const clickedDate = new Date(info.date);
     if (clickedDate > new Date()) return;
 
-    if (firstClickDate === null) {
-      setFirstClickDate(clickedDate);
-      setStartDate(startOfWeek(clickedDate));
-      setEndDate(endOfWeek(clickedDate));
-    } else {
-      setSelectedWeek(clickedDate);
-      setShowCalendar(false);
-      setFirstClickDate(null);
-    }
+    // Set the temporary week selection
+    setTempStartDate(startOfWeek(clickedDate));
+    setTempEndDate(endOfWeek(clickedDate));
+  };
+
+  const confirmDateSelection = () => {
+    // Update actual state with selected dates
+    setStartDate(tempStartDate);
+    setEndDate(tempEndDate);
+    setShowCalendar(false);
   };
 
   const closeCalendar = (e) => {
     if (e.target.id === "calendar-overlay") {
       setShowCalendar(false);
-      setFirstClickDate(null);
     }
   };
 
@@ -167,14 +166,14 @@ const DeveloperWise = ({ developerData }) => {
           </select>
         </div>
       </div>
-
+     
       {showCalendar && (
         <div
           id="calendar-overlay"
           className="form-overlay flex justify-center items-center z-50"
           onClick={closeCalendar}
         >
-          <div className="bg-white w-[400px] h-[400px] p-6  shadow-lg relative">
+          <div className="bg-white w-[400px] h-[450px] p-6 shadow-lg relative">
             <button
               onClick={() => setShowCalendar(false)}
               className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-md text-xs"
@@ -192,12 +191,19 @@ const DeveloperWise = ({ developerData }) => {
               dayCellClassNames={({ date }) => {
                 const today = new Date();
                 if (date > today) return "opacity-50 pointer-events-none";
-                return date >= startDate && date <= endDate
+                return date >= tempStartDate && date <= tempEndDate
                   ? "bg-yellow-300 rounded-md"
                   : "";
               }}
-              dayHeaderContent={() => ""} // Remove today label
             />
+            <div className="flex justify-end mt-4">
+              <button
+                onClick={confirmDateSelection}
+                className="bg-blue-500 text-white px-4 py-2 rounded-md text-sm"
+              >
+                OK
+              </button>
+            </div>
           </div>
         </div>
       )}
