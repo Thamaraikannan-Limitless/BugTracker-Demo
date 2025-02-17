@@ -3,7 +3,6 @@ import AuthForm from "./Pages/AuthForm";
 import Dashboard from "./Pages/Dashboard";
 import Tickets from "./Pages/Tickets";
 import TicketDetailWrapper from "./Components/Ticket/TicketDetailWrapper";
-import Header from "./Components/Header/Header";
 
 function App() {
   return (
