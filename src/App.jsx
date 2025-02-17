@@ -10,11 +10,9 @@ function App() {
     <Router basename="/ticket-tracker">
       <Routes>
         <Route path="/" element={<AuthForm />} />
-        <Route element={<Header/>}>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/ticket" element={<Tickets />} />
-          <Route path="/tickets/:ticketId" element={<TicketDetailWrapper />} />
-          </Route>
+        <Route path="/tickets/:ticketId" element={<TicketDetailWrapper />} />
       </Routes>
     </Router>
   );
