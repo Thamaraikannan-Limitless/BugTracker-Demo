@@ -85,7 +85,7 @@ section {
 }
 
 /* Grid data pagination */
-@media (max-width: 640px) {
+@media (max-width: 465px) {
   .ag-paging-panel {
     margin: 50px 0 !important;
     margin-top: 10px !important;
