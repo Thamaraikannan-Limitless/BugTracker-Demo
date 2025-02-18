@@ -12,6 +12,8 @@ import TicketFilterForm from "./TicketFilterForm";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
+// const defaultAvatar = "/mnt/data/image.png";
+
 const TicketTable = ({ tickets, onSelectTicket }) => {
   const [paginationPageSize, setPaginationPageSize] = useState(10);
   const [activeTab, setActiveTab] = useState("All");
@@ -22,6 +24,43 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [appliedFilters, setAppliedFilters] = useState({});
   const dropdownRef = useRef(null);
+  const [gridData, setGridData] = useState(tickets);
+  const gridRef = useRef(null);
+
+  useEffect(() => {
+    let updatedData = [...tickets];
+
+    if (activeTab === "Created") {
+      updatedData = tickets
+        .filter((ticket) => ticket.status === "Created")
+        .map((ticket) => ({
+          id: ticket.id,
+          priority: ticket.priority,
+          ticket: ticket.ticket,
+          project: ticket.project,
+          createdOn: ticket.createdOn,
+          createdBy: {
+            name: ticket.createdBy?.name || "Unknown",
+            image: ticket.createdBy?.image,
+          },
+          reportedBy: {
+            name: ticket.reportedBy?.name || "Unknown",
+            image: ticket.reportedBy?.image,
+          },
+          action: "Assign to",
+          status: ticket.status,
+        }));
+    } else if (activeTab !== "All") {
+      updatedData = tickets.filter((ticket) => ticket.status === activeTab);
+    }
+
+    setGridData(updatedData);
+
+    // Force the grid to refresh
+    if (gridRef.current && gridRef.current.api) {
+      gridRef.current.api.setRowData(updatedData);
+    }
+  }, [activeTab, tickets]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -124,6 +163,7 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
       </div>
     );
   };
+
   const ticketLinkRenderer = (params) => (
     <div className="flex items-center space-x-1 cursor-pointer">
       {priorityIndicatorRenderer({ value: params.data.priority })}
@@ -139,33 +179,100 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
     </div>
   );
 
-  const filteredData = tickets.filter((ticket) => {
-    //  the tab filter
-    const matchesTab = activeTab === "All" || ticket.status === activeTab;
-
-    //  the search query filter
+  const filteredData = gridData.filter((ticket) => {
     const matchesSearch =
       ticket.ticket.toLowerCase().includes(searchQuery.toLowerCase()) ||
       ticket.project.toLowerCase().includes(searchQuery.toLowerCase());
-
-    //  all the active filters
     const matchesFilters = Object.entries(appliedFilters).every(
       ([key, value]) => {
         return ticket[key]?.toLowerCase() === value.toLowerCase();
       }
     );
 
-    return matchesTab && matchesSearch && matchesFilters;
+    return matchesSearch && matchesFilters;
   });
 
-  const allColumns = [
+  const getCreatedTabColumns = () => [
     {
       headerName: "TICKET #",
       field: "ticket",
       cellRenderer: ticketLinkRenderer,
       sortable: false,
       filter: false,
-      minWidth: 10,
+      flex: 1,
+      minWidth: 200,
+      pinned: "left",
+    },
+    {
+      headerName: "PROJECT",
+      field: "project",
+      sortable: false,
+      filter: false,
+      flex: 1,
+      minWidth: 200,
+    },
+    {
+      headerName: "CREATED ON",
+      field: "createdOn",
+      sortable: false,
+      filter: false,
+      flex: 1,
+      minWidth: 200,
+    },
+    {
+      headerName: "CREATED BY",
+      field: "createdBy.name",
+      cellRenderer: (params) => (
+        <div className="flex items-center">
+          <img
+            src={params.data.createdBy.image}
+            alt="creator"
+            className="w-8 h-8 rounded-full mr-2"
+          />
+          <span>{params.value}</span>
+        </div>
+      ),
+      flex: 1,
+      minWidth: 200,
+    },
+    {
+      headerName: "REPORTED BY",
+      field: "reportedBy.name",
+      cellRenderer: (params) => (
+        <div className="flex items-center">
+          <img
+            src={params.data.reportedBy.image}
+            alt="reporter"
+            className="w-8 h-8 rounded-full mr-2"
+          />
+          <span>{params.value}</span>
+        </div>
+      ),
+      flex: 1,
+      minWidth: 200,
+    },
+    {
+      headerName: "ACTION",
+      field: "action",
+      cellRenderer: () => (
+        <button className="text-[#034C41] px-4 py-1 border border-[#034C41] cursor-pointer rounded-md text-sm">
+          Assign to
+        </button>
+      ),
+      flex: 1,
+      minWidth: 200,
+      pinned: "right",
+    },
+  ];
+
+  const getDefaultColumns = () => [
+    {
+      headerName: "TICKET #",
+      field: "ticket",
+      cellRenderer: ticketLinkRenderer,
+      sortable: false,
+      filter: false,
+      minWidth: 150,
       pinned: "left",
     },
     {
@@ -227,6 +334,9 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
       pinned: "right",
     },
   ];
+
+  const allColumns =
+    activeTab === "Created" ? getCreatedTabColumns() : getDefaultColumns();
 
   const columnDefs = allColumns.filter(
     (col) => !hiddenColumns.includes(col.field)
@@ -404,11 +514,13 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
 
       <div className="ag-theme-quartz h-[450px] w-full overflow-x-auto">
         <AgGridReact
+          key={gridData.length}
           rowData={filteredData}
           columnDefs={columnDefs}
           defaultColDef={defaultColDef}
           pagination={true}
           paginationPageSize={paginationPageSize}
+          // domLayout="autoHeight"
           paginationPageSizeSelector={[10, 25, 50, 100]}
           onPaginationChanged={(params) => {
             setPaginationPageSize(params.api.paginationGetPageSize());

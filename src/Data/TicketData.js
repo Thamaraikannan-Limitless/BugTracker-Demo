@@ -1,4 +1,3 @@
-
 import userImage from "../assets/alexander-hipp-iEEBWgY_6lA-unsplash.jpg";
 import Screenshot from "../assets/photo-1566241440091-ec10de8db2e1.jpeg";
 
@@ -31,6 +30,11 @@ export const rowData = [
       image: userImage,
     },
     retestBy: {
+      name: "Jasper",
+      date: "20 Jan,2025",
+      image: userImage,
+    },
+    reportedBy: {
       name: "Jasper",
       date: "20 Jan,2025",
       image: userImage,
@@ -83,6 +87,11 @@ export const rowData = [
       date: "20 Jan,2025",
       image: userImage,
     },
+    reportedBy: {
+      name: "Syed",
+      date: "20 Jan,2025",
+      image: userImage,
+    },
     details:
       "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam consectetur obcaecati quibusdam autem hic sapiente voluptates, suscipit ratione magnam! Nihil aspernatur deserunt, accusantium commodi suscipit illo, doloremque delectus sint atque consequatur consectetur? Tenetur modi ea non iste ipsum temporibus magnam, mollitia expedita minima porro rem, inventore tempora illo odio dicta?",
     attachments: Screenshot,
@@ -100,7 +109,7 @@ export const rowData = [
   {
     id: 3,
     priority: "Medium",
-    ticket: "TK000001",
+    ticket: "TK000003",
     project: "Project 1",
     createdOn: "20 Jan",
     assignedOn: "21 Jan",
@@ -109,6 +118,16 @@ export const rowData = [
     timeToAllocate: "2 days (16 hrs)",
     timeToFinish: "2 days (16 hrs)",
     createdBy: {
+      name: "Kannan",
+      date: "20 Jan,2025",
+      image: userImage,
+    },
+    assignedBy: {
+      name: "Kannan",
+      date: "20 Jan,2025",
+      image: userImage,
+    },
+    reportedBy: {
       name: "Kannan",
       date: "20 Jan,2025",
       image: userImage,
@@ -127,4 +146,4 @@ export const rowData = [
       },
     ],
   },
-]; 
+];
