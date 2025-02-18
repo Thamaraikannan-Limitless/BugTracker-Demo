@@ -92,7 +92,6 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
       window.removeEventListener("click", handleClose);
     };
 
-
     return (
       <div className="relative">
         <button
@@ -140,31 +139,29 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
     </div>
   );
 
-  // const filters = ["Projects", "Priority", "Status", "Developer", "Tester"];
+  const filteredData = tickets.filter((ticket) => {
+    //  the tab filter
+    const matchesTab = activeTab === "All" || ticket.status === activeTab;
 
-  const filteredData = tickets.filter(
-    (ticket) =>
-      (activeTab === "All" || ticket.status === activeTab) &&
-      (ticket.ticket.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        ticket.project.toLowerCase().includes(searchQuery.toLowerCase()))
-  );
+    //  the search query filter
+    const matchesSearch =
+      ticket.ticket.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      ticket.project.toLowerCase().includes(searchQuery.toLowerCase());
+
+    //  all the active filters
+    const matchesFilters = Object.entries(appliedFilters).every(
+      ([key, value]) => {
+        return ticket[key]?.toLowerCase() === value.toLowerCase();
+      }
+    );
+
+    return matchesTab && matchesSearch && matchesFilters;
+  });
 
   const allColumns = [
     {
       headerName: "TICKET #",
       field: "ticket",
-      // cellRenderer: (params) => (
-      //   <div className="flex items-center space-x-1 cursor-pointer">
-      //     {priorityIndicatorRenderer({ value: params.data.priority })}
-      //     <a
-      //       href={`#${params.value}`}
-      //       className="text-blue-500 ml-2 cursor-pointer font-semibold text-[#1358D0]"
-      //       onClick={() => onSelectTicket(params.data.id)}
-      //     >
-      //       {params.value}
-      //     </a>
-      //   </div>
-      // ),
       cellRenderer: ticketLinkRenderer,
       sortable: false,
       filter: false,
