@@ -44,6 +44,11 @@ export const rowData = [
       date: "20 Jan,2025",
       image: userImage,
     },
+    retestBy: {
+      name: "Syed",
+      date: "20 Jan,2025",
+      image: userImage,
+    },
     details:
       "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam consectetur obcaecati quibusdam autem hic sapiente voluptates, suscipit ratione magnam! Nihil aspernatur deserunt, accusantium commodi suscipit illo, doloremque delectus sint atque consequatur consectetur? Tenetur modi ea non iste ipsum temporibus magnam, mollitia expedita minima porro rem, inventore tempora illo odio dicta?",
     attachments: Screenshot,
@@ -243,6 +248,11 @@ export const rowData = [
       date: "20 Jan,2025",
       image: userImage,
     },
+    retestBy: {
+      name: "Syed",
+      date: "20 Jan,2025",
+      image: userImage,
+    },
 
     details:
       "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam consectetur obcaecati quibusdam autem hic sapiente voluptates, suscipit ratione magnam! Nihil aspernatur deserunt, accusantium commodi suscipit illo,.",
@@ -279,6 +289,11 @@ export const rowData = [
       date: "20 Jan,2025",
       image: userImage,
     },
+    assignedTo: {
+      name: "Kannan",
+      date: "20 Jan,2025",
+      image: userImage,
+    },
     reportedBy: {
       name: "Kannan",
       date: "20 Jan,2025",
@@ -294,6 +309,12 @@ export const rowData = [
       date: "20 Jan,2025",
       image: userImage,
     },
+    retestBy: {
+      name: "Syed",
+      date: "20 Jan,2025",
+      image: userImage,
+    },
+
 
     details:
       "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam consectetur obcaecati quibusdam autem hic sapiente voluptates, suscipit ratione magnam! Nihil aspernatur deserunt, accusantium commodi suscipit illo,.",

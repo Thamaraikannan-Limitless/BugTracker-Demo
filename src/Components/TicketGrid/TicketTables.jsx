@@ -6,6 +6,8 @@ import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
 import PropTypes from "prop-types";
 import TableHeader from "./TableHeader";
 import TableFilters from "./TableFilters";
+import TicketAssignForm from "../Ticket/TicketAssignForm";
+
 import {
   getCreatedTabColumns,
   getAssignedTabColumns,
@@ -22,6 +24,7 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
   const [hiddenColumns, setHiddenColumns] = useState([]);
   const [appliedFilters, setAppliedFilters] = useState({});
   const [gridData, setGridData] = useState(tickets);
+  const [isAssignFormOpen, setIsAssignFormOpen] = useState(false);
   const gridRef = useRef(null);
 
   // Process tickets based on activeTab
@@ -121,11 +124,11 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
   const getColumnsForTab = () => {
     switch (activeTab) {
       case "Created":
-        return getCreatedTabColumns(onSelectTicket);
+        return getCreatedTabColumns(onSelectTicket , () => setIsAssignFormOpen(true));
       case "Assigned":
         return getAssignedTabColumns(onSelectTicket);
       case "Completed":
-      case "ForReTest": // Added this case to handle ForReTest tab
+      case "ForReTest":// Added this case to handle ForReTest tab
       case "Done":
         return getCompletedTabColumns(onSelectTicket);
       default:
@@ -180,6 +183,23 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
         setHiddenColumns={setHiddenColumns}
         activeTab={activeTab}
       />
+
+      {/* Overlay   */}
+            {isAssignFormOpen && (
+             
+               <div
+                 className="fixed inset-0 bg-[#00000080] bg-opacity-50 z-10"
+                 onClick={() => setIsAssignFormOpen(false)}
+               ></div>
+               ) 
+           }
+           {/* TicketAssignForm */}
+               <div className={`fixed md:top-[72px] top-[56px] right-0 h-full max-h-screen md:w-[480px] bg-[#EDEDED] z-20 w-[380px] shadow-md transform ${
+               isAssignFormOpen ? "translate-x-0" : "translate-x-full"
+             } transition-transform duration-500 ease-in-out overflow-y-auto`}>
+               {isAssignFormOpen && (  <TicketAssignForm onClose={() => setIsAssignFormOpen(false)} />
+               )}
+               </div>
 
       <div className="ag-theme-quartz h-[450px] w-full overflow-x-auto">
         <AgGridReact

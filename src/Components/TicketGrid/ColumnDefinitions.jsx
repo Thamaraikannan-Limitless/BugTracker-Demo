@@ -3,7 +3,9 @@ import { MdOutlineModeEdit } from "react-icons/md";
 import { FiMoreVertical } from "react-icons/fi";
 import { useState } from "react";
 import { FaSquarePlus } from "react-icons/fa6";
+
 // Cell renderers
+
 export const StatusCellRenderer = (params) => {
   const statusColors = {
     Created: "bg-[#ECBF50] text-white",
@@ -128,8 +130,10 @@ export const UserProfileRenderer = (props) => {
 UserProfileRenderer.displayName = "UserProfileRenderer";
 
 // Action button renderer
-export const ActionButtonRenderer = () => (
-  <button className="text-[#034C41] px-4 py-1 border border-[#034C41] cursor-pointer rounded-md text-sm">
+export const ActionButtonRenderer = (props) => (
+ 
+  <button  onClick={() => props.openAssignForm()}
+   className="text-[#034C41] px-4 py-1 border border-[#034C41] cursor-pointer rounded-md text-sm">
     Assign to
   </button>
 );
@@ -190,7 +194,7 @@ export const ChangeStatusRenderer = (props) => {
 ChangeStatusRenderer.displayName = "ChangeStatusRenderer";
 
 // Column definitions
-export const getCreatedTabColumns = (onSelectTicket) => [
+export const getCreatedTabColumns = (onSelectTicket,openAssignForm) => [
   {
     headerName: "TICKET #",
     field: "ticket",
@@ -236,6 +240,7 @@ export const getCreatedTabColumns = (onSelectTicket) => [
     headerName: "ACTION",
     field: "action",
     cellRenderer: ActionButtonRenderer,
+    cellRendererParams: { openAssignForm }, //pass the function to open form
     flex: 1,
     minWidth: 100,
     pinned: "right",

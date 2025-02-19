@@ -30,9 +30,11 @@ const TicketDetails = ({ ticket, onBack }) => {
               ? "bg-yellow-200 text-yellow-700"
               : ticket.status === "Assigned"
               ? "bg-orange-200 text-orange-700"
-              : ticket.status === "Completed"
+              : ticket.status === "Done"
               ? "bg-green-200 text-green-700"
-              : "bg-red-200 text-red-700"
+                : ticket.status === "ForRetest"
+              ?  "bg-red-200 text-red-700"
+               :"bg-amber-800"
           }`}
         >
           {ticket.status}
