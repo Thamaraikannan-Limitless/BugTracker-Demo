@@ -1,4 +1,3 @@
-// File: components/tickets/TicketTable.jsx
 import { useState, useEffect, useRef } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-theme-quartz.css";
@@ -72,9 +71,14 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
           status: ticket.status,
         }));
     } else if (activeTab === "Completed") {
+      // Fix: Standardize on "ForRetest" (lowercase t) and handle both variants
       updatedData = tickets
         .filter(
-          (ticket) => ticket.status === "Done" || ticket.status === "ForReTest"
+          (ticket) =>
+            ticket.status === "Done" ||
+            ticket.status === "ForRetest" ||
+            // Handle potential case where "ForReTest" (capital T) is used
+            (ticket.status === "ForReTest" && (ticket.status = "ForRetest"))
         )
         .map((ticket) => ({
           id: ticket.id,
@@ -91,7 +95,7 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
             image: ticket.retestTo?.image,
           },
           timeToFinish: ticket.timeToFinish || "2 days (16 hrs)",
-          changeStatus: ticket.status, // Simply use the current status value
+          changeStatus: ticket.status,
           status: ticket.status,
         }));
     } else if (activeTab !== "All") {
@@ -128,7 +132,7 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
       case "Assigned":
         return getAssignedTabColumns(onSelectTicket);
       case "Completed":
-      case "ForReTest":// Added this case to handle ForReTest tab
+      case "ForRetest": // Fixed: Standardized on lowercase t
       case "Done":
         return getCompletedTabColumns(onSelectTicket);
       default:

@@ -95,6 +95,102 @@ export const MoreOptionsRenderer = (props) => {
 };
 MoreOptionsRenderer.displayName = "MoreOptionsRenderer";
 
+export const MoreOptionsAssignedRenderer = (props) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleToggle = (event) => {
+    event.stopPropagation();
+    setIsOpen(!isOpen);
+
+    if (!isOpen) {
+      window.addEventListener("click", handleClose);
+    }
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
+    window.removeEventListener("click", handleClose);
+  };
+
+  return (
+    <div className="relative">
+      <button
+        onClick={handleToggle}
+        className="cursor-pointer text-sm focus:outline-none"
+      >
+        <FiMoreVertical className="cursor-pointer mt-4" />
+      </button>
+      {isOpen && (
+        <div
+          className="fixed right-7 mr-2 top-0 bg-white border border-gray-300 rounded-md shadow-lg z-20 w-40"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <ul className="text-sm">
+            <li
+              className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+              // onClick={() => props.context.onSelectTicket(props.data.id)}
+            >
+              Re-assign to
+            </li>
+            <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+              Send for Retest
+            </li>
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+};
+MoreOptionsAssignedRenderer.displayName = "MoreOptionsAssignedRenderer";
+
+export const MoreOptionsCompletedRenderer = (props) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleToggle = (event) => {
+    event.stopPropagation();
+    setIsOpen(!isOpen);
+
+    if (!isOpen) {
+      window.addEventListener("click", handleClose);
+    }
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
+    window.removeEventListener("click", handleClose);
+  };
+
+  return (
+    <div className="relative">
+      <button
+        onClick={handleToggle}
+        className="cursor-pointer text-sm focus:outline-none"
+      >
+        <FiMoreVertical className="cursor-pointer mt-4" />
+      </button>
+      {isOpen && (
+        <div
+          className="fixed right-7 mr-2 top-0 bg-white border border-gray-300 rounded-md shadow-lg z-20 w-40"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <ul className="text-sm">
+            <li
+              className="px-4 py-2  hover:bg-gray-100 cursor-pointer"
+              // onClick={() => props.context.onSelectTicket(props.data.id)}
+            >
+              Close Ticket
+            </li>
+            <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+              Add Remarks
+            </li>
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+};
+MoreOptionsCompletedRenderer.displayName = "MoreOptionsCompletedRenderer";
+
 export const TicketLinkRenderer = (props) => (
   <div className="flex items-center space-x-1 cursor-pointer">
     <PriorityIndicatorRenderer value={props.data.priority} />
@@ -166,24 +262,34 @@ export const EditTimeRenderer = (props) => {
 EditTimeRenderer.displayName = "EditTimeRenderer";
 
 // Change status renderer
+// Change status renderer with consistent naming
 export const ChangeStatusRenderer = (props) => {
   const statuses = {
     ForRetest: {
-      color: "bg-red-600 text-white",
+      color: "bg-[#FF0000] text-white",
       icon: "0",
     },
     Done: {
-      color: "bg-green-500 text-white",
+      color: "bg-[#00C875] text-white",
       icon: "",
     },
   };
 
-  const status = statuses[props.value] || statuses["ForRetest"];
+  // Handle potential "ForReTest" values by normalizing them to "ForRetest"
+  const normalizedValue =
+    props.value === "ForReTest" ? "ForRetest" : props.value;
+  const status = statuses[normalizedValue];
 
   return (
     <div className="flex items-center">
-      <span className={`px-3 py-0 rounded ${status.color}`}>{props.value}</span>
-      {status.icon && (
+      <span
+        className={`px-3 py-1 text-sm mt-1 rounded ${
+          status?.color || "bg-gray-300 text-white"
+        }`}
+      >
+        {props.value}
+      </span>
+      {status?.icon && (
         <span className="ml-2 w-6 h-6 flex items-center justify-center rounded-full bg-red-600 text-white text-xs">
           {status.icon}
         </span>
@@ -299,7 +405,7 @@ export const getAssignedTabColumns = (onSelectTicket) => [
   {
     headerName: "",
     field: "moreOptions",
-    cellRenderer: MoreOptionsRenderer,
+    cellRenderer: MoreOptionsAssignedRenderer,
     cellRendererParams: { context: { onSelectTicket } },
     width: 10,
     pinned: "right",
@@ -366,7 +472,7 @@ export const getCompletedTabColumns = (onSelectTicket) => [
   {
     headerName: "",
     field: "moreOptions",
-    cellRenderer: MoreOptionsRenderer,
+    cellRenderer: MoreOptionsCompletedRenderer,
     cellRendererParams: { context: { onSelectTicket } },
     width: 10,
     pinned: "right",
