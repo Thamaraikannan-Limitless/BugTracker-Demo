@@ -9,6 +9,7 @@ import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 import { FiFilter } from "react-icons/fi";
 import TicketFilterForm from "./TicketFilterForm";
+import TicketAssignForm from "../Ticket/TicketAssignForm";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -26,7 +27,8 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
   const dropdownRef = useRef(null);
   const [gridData, setGridData] = useState(tickets);
   const gridRef = useRef(null);
-
+  const [isAssignFormOpen, setIsAssignFormOpen] = useState(false);
+  
   useEffect(() => {
     let updatedData = [...tickets];
 
@@ -255,7 +257,7 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
       headerName: "ACTION",
       field: "action",
       cellRenderer: () => (
-        <button className="text-[#034C41] px-4 py-1 border border-[#034C41] cursor-pointer rounded-md text-sm">
+        <button onClick={() => setIsAssignFormOpen(true)} className="text-[#034C41] px-4 py-1 border border-[#034C41] cursor-pointer rounded-md text-sm">
           Assign to
         </button>
       ),
@@ -511,6 +513,24 @@ const TicketTable = ({ tickets, onSelectTicket }) => {
           )}
         </div>
       </div>
+
+       {/* Overlay   */}
+       {isAssignFormOpen && (
+        
+          <div
+            className="fixed inset-0 bg-[#00000080] bg-opacity-50 z-10"
+            onClick={() => setIsAssignFormOpen(false)}
+          ></div>
+          ) 
+      }
+      {/* TicketAssignForm */}
+          <div className={`fixed md:top-[72px] top-[56px] right-0 h-full max-h-screen md:w-[480px] bg-[#EDEDED] z-20 w-[380px] shadow-md transform ${
+          isAssignFormOpen ? "translate-x-0" : "translate-x-full"
+        } transition-transform duration-500 ease-in-out overflow-y-auto`}>
+          {isAssignFormOpen && (  <TicketAssignForm onClose={() => setIsAssignFormOpen(false)} />
+          )}
+          </div>
+        
 
       <div className="ag-theme-quartz h-[450px] w-full overflow-x-auto">
         <AgGridReact

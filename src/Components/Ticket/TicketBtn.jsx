@@ -2,20 +2,19 @@ import { useState, useEffect, useRef } from "react";
 import TicketForm from "./TicketForm";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import TicketAssignForm from "./TicketAssignForm";
 import ReassignForm from "./ReassignForm";
 import RetestForm from "./RetestForm";
 import TicketCloseForm from "./TicketCloseForm"
 import RemarkForm from "./RemarkForm";
 const TicketBtn = () => {
   const [showForm, setShowForm] = useState(false);
-  const [assignForm, setAssignForm] = useState(false);
+
   const [reassignForm, setReAssignForm] = useState(false);
   const [retestForm, setRetestForm] = useState(false);
   const [closeForm, setCloseForm] = useState(false);
   const [remarkForm, setRemarkForm] = useState(false);
   const formRef = useRef(null);
-  const assignRef = useRef(null);
+
   const reassignRef = useRef(null);
   const retestRef = useRef(null);
   const closeRef = useRef(null);
@@ -27,9 +26,7 @@ const TicketBtn = () => {
       if (formRef.current && !formRef.current.contains(event.target)) {
         setShowForm(false);
       }
-      if (assignRef.current && !assignRef.current.contains(event.target)) {
-        setAssignForm(false);
-      }
+     
       if (reassignRef.current && !reassignRef.current.contains(event.target)) {
         setReAssignForm(false);
       }
@@ -73,15 +70,6 @@ const TicketBtn = () => {
           >
             New Ticket
           </button>
-
-          {/* Assign Button */}
-          <button
-            onClick={() => setAssignForm(true)}
-            className="bg-[#034C41] text-white px-4 py-2 rounded-full h-[37px] w-[125px] hover:bg-[#026f63] transition"
-          >
-            Assign To
-          </button>
-
           {/* Reassign Button */}
           <button
             onClick={() => setReAssignForm(true)}
@@ -117,28 +105,6 @@ const TicketBtn = () => {
       </header>
     </section>
 
-
-     
-     
-   {/* Overlay Background */}
-   {assignForm && (
-        <div
-          className="form-overlay"
-          onClick={() => setAssignForm(false)} // Close form when clicking overlay
-        ></div>
-      )}
-      {/* Assign Form (Opens on click, Closes on clicking outside) */}
-     
-        <div
-          ref={assignRef}
-          className={`fixed md:top-[72px] top-[56px] right-0 h-full max-h-screen md:w-[480px] bg-[#EDEDED] z-20 w-[380px] shadow-md transform ${
-            assignForm ? "translate-x-0" : "translate-x-full"
-          } transition-transform duration-500 ease-in-out overflow-y-auto`}
-        >
-         {assignForm && (  <TicketAssignForm onClose={() => setAssignForm(false)} /> )}
-  
-        </div>
-
       {/* Overlay Background */}
       {showForm && (
         <div
@@ -150,7 +116,7 @@ const TicketBtn = () => {
       {/* Form Section - Render conditionally */}
       <div
         ref={formRef}
-        className={`fixed md:top-[72px] top-[56px] right-0 h-full max-h-screen md:w-[480px] bg-[#EDEDED] z-20 w-[380px] shadow-md transform ${
+        className={`fixed md:top-[72px] top-[56px] right-0 h-full max-h-screen md:w-[480px] bg-[#EDEDED] z-50 w-[380px] shadow-md transform ${
           showForm ? "translate-x-0" : "translate-x-full"
         } transition-transform duration-500 ease-in-out overflow-y-auto`}
       >
