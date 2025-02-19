@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-
+import PropType from "prop-types";
 const TicketFilterForm = ({ onClose, onApplyFilters }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [filters, setFilters] = useState({
@@ -153,6 +153,11 @@ const TicketFilterForm = ({ onClose, onApplyFilters }) => {
       </div>
     </div>
   );
+};
+
+TicketFilterForm.propTypes = {
+  onClose: PropType.func.isRequired,
+  onApplyFilters: PropType.func.isRequired,
 };
 
 export default TicketFilterForm;

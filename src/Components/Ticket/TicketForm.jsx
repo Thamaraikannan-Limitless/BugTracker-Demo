@@ -3,6 +3,18 @@ import PropTypes from "prop-types";
 import { RxCrossCircled } from "react-icons/rx";
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
+
+const data = [
+  {
+    id: 1,
+    name: " Osel-Signage",
+  },
+  {
+    id: 2,
+    name: "Ticket-Tracker",
+  },
+];
+
 const TicketForm = ({ onClose }) => {
   const [formData, setFormData] = useState({
     project: "",
@@ -110,7 +122,7 @@ const TicketForm = ({ onClose }) => {
       <h2 className="text-2xl font-semibold mb-5">Create a New Ticket</h2>
 
       {/* Project Selection */}
-      <label className="block mb-2 text-sm font-[400] text-gray-700">
+      <label className="block mb-2 text-sm font-[400] ">
 
         Project <span className="text-red-600">*</span>
       </label>
@@ -125,8 +137,13 @@ const TicketForm = ({ onClose }) => {
         }"`}
       >
         <option value="">Select Project</option>
-        <option>Project A</option>
-        <option>Project B</option>
+          {
+            data.map((data) => {
+              return (
+                <option key={data.id} >{data.name}</option>
+              )
+            })
+}
       </select>
       {errors.project && (
         <p className="text-red-500 text-sm mb-2 ">{errors.project}</p>
@@ -136,7 +153,7 @@ const TicketForm = ({ onClose }) => {
         {/* Ticket Number */}
         <div>
 
-          <label className="block mb-2 text-sm font-[400] text-gray-700">
+          <label className="block mb-2 text-sm font-[400] ">
 
             Ticket Number <span className="text-red-600">*</span>
           </label>
@@ -158,7 +175,7 @@ const TicketForm = ({ onClose }) => {
         {/* Ticket Date */}
         <div>
 
-          <label className="block mb-2 text-sm font-[400] text-gray-700" htmlFor="date">
+          <label className="block mb-2 text-sm font-[400] " htmlFor="date">
 
             Ticket Date <span className="text-red-600">*</span>
           </label>
@@ -181,7 +198,7 @@ const TicketForm = ({ onClose }) => {
 
       {/* Bug Details */}
       <div>
-        <label className="block mb-2 text-sm font-[400] text-gray-700">
+        <label className="block mb-2 text-sm font-[400] ">
 
           Bug Details <span className="text-red-600">*</span>
         </label>
@@ -202,7 +219,7 @@ const TicketForm = ({ onClose }) => {
 
       {/* Priority Selection */}
       <div>
-        <label className="block mb-2  text-sm font-[400] text-gray-700">
+        <label className="block mb-2  text-sm font-[400] ">
           Priority <span className="text-red-600">*</span>
         </label>
         <div className="flex space-x-5 mb-2">
