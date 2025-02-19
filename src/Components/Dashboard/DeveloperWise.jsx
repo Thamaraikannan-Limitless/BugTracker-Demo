@@ -3,8 +3,9 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import PropTypes from "prop-types";
-import { format, subWeeks, startOfWeek, endOfWeek } from "date-fns";
+import { format, startOfWeek, endOfWeek } from "date-fns";
 import userImage from "../../assets/alexander-hipp-iEEBWgY_6lA-unsplash.jpg";
+import { HiXMark } from "react-icons/hi2";
 
 const SummaryTable = ({ data, columns, nameChange, startDate, endDate }) => {
   const totals = columns.reduce((acc, col) => {
@@ -176,9 +177,9 @@ const DeveloperWise = ({ developerData }) => {
           <div className="bg-white w-[400px] h-[450px] p-6 shadow-lg relative">
             <button
               onClick={() => setShowCalendar(false)}
-              className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-md text-xs"
+              className="absolute top-2 right-2   text-[#535353] px-2 py-1 rounded-md text-xl"
             >
-              X
+              <HiXMark />
             </button>
             <h3 className="text-center text-lg font-semibold mb-3">
               Select a Week
