@@ -1,6 +1,6 @@
 import Header from "../Header/Header";
 
-import TicketTable from "../TicketGrid/TicketTable";
+import TicketTables from "../TicketGrid/TicketTables";
 import TicketBtn from "./TicketBtn";
 import { rowData } from "../../Data/TicketData";
 
@@ -19,7 +19,7 @@ const TicketDisplay = () => {
       <TicketBtn />
       <div className="py-2">
         <section>
-          <TicketTable tickets={rowData} onSelectTicket={handleTicketSelect} />
+          <TicketTables tickets={rowData} onSelectTicket={handleTicketSelect} />
         </section>
       </div>
     </>
