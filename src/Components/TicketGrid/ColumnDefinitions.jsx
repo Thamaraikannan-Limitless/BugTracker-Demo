@@ -47,8 +47,10 @@ PriorityIndicatorRenderer.displayName = "PriorityIndicatorRenderer";
 PriorityIndicatorRenderer.propTypes = {
   value: PropTypes.string.isRequired, // The priority value
 };
+
 export const MoreOptionsRenderer = (props) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { status } = props.data; // Extract status from props
 
   const handleToggle = (event) => {
     event.stopPropagation();
@@ -78,174 +80,57 @@ export const MoreOptionsRenderer = (props) => {
           onClick={(e) => e.stopPropagation()}
         >
           <ul className="text-sm">
+            {/* View - Available for all statuses */}
             <li
               className="px-4 py-2 border-b border-[#cfcfcf] hover:bg-gray-100 cursor-pointer"
               onClick={() => props.context.onSelectTicket(props.data)}
             >
               View
             </li>
-            <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-              Assign to
-            </li>
-          </ul>
-        </div>
-      )}
-    </div>
-  );
-};
-MoreOptionsRenderer.displayName = "MoreOptionsRenderer";
 
-export const MoreOptionsCreatedRenderer = (props) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleToggle = (event) => {
-    event.stopPropagation();
-    setIsOpen(!isOpen);
-
-    if (!isOpen) {
-      window.addEventListener("click", handleClose);
-    }
-  };
-
-  const handleClose = () => {
-    setIsOpen(false);
-    window.removeEventListener("click", handleClose);
-  };
-
-  return (
-    <div className="relative">
-      <button
-        onClick={handleToggle}
-        className="cursor-pointer text-sm focus:outline-none"
-      >
-        <FiMoreVertical className="cursor-pointer mt-4" />
-      </button>
-      {isOpen && (
-        <div
-          className="fixed right-0 mr-4 top-0 bg-white border border-gray-300 rounded-md shadow-lg z-20 w-40"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <ul className="text-sm">
-            <li
-              className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-              // onClick={() => props.context.onSelectTicket(props.data.id)}
-            >
-              View
-            </li>
-            <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-              Assign to
-            </li>
-          </ul>
-        </div>
-      )}
-    </div>
-  );
-};
-
-MoreOptionsCreatedRenderer.displayName = "MoreOptionsCreatedRenderer";
-
-export const MoreOptionsAssignedRenderer = (props) => {
-
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleToggle = (event) => {
-    event.stopPropagation();
-    setIsOpen(!isOpen);
-
-    if (!isOpen) {
-      window.addEventListener("click", handleClose);
-    }
-  };
-
-  const handleClose = () => {
-    setIsOpen(false);
-    window.removeEventListener("click", handleClose);
-  };
-
-  return (
-    <div className="relative">
-      <button
-        onClick={handleToggle}
-        className="cursor-pointer text-sm focus:outline-none"
-      >
-        <FiMoreVertical className="cursor-pointer mt-4" />
-      </button>
-      {isOpen && (
-        <div
-          className="fixed right-7 mr-2 top-0 bg-white border border-gray-300 rounded-md shadow-lg z-20 w-40"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <ul className="text-sm">
-            <li
-              className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-              // onClick={() => props.context.onSelectTicket(props.data.id)}
-            >
-              View
-            </li>
-            <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-              Send for Retest
-            </li>
-            <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-              Reassign to
-            </li>
-          </ul>
-        </div>
-      )}
-    </div>
-  );
-};
-MoreOptionsAssignedRenderer.displayName = "MoreOptionsAssignedRenderer";
-MoreOptionsAssignedRenderer.propTypes = {
-  context: PropTypes.shape({
-    onSelectTicket: PropTypes.func.isRequired, // Function to handle ticket selection
-  }).isRequired,
-  data: PropTypes.shape({
-    id: PropTypes.number.isRequired, // Ticket ID
-  }).isRequired,
-};
-export const MoreOptionsCompletedRenderer = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleToggle = (event) => {
-    event.stopPropagation();
-    setIsOpen(!isOpen);
-
-    if (!isOpen) {
-      window.addEventListener("click", handleClose);
-    }
-  };
-
-  const handleClose = () => {
-    setIsOpen(false);
-    window.removeEventListener("click", handleClose);
-  };
-
-  const { status, id } = props.data; // Extract status from props
-
-  return (
-    <div className="relative">
-      <button
-        onClick={handleToggle}
-        className="cursor-pointer text-sm focus:outline-none"
-      >
-        <FiMoreVertical className="cursor-pointer mt-4" />
-      </button>
-      {isOpen && (
-        <div
-          className="fixed right-7 mr-2 top-0 bg-white border border-gray-300 rounded-md shadow-lg z-20 w-40"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <ul className="text-sm">
-            <li
-              className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-              // onClick={() => props.context.onSelectTicket(id)}
-            >
-              View
-            </li>
-            {status !== "Done" && (
+            {/* Assign to - Only for Created status */}
+            {status === "Created" && (
               <li
                 className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                // onClick={() => props.context.onSendForRetest(id)}
+                onClick={() => props.context.onAssignTicket(props.data)}
+              >
+                Assign to
+              </li>
+            )}
+
+            {/* Send for Retest & Reassign to - Only for Assigned status */}
+            {status === "Assigned" && (
+              <>
+                <li
+                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                  onClick={() => props.context.onSendForRetest(props.data)}
+                >
+                  Send for Retest
+                </li>
+                <li
+                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                  onClick={() => props.context.onReassignTicket(props.data)}
+                >
+                  Reassign to
+                </li>
+              </>
+            )}
+
+            {/* Close Ticket - Only for ForRetest status */}
+            {status === "ForRetest" && (
+              <li
+                className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                onClick={() => props.context.onCloseTicket(props.data)}
+              >
+                Close Ticket
+              </li>
+            )}
+
+            {/* Send for Retest - Only for NotDone status */}
+            {status === "NotDone" && (
+              <li
+                className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                onClick={() => props.context.onSendForRetest(props.data)}
               >
                 Send for Retest
               </li>
@@ -256,15 +141,9 @@ export const MoreOptionsCompletedRenderer = () => {
     </div>
   );
 };
-MoreOptionsCompletedRenderer.displayName = "MoreOptionsCompletedRenderer";
-MoreOptionsCompletedRenderer.propTypes = {
-  context: PropTypes.shape({
-    onSelectTicket: PropTypes.func.isRequired, // Function to handle ticket selection
-  }).isRequired,
-  data: PropTypes.shape({
-    id: PropTypes.number.isRequired, // Ticket ID
-  }).isRequired,
-};
+
+MoreOptionsRenderer.displayName = "MoreOptionsRenderer";
+
 export const TicketLinkRenderer = (props) => (
   <div className="flex items-center space-x-1 cursor-pointer">
     <PriorityIndicatorRenderer value={props.data.priority} />
@@ -360,7 +239,8 @@ export const EditTimeRenderer = (props) => {
       <div className="flex items-center ms-10 mt-2">
         <button
           onClick={props.onClick}
-          className="text-green-600 rounded-md cursor-pointer text-xl">
+          className="text-green-600 rounded-md cursor-pointer text-xl"
+        >
           <FaSquarePlus />
         </button>
       </div>
@@ -372,7 +252,9 @@ export const EditTimeRenderer = (props) => {
     <div className="flex items-center">
       <span className="mr-2">{props.value}</span>
       <button
-         onClick={props.onClick}  className="text-gray-500 hover:text-gray-700 cursor-pointer ms-2 text-[#9F9F9F] text-lg">
+        onClick={props.onClick}
+        className="text-gray-500 hover:text-gray-700 cursor-pointer ms-2 text-[#9F9F9F] text-lg"
+      >
         <MdOutlineModeEdit />
       </button>
     </div>
@@ -396,7 +278,6 @@ export const ChangeStatusRenderer = (props) => {
     },
   };
 
-  // Handle potential "ForReTest" values by normalizing them to "ForRetest"
   const normalizedValue =
     props.value === "ForReTest" ? "ForRetest" : props.value;
   const status = statuses[normalizedValue];
@@ -469,17 +350,14 @@ export const getCreatedTabColumns = (onSelectTicket, openAssignForm) => [
   {
     headerName: "",
     field: "MoreOptionsCreatedRenderer",
-    cellRenderer: MoreOptionsCreatedRenderer,
+    cellRenderer: MoreOptionsRenderer,
     cellRendererParams: { openAssignForm }, //pass the function to open form
     flex: 1,
     minWidth: 100,
-    pinned: "right",
+    // pinned: "right",
   },
 ];
-getCreatedTabColumns.propTypes = {
-  onSelectTicket: PropTypes.func.isRequired, // Function to handle ticket selection
-  openAssignForm: PropTypes.func.isRequired, // Function to open the assign form
-};
+
 export const getAssignedTabColumns = (onSelectTicket, openAverageTimeForm) => [
   {
     headerName: "TICKET #",
@@ -533,7 +411,7 @@ export const getAssignedTabColumns = (onSelectTicket, openAverageTimeForm) => [
   {
     headerName: "",
     field: "moreOptions",
-    cellRenderer: MoreOptionsAssignedRenderer,
+    cellRenderer: MoreOptionsRenderer,
     cellRendererParams: { context: { onSelectTicket } },
     width: 10,
     pinned: "right",
@@ -600,7 +478,7 @@ export const getCompletedTabColumns = (onSelectTicket) => [
   {
     headerName: "",
     field: "moreOptions",
-    cellRenderer: MoreOptionsCompletedRenderer,
+    cellRenderer: MoreOptionsRenderer,
     cellRendererParams: { context: { onSelectTicket } },
     width: 10,
     pinned: "right",
