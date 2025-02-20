@@ -3,6 +3,7 @@ import { FiMoreVertical } from "react-icons/fi";
 import { useState } from "react";
 import { FaSquarePlus } from "react-icons/fa6";
 import PropTypes from "prop-types";
+// import useMenuStore from "../../Store/useMenuStore";
 // Cell renderers
 
 export const StatusCellRenderer = (params) => {
@@ -143,10 +144,17 @@ export const MoreOptionsRenderer = (props) => {
 };
 
 MoreOptionsRenderer.displayName = "MoreOptionsRenderer";
+
 MoreOptionsRenderer.propTypes = {
   data: PropTypes.shape({
     id: PropTypes.number.isRequired, // Ticket ID
-    status: PropTypes.oneOf(["Created", "Assigned", "ForRetest", "Done", "NotDone"]).isRequired, // Ticket status
+    status: PropTypes.oneOf([
+      "Created",
+      "Assigned",
+      "ForRetest",
+      "Done",
+      "NotDone",
+    ]).isRequired, // Ticket status
   }).isRequired,
   context: PropTypes.shape({
     onSelectTicket: PropTypes.func.isRequired, // Function to handle ticket selection
@@ -367,7 +375,7 @@ export const getCreatedTabColumns = (onSelectTicket, openAssignForm) => [
     cellRendererParams: { openAssignForm }, //pass the function to open form
     flex: 1,
     minWidth: 100,
-    // pinned: "right",
+    pinned: "right",
   },
 ];
 
@@ -425,7 +433,7 @@ export const getAssignedTabColumns = (onSelectTicket, openAverageTimeForm) => [
     headerName: "",
     field: "moreOptions",
     cellRenderer: MoreOptionsRenderer,
-    cellRendererParams: { context: { onSelectTicket } },
+    cellRendererParams: { onSelectTicket },
     width: 10,
     pinned: "right",
   },
