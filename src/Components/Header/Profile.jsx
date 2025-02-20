@@ -72,13 +72,14 @@ const Profile = () => {
       {/* Dropdown Menu */}
       {isOpen && (
         <nav className="absolute right-0 bg-white  mt-4 w-52 h-10 text-center rounded-md text-black z-10 hover:bg-gray-200">
-          <ul>
+          <ul className="bg-white  p-4 shadow-xl">
             <li
               onClick={() => logout(navigate)}
               className="px-2 py-2 bg-gradient-to-r from-[#034C41] to-[#71BF44] rounded-lg shadow-sm shadow-green-600 text-white cursor-pointer"
             >
               Log Out
             </li>
+  
           </ul>
         </nav>
       )}
