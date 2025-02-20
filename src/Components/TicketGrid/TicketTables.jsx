@@ -22,7 +22,9 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
   const location = useLocation();
   const [paginationPageSize, setPaginationPageSize] = useState(10);
   // Initialize activeTab from location state if available, otherwise use "All"
-  const [activeTab, setActiveTab] = useState(location.state?.activeTab || "All");
+  const [activeTab, setActiveTab] = useState(
+    location.state?.activeTab || "All"
+  );
   const [searchQuery, setSearchQuery] = useState("");
   const [hiddenColumns, setHiddenColumns] = useState([]);
   const [appliedFilters, setAppliedFilters] = useState({});
@@ -152,8 +154,7 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
   const getColumnsForTab = () => {
     switch (activeTab) {
       case "Created":
-
-        return getCreatedTabColumns(onSelectTicket, () =>
+        return getCreatedTabColumns(handleTicketSelect, () =>
           setIsAssignFormOpen(true)
         );
 
@@ -215,7 +216,6 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
         activeTab={activeTab}
       />
 
-
       {/* Overlay */}
 
       {isAssignFormOpen && (
@@ -250,9 +250,10 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
           isAverageTimeFormOpen ? "translate-y-0" : "translate-y-full"
         } transition-transform duration-500 ease-in-out overflow-y-auto`}
       >
-        {isAverageTimeFormOpen && <AverageTime onClose={closeAverageTimeForm} />}
+        {isAverageTimeFormOpen && (
+          <AverageTime onClose={closeAverageTimeForm} />
+        )}
       </div>
-
 
       <div className="ag-theme-quartz h-[450px] w-full overflow-x-auto">
         <AgGridReact
