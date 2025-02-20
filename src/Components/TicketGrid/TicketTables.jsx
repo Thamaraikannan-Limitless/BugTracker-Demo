@@ -60,11 +60,11 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
           project: ticket.project,
           createdOn: ticket.createdOn,
           createdBy: {
-            name: ticket.createdBy?.name || "Unknown",
+            name: ticket.createdBy?.name,
             image: ticket.createdBy?.image,
           },
           reportedBy: {
-            name: ticket.reportedBy?.name || "Unknown",
+            name: ticket.reportedBy?.name,
             image: ticket.reportedBy?.image,
           },
           action: "Assign to",
@@ -78,16 +78,18 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
           priority: ticket.priority,
           ticket: ticket.ticket,
           project: ticket.project,
-          assignedOn: ticket.assignedOn || "N/A",
+          assignedOn: ticket.assignedOn,
           assignedBy: {
-            name: ticket.assignedBy?.name || "Unknown",
+            name: ticket.assignedBy?.name,
             image: ticket.assignedBy?.image,
           },
           assignedTo: {
-            name: ticket.assignedTo?.name || "Unknown",
+            name: ticket.assignedTo?.name,
             image: ticket.assignedTo?.image,
           },
-          averageTime: ticket.averageTime || "7hrs",
+
+          averageTime: ticket.averageTime,
+
           status: ticket.status,
         }));
     } else if (activeTab === "Completed") {
@@ -103,16 +105,16 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
           priority: ticket.priority,
           ticket: ticket.ticket,
           project: ticket.project,
-          completedOn: ticket.completedOn || "20 Jan, 2025",
+          completedOn: ticket.completedOn,
           completedBy: {
-            name: ticket.completedBy?.name || "Syed",
+            name: ticket.completedBy?.name,
             image: ticket.completedBy?.image,
           },
           retestTo: {
-            name: ticket.retestTo?.name || "Jasper",
+            name: ticket.retestTo?.name,
             image: ticket.retestTo?.image,
           },
-          timeToFinish: ticket.timeToFinish || "2 days (16 hrs)",
+          timeToFinish: ticket.timeToFinish,
           changeStatus: ticket.status,
           status: ticket.status,
         }));
@@ -150,7 +152,11 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
   const getColumnsForTab = () => {
     switch (activeTab) {
       case "Created":
-        return getCreatedTabColumns(handleTicketSelect, () => setIsAssignFormOpen(true));
+
+        return getCreatedTabColumns(onSelectTicket, () =>
+          setIsAssignFormOpen(true)
+        );
+
       case "Assigned":
         return getAssignedTabColumns(handleTicketSelect, openAverageTimeForm);
       case "Completed":
@@ -163,6 +169,8 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
   };
 
   const allColumns = getColumnsForTab();
+  // Filter columns based  preferences
+
   const columnDefs = allColumns.filter(
     (col) => !hiddenColumns.includes(col.field)
   );
@@ -207,14 +215,16 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
         activeTab={activeTab}
       />
 
+
       {/* Overlay */}
+
       {isAssignFormOpen && (
         <div
           className="fixed inset-0 bg-[#00000080] bg-opacity-50 z-10"
           onClick={() => setIsAssignFormOpen(false)}
         ></div>
       )}
-      
+
       {/* TicketAssignForm */}
       <div
         className={`fixed md:top-[72px] top-[56px] right-0 h-full max-h-screen md:w-[480px] bg-[#EDEDED] z-20 w-[380px] shadow-md transform ${
@@ -242,6 +252,7 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
       >
         {isAverageTimeFormOpen && <AverageTime onClose={closeAverageTimeForm} />}
       </div>
+
 
       <div className="ag-theme-quartz h-[450px] w-full overflow-x-auto">
         <AgGridReact
