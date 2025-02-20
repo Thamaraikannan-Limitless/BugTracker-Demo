@@ -1,9 +1,10 @@
 import { useState } from "react";
-import Profile from "./Profile";
-import logo from "../../assets/logo/limitless-logo.svg";
 import { NavLink } from "react-router-dom";
 import { MdOutlineClose } from "react-icons/md";
 import { IoMenu } from "react-icons/io5";
+
+import Profile from "./Profile";
+import logo from "../../assets/logo/limitless-logo.svg";
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
 

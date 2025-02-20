@@ -39,6 +39,15 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
       window.history.replaceState({}, document.title);
     }
   }, [location.state]);
+   // Function to open the assign form
+   const openAssignForm = () => {
+    setIsAssignFormOpen(true);
+  };
+
+  // Function to close the assign form
+  const closeAssignForm = () => {
+    setIsAssignFormOpen(false);
+  }; 
 
   const openAverageTimeForm = () => {
     setIsAverageTimeFormOpen(true);
@@ -154,8 +163,7 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
   const getColumnsForTab = () => {
     switch (activeTab) {
       case "Created":
-        return getCreatedTabColumns(handleTicketSelect, () =>
-          setIsAssignFormOpen(true)
+        return getCreatedTabColumns(handleTicketSelect, openAssignForm
         );
 
       case "Assigned":
@@ -221,7 +229,7 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
       {isAssignFormOpen && (
         <div
           className="fixed inset-0 bg-[#00000080] bg-opacity-50 z-10"
-          onClick={() => setIsAssignFormOpen(false)}
+          onClick={closeAssignForm}
         ></div>
       )}
 
@@ -232,7 +240,7 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
         } transition-transform duration-500 ease-in-out overflow-y-auto`}
       >
         {isAssignFormOpen && (
-          <TicketAssignForm onClose={() => setIsAssignFormOpen(false)} />
+          <TicketAssignForm onClose={closeAssignForm} />
         )}
       </div>
 
