@@ -1,119 +1,20 @@
-import { useState, useEffect } from "react"; // Make sure to import useEffect
+import { useState} from "react"; 
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import PropTypes from "prop-types";
 import { format, startOfWeek, endOfWeek } from "date-fns";
-import userImage from "../../assets/alexander-hipp-iEEBWgY_6lA-unsplash.jpg";
 import { HiXMark } from "react-icons/hi2";
-
-const SummaryTable = ({ data, columns, nameChange, startDate, endDate }) => {
-  const totals = columns.reduce((acc, col) => {
-    acc[col.toLowerCase()] = data.reduce(
-      (sum, item) => sum + item[col.toLowerCase()],
-      0
-    );
-    return acc;
-  }, {});
-
-  return (
-    <div className="flex gap-x-10 flex-col md:flex-row">
-      <div className="md:w-[150px] w-[80px] text-center pt-2 dev-profile-section ">
-        <img
-          className="w-18 h-18 max-w-[120%] rounded-full"
-          src={userImage}
-          alt="User Profile"
-        />
-        <h4 className="pt-2 text-xs font-semibold">{nameChange}</h4>
-        <p className="text-xs font-light">Developer</p>
-      </div>
-      <table className="w-full text-left border-collapse">
-        <thead>
-          <tr>
-            <th className="pt-2 text-xs pb-2 text-[#9F9F9F] font-[600]">
-              {format(startDate, "MMM-dd")} - {format(endDate, "MMM-dd")}
-            </th>
-            {columns.map((col) => (
-              <th
-                key={col}
-                className="text-xs font-[600] text-[#9F9F9F] whitespace-nowrap"
-              >
-                {col}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((item, index) => (
-            <tr key={index}>
-              <td className="pt-2 border-b pb-2 text-sm font-semibold border-[#D9D9D9] whitespace-nowrap">
-                {format(new Date(item.date), "MMM-dd-EEE")}
-              </td>
-              {columns.map((col) => (
-                <td
-                  key={col}
-                  className="p-2 border-b border-[#D9D9D9] text-sm font-[400] whitespace-nowrap"
-                >
-                  {item[col.toLowerCase()]}
-                </td>
-              ))}
-            </tr>
-          ))}
-          <tr className="font-[600]">
-            <td className="p-2 border-b border-[#D9D9D9]"></td>
-            {columns.map((col) => (
-              <td
-                key={col}
-                className="p-2 border-b border-[#D9D9D9] whitespace-nowrap"
-              >
-                {totals[col.toLowerCase()]}
-              </td>
-            ))}
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  );
-};
-
-SummaryTable.propTypes = {
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      date: PropTypes.string.isRequired,
-      assigned: PropTypes.number.isRequired,
-      completed: PropTypes.number.isRequired,
-      reoccur: PropTypes.number.isRequired,
-      retest: PropTypes.number.isRequired,
-    })
-  ).isRequired,
-  columns: PropTypes.arrayOf(PropTypes.string).isRequired,
-  nameChange: PropTypes.string.isRequired,
-  startDate: PropTypes.instanceOf(Date).isRequired,
-  endDate: PropTypes.instanceOf(Date).isRequired,
-};
+import { LiaCalendar } from "react-icons/lia";
+import DeveloperSummaryTable from "./DeveloperSummaryTable";
 
 const DeveloperWise = ({ developerData }) => {
-  const [dateOption, setDateOption] = useState("This Week");
   const [nameChange, setName] = useState("");
   const [startDate, setStartDate] = useState(startOfWeek(new Date()));
   const [endDate, setEndDate] = useState(endOfWeek(new Date()));
   const [showCalendar, setShowCalendar] = useState(false);
   const [tempStartDate, setTempStartDate] = useState(startOfWeek(new Date()));
   const [tempEndDate, setTempEndDate] = useState(endOfWeek(new Date()));
-
-  useEffect(() => {
-    if (dateOption === "This Week") {
-      setStartDate(startOfWeek(new Date()));
-      setEndDate(endOfWeek(new Date()));
-      setShowCalendar(false);
-    } else if (dateOption === "Previous Week") {
-      setStartDate(startOfWeek(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)));
-      setEndDate(endOfWeek(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)));
-      setShowCalendar(false);
-    } else if (dateOption === "Custom Week") {
-      setShowCalendar(true);
-    }
-  }, [dateOption]);
 
   const handleWeekChange = (info) => {
     const clickedDate = new Date(info.date);
@@ -141,12 +42,24 @@ const DeveloperWise = ({ developerData }) => {
     const itemDate = new Date(item.date);
     return itemDate >= startDate && itemDate <= endDate;
   });
+  
+  const getWeekText = () => {
+    const today = new Date();
+    const startOfCurrentWeek = startOfWeek(today);
+    const endOfCurrentWeek = endOfWeek(today);
+
+    if (startDate.getTime() === startOfCurrentWeek.getTime() && endDate.getTime() === endOfCurrentWeek.getTime()) {
+      return "This Week";
+    } else {
+      return `${format(startDate, "MMM-dd")} - ${format(endDate, "MMM-dd")}`;
+    }
+  };
 
   return (
     <div className="bg-white p-6 rounded-xl relative">
       <div className="flex justify-between items-center flex-row mb-4">
         <h2 className="text-[16px] pl-3 font-semibold">Developer Wise</h2>
-        <div className="flex gap-x-2">
+        <div className="flex gap-x-3 dev-menu">
           <select
             onChange={(e) => setName(e.target.value)}
             className="p-2 border rounded-md border-[#EAEEF7] text-xs"
@@ -156,15 +69,15 @@ const DeveloperWise = ({ developerData }) => {
             <option value="Krishna">Krishna</option>
             <option value="Thamarai">Thamarai</option>
           </select>
-          <select
-            value={dateOption}
-            onChange={(e) => setDateOption(e.target.value)}
-            className="p-2 border-[#EAEEF7] border rounded-md text-xs"
-          >
-            <option value="This Week">This Week</option>
-            <option value="Previous Week">Previous Week</option>
-            <option value="Custom Week">Custom Week</option>
-          </select>
+              <div className="flex gap-x-4 items-center dev-calendar-sec">
+                       <h1 className="text-sm font-[600] ">Selected : <span className="text-xs font-[400]">{getWeekText()}</span></h1>  
+                       <button
+                         onClick={() => setShowCalendar(true)}
+                         className="p-2 text-[#535353] rounded-md text-2xl"
+                       >
+                         <LiaCalendar />
+                       </button>
+                     </div>
         </div>
       </div>
      
@@ -209,7 +122,7 @@ const DeveloperWise = ({ developerData }) => {
         </div>
       )}
 
-      <SummaryTable
+      <DeveloperSummaryTable
         data={filteredData}
         columns={["Assigned", "Completed", "Reoccur", "Retest"]}
         nameChange={nameChange}

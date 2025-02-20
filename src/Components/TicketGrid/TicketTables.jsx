@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
@@ -6,6 +7,7 @@ import PropTypes from "prop-types";
 import TableHeader from "./TableHeader";
 import TableFilters from "./TableFilters";
 import TicketAssignForm from "../Ticket/TicketAssignForm";
+import AverageTime from "../Ticket/AverageTime";
 
 import {
   getCreatedTabColumns,
@@ -17,14 +19,32 @@ import {
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 const TicketTables = ({ tickets, onSelectTicket }) => {
+  const location = useLocation();
   const [paginationPageSize, setPaginationPageSize] = useState(10);
-  const [activeTab, setActiveTab] = useState("All");
+  // Initialize activeTab from location state if available, otherwise use "All"
+  const [activeTab, setActiveTab] = useState(location.state?.activeTab || "All");
   const [searchQuery, setSearchQuery] = useState("");
   const [hiddenColumns, setHiddenColumns] = useState([]);
   const [appliedFilters, setAppliedFilters] = useState({});
   const [gridData, setGridData] = useState(tickets);
   const [isAssignFormOpen, setIsAssignFormOpen] = useState(false);
+  const [isAverageTimeFormOpen, setIsAverageTimeFormOpen] = useState(false);
   const gridRef = useRef(null);
+
+  // Clear the location state after using it
+  useEffect(() => {
+    if (location.state?.activeTab) {
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
+
+  const openAverageTimeForm = () => {
+    setIsAverageTimeFormOpen(true);
+  };
+
+  const closeAverageTimeForm = () => {
+    setIsAverageTimeFormOpen(false);
+  };
 
   // Process tickets based on activeTab
   useEffect(() => {
@@ -67,7 +87,9 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
             name: ticket.assignedTo?.name,
             image: ticket.assignedTo?.image,
           },
+
           averageTime: ticket.averageTime,
+
           status: ticket.status,
         }));
     } else if (activeTab === "Completed") {
@@ -101,9 +123,13 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
     }
 
     setGridData(updatedData);
-    // Reset hidden columns when changing tabs to ensure all new columns are visible
     setHiddenColumns([]);
   }, [activeTab, tickets]);
+
+  // Handle ticket selection with active tab
+  const handleTicketSelect = (ticket) => {
+    onSelectTicket(ticket, activeTab);
+  };
 
   // Filter data based on search query and applied filters
   const filteredData = gridData.filter((ticket) => {
@@ -126,23 +152,25 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
   const getColumnsForTab = () => {
     switch (activeTab) {
       case "Created":
+
         return getCreatedTabColumns(onSelectTicket, () =>
           setIsAssignFormOpen(true)
         );
+
       case "Assigned":
-        return getAssignedTabColumns(onSelectTicket);
+        return getAssignedTabColumns(handleTicketSelect, openAverageTimeForm);
       case "Completed":
-      case "ForRetest": // Fixed: Standardized on lowercase t
+      case "ForRetest":
       case "Done":
-        return getCompletedTabColumns(onSelectTicket);
+        return getCompletedTabColumns(handleTicketSelect);
       default:
-        return getDefaultColumns(onSelectTicket);
+        return getDefaultColumns(handleTicketSelect);
     }
   };
 
   const allColumns = getColumnsForTab();
-
   // Filter columns based  preferences
+
   const columnDefs = allColumns.filter(
     (col) => !hiddenColumns.includes(col.field)
   );
@@ -154,7 +182,6 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
     cellStyle: { border: "none" },
   };
 
-  // Handle filter operations
   const handleApplyFilters = (filters) => {
     setAppliedFilters(filters);
   };
@@ -188,13 +215,16 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
         activeTab={activeTab}
       />
 
-      {/* Overlay   */}
+
+      {/* Overlay */}
+
       {isAssignFormOpen && (
         <div
           className="fixed inset-0 bg-[#00000080] bg-opacity-50 z-10"
           onClick={() => setIsAssignFormOpen(false)}
         ></div>
       )}
+
       {/* TicketAssignForm */}
       <div
         className={`fixed md:top-[72px] top-[56px] right-0 h-full max-h-screen md:w-[480px] bg-[#EDEDED] z-20 w-[380px] shadow-md transform ${
@@ -205,6 +235,24 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
           <TicketAssignForm onClose={() => setIsAssignFormOpen(false)} />
         )}
       </div>
+
+      {/* Overlay for AverageTime Form */}
+      {isAverageTimeFormOpen && (
+        <div
+          className="fixed inset-0 bg-[#00000080] bg-opacity-50 z-10"
+          onClick={closeAverageTimeForm}
+        ></div>
+      )}
+
+      {/* AverageTime Form */}
+      <div
+        className={`fixed md:top-[30%] top-[20%] right-[36%] md:w-[480px] bg-white z-20 w-[380px] rounded-md transform ${
+          isAverageTimeFormOpen ? "translate-y-0" : "translate-y-full"
+        } transition-transform duration-500 ease-in-out overflow-y-auto`}
+      >
+        {isAverageTimeFormOpen && <AverageTime onClose={closeAverageTimeForm} />}
+      </div>
+
 
       <div className="ag-theme-quartz h-[450px] w-full overflow-x-auto">
         <AgGridReact
@@ -220,7 +268,7 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
           onPaginationChanged={(params) => {
             setPaginationPageSize(params.api.paginationGetPageSize());
           }}
-          context={{ onSelectTicket }}
+          context={{ onSelectTicket: handleTicketSelect }}
         />
       </div>
     </div>

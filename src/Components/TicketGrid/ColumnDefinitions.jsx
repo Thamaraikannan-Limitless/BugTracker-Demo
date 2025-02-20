@@ -2,7 +2,7 @@ import { MdOutlineModeEdit } from "react-icons/md";
 import { FiMoreVertical } from "react-icons/fi";
 import { useState } from "react";
 import { FaSquarePlus } from "react-icons/fa6";
-
+import PropTypes from "prop-types";
 // Cell renderers
 
 export const StatusCellRenderer = (params) => {
@@ -25,7 +25,9 @@ export const StatusCellRenderer = (params) => {
   );
 };
 StatusCellRenderer.displayName = "StatusCellRenderer";
-
+StatusCellRenderer.propTypes = {
+  value: PropTypes.string.isRequired, // The status value
+};
 export const PriorityIndicatorRenderer = (params) => {
   const priorityColors = {
     High: "bg-[#E2445C]",
@@ -42,7 +44,9 @@ export const PriorityIndicatorRenderer = (params) => {
   );
 };
 PriorityIndicatorRenderer.displayName = "PriorityIndicatorRenderer";
-
+PriorityIndicatorRenderer.propTypes = {
+  value: PropTypes.string.isRequired, // The priority value
+};
 export const MoreOptionsRenderer = (props) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -76,7 +80,7 @@ export const MoreOptionsRenderer = (props) => {
           <ul className="text-sm">
             <li
               className="px-4 py-2 border-b border-[#cfcfcf] hover:bg-gray-100 cursor-pointer"
-              onClick={() => props.context.onSelectTicket(props.data.id)}
+              onClick={() => props.context.onSelectTicket(props.data)}
             >
               View
             </li>
@@ -137,9 +141,11 @@ export const MoreOptionsCreatedRenderer = (props) => {
     </div>
   );
 };
+
 MoreOptionsCreatedRenderer.displayName = "MoreOptionsCreatedRenderer";
 
 export const MoreOptionsAssignedRenderer = (props) => {
+
   const [isOpen, setIsOpen] = useState(false);
 
   const handleToggle = (event) => {
@@ -189,8 +195,15 @@ export const MoreOptionsAssignedRenderer = (props) => {
   );
 };
 MoreOptionsAssignedRenderer.displayName = "MoreOptionsAssignedRenderer";
-
-export const MoreOptionsCompletedRenderer = (props) => {
+MoreOptionsAssignedRenderer.propTypes = {
+  context: PropTypes.shape({
+    onSelectTicket: PropTypes.func.isRequired, // Function to handle ticket selection
+  }).isRequired,
+  data: PropTypes.shape({
+    id: PropTypes.number.isRequired, // Ticket ID
+  }).isRequired,
+};
+export const MoreOptionsCompletedRenderer = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleToggle = (event) => {
@@ -244,14 +257,21 @@ export const MoreOptionsCompletedRenderer = (props) => {
   );
 };
 MoreOptionsCompletedRenderer.displayName = "MoreOptionsCompletedRenderer";
-
+MoreOptionsCompletedRenderer.propTypes = {
+  context: PropTypes.shape({
+    onSelectTicket: PropTypes.func.isRequired, // Function to handle ticket selection
+  }).isRequired,
+  data: PropTypes.shape({
+    id: PropTypes.number.isRequired, // Ticket ID
+  }).isRequired,
+};
 export const TicketLinkRenderer = (props) => (
   <div className="flex items-center space-x-1 cursor-pointer">
     <PriorityIndicatorRenderer value={props.data.priority} />
     <a
       onClick={(e) => {
         e.preventDefault();
-        props.onSelectTicket(props.data.id);
+        props.onSelectTicket(props.data);
       }}
       className="ml-2 cursor-pointer font-semibold text-[#1358D0]"
     >
@@ -260,7 +280,14 @@ export const TicketLinkRenderer = (props) => (
   </div>
 );
 TicketLinkRenderer.displayName = "TicketLinkRenderer";
-
+TicketLinkRenderer.propTypes = {
+  value: PropTypes.string.isRequired, // The ticket number
+  data: PropTypes.shape({
+    id: PropTypes.number.isRequired, // Ticket ID
+    priority: PropTypes.string.isRequired, // Ticket priority
+  }).isRequired,
+  onSelectTicket: PropTypes.func.isRequired, // Function to handle ticket selection
+};
 // Cell renderer for user profiles
 export const UserProfileRenderer = (props) => {
   return (
@@ -278,6 +305,38 @@ export const UserProfileRenderer = (props) => {
   );
 };
 UserProfileRenderer.displayName = "UserProfileRenderer";
+UserProfileRenderer.propTypes = {
+  value: PropTypes.string.isRequired, // The user's name
+  data: PropTypes.shape({
+    createdBy: PropTypes.shape({
+      name: PropTypes.string,
+      image: PropTypes.string,
+    }),
+    reportedBy: PropTypes.shape({
+      name: PropTypes.string,
+      image: PropTypes.string,
+    }),
+    assignedBy: PropTypes.shape({
+      name: PropTypes.string,
+      image: PropTypes.string,
+    }),
+    assignedTo: PropTypes.shape({
+      name: PropTypes.string,
+      image: PropTypes.string,
+    }),
+    completedBy: PropTypes.shape({
+      name: PropTypes.string,
+      image: PropTypes.string,
+    }),
+    retestTo: PropTypes.shape({
+      name: PropTypes.string,
+      image: PropTypes.string,
+    }),
+  }).isRequired,
+  colDef: PropTypes.shape({
+    field: PropTypes.string.isRequired, // The field name (e.g., "createdBy.name")
+  }).isRequired,
+};
 
 // Action button renderer
 export const ActionButtonRenderer = (props) => (
@@ -289,7 +348,9 @@ export const ActionButtonRenderer = (props) => (
   </button>
 );
 ActionButtonRenderer.displayName = "ActionButtonRenderer";
-
+ActionButtonRenderer.propTypes = {
+  openAssignForm: PropTypes.func.isRequired, // Function to open the assign form
+};
 // Edit time renderer
 
 export const EditTimeRenderer = (props) => {
@@ -297,7 +358,9 @@ export const EditTimeRenderer = (props) => {
   if (!props.value) {
     return (
       <div className="flex items-center ms-10 mt-2">
-        <button className="text-green-600 rounded-md cursor-pointer text-xl">
+        <button
+          onClick={props.onClick}
+          className="text-green-600 rounded-md cursor-pointer text-xl">
           <FaSquarePlus />
         </button>
       </div>
@@ -308,14 +371,17 @@ export const EditTimeRenderer = (props) => {
   return (
     <div className="flex items-center">
       <span className="mr-2">{props.value}</span>
-      <button className="text-gray-500 hover:text-gray-700 cursor-pointer ms-2 text-[#9F9F9F] text-lg">
+      <button
+         onClick={props.onClick}  className="text-gray-500 hover:text-gray-700 cursor-pointer ms-2 text-[#9F9F9F] text-lg">
         <MdOutlineModeEdit />
       </button>
     </div>
   );
 };
 EditTimeRenderer.displayName = "EditTimeRenderer";
-
+EditTimeRenderer.propTypes = {
+  value: PropTypes.string, // The time value (optional)
+};
 // Change status renderer
 // Change status renderer with consistent naming
 export const ChangeStatusRenderer = (props) => {
@@ -353,7 +419,9 @@ export const ChangeStatusRenderer = (props) => {
   );
 };
 ChangeStatusRenderer.displayName = "ChangeStatusRenderer";
-
+ChangeStatusRenderer.propTypes = {
+  value: PropTypes.string.isRequired, // The status value
+};
 // Column definitions
 export const getCreatedTabColumns = (onSelectTicket, openAssignForm) => [
   {
@@ -408,8 +476,11 @@ export const getCreatedTabColumns = (onSelectTicket, openAssignForm) => [
     pinned: "right",
   },
 ];
-
-export const getAssignedTabColumns = (onSelectTicket) => [
+getCreatedTabColumns.propTypes = {
+  onSelectTicket: PropTypes.func.isRequired, // Function to handle ticket selection
+  openAssignForm: PropTypes.func.isRequired, // Function to open the assign form
+};
+export const getAssignedTabColumns = (onSelectTicket, openAverageTimeForm) => [
   {
     headerName: "TICKET #",
     field: "ticket",
@@ -455,6 +526,7 @@ export const getAssignedTabColumns = (onSelectTicket) => [
     headerName: "AVERAGE TIME",
     field: "averageTime",
     cellRenderer: EditTimeRenderer,
+    cellRendererParams: { onClick: openAverageTimeForm }, // Pass the onClick handler
     flex: 1,
     minWidth: 150,
   },
