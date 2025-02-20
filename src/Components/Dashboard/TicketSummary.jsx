@@ -1,109 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import PropTypes from "prop-types";
 import { format, startOfWeek, endOfWeek } from "date-fns";
 import { HiXMark } from "react-icons/hi2";
+import { LiaCalendar } from "react-icons/lia";
+import TicketSummaryTable from "./TicketSummaryTable"
 
-const formatDate = (dateString) => {
-  return format(new Date(dateString), "MMM-dd-EEE");
-};
-
-const SummaryTable = ({ data, columns, startDate, endDate }) => {
-  const totals = columns.reduce((acc, col) => {
-    acc[col.toLowerCase()] = data.reduce(
-      (sum, item) => sum + item[col.toLowerCase()],
-      0
-    );
-    return acc;
-  }, {});
-
-  return (
-    <table className="w-full text-left border-collapse">
-      <thead>
-        <tr>
-          <th className="pt-2 text-xs pb-2 text-[#9F9F9F] font-[600]">
-            {format(startDate, "MMM-dd")} - {format(endDate, "MMM-dd")}
-          </th>
-          {columns.map((col) => (
-            <th
-              key={col}
-              className="text-xs font-[600] text-[#9F9F9F] whitespace-nowrap"
-            >
-              {col}
-            </th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((item, index) => (
-          <tr key={index}>
-            <td className="pt-2 border-b pb-2 text-sm font-semibold border-[#D9D9D9] whitespace-nowrap">
-              {formatDate(item.date)}
-            </td>
-            {columns.map((col) => (
-              <td
-                key={col}
-                className="p-2 border-b border-[#D9D9D9] text-sm font-[400] whitespace-nowrap"
-              >
-                {item[col.toLowerCase()]}
-              </td>
-            ))}
-          </tr>
-        ))}
-        <tr className="font-[600]">
-          <td className="p-2 border-b border-[#D9D9D9]"></td>
-          {columns.map((col) => (
-            <td
-              key={col}
-              className="p-2 border-b border-[#D9D9D9] whitespace-nowrap"
-            >
-              {totals[col.toLowerCase()]}
-            </td>
-          ))}
-        </tr>
-      </tbody>
-    </table>
-  );
-};
-
-SummaryTable.propTypes = {
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      date: PropTypes.string.isRequired,
-      assigned: PropTypes.number.isRequired,
-      completed: PropTypes.number.isRequired,
-      reoccur: PropTypes.number.isRequired,
-      retest: PropTypes.number.isRequired,
-    })
-  ).isRequired,
-  columns: PropTypes.arrayOf(PropTypes.string).isRequired,
-  startDate: PropTypes.instanceOf(Date).isRequired,
-  endDate: PropTypes.instanceOf(Date).isRequired,
-};
 
 const TicketSummary = ({ ticketData }) => {
-  const [dateOption, setDateOption] = useState("This Week");
   const [startDate, setStartDate] = useState(startOfWeek(new Date()));
   const [endDate, setEndDate] = useState(endOfWeek(new Date()));
   const [showCalendar, setShowCalendar] = useState(false);
   const [tempStartDate, setTempStartDate] = useState(startOfWeek(new Date()));
   const [tempEndDate, setTempEndDate] = useState(endOfWeek(new Date()));
-
-  useEffect(() => {
-    if (dateOption === "This Week") {
-      setStartDate(startOfWeek(new Date()));
-      setEndDate(endOfWeek(new Date()));
-      setShowCalendar(false);
-    } else if (dateOption === "Previous Week") {
-      setStartDate(startOfWeek(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)));
-      setEndDate(endOfWeek(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)));
-      setShowCalendar(false);
-    } else if (dateOption === "Custom Week") {
-      setShowCalendar(true);
-    }
-  }, [dateOption]);
 
   const handleWeekChange = (info) => {
     const clickedDate = new Date(info.date);
@@ -112,7 +23,6 @@ const TicketSummary = ({ ticketData }) => {
     // Set the temporary week selection
     setTempStartDate(startOfWeek(clickedDate));
     setTempEndDate(endOfWeek(clickedDate));
-    
   };
 
   const confirmDateSelection = () => {
@@ -133,20 +43,30 @@ const TicketSummary = ({ ticketData }) => {
     return itemDate >= startDate && itemDate <= endDate;
   });
 
+  const getWeekText = () => {
+    const today = new Date();
+    const startOfCurrentWeek = startOfWeek(today);
+    const endOfCurrentWeek = endOfWeek(today);
+
+    if (startDate.getTime() === startOfCurrentWeek.getTime() && endDate.getTime() === endOfCurrentWeek.getTime()) {
+      return "This Week";
+    } else {
+      return `${format(startDate, "MMM-dd")} - ${format(endDate, "MMM-dd")}`;
+    }
+  };
+
   return (
     <div className="bg-white p-6 rounded-xl relative">
       <div className="flex justify-between items-center flex-row mb-4">
         <h2 className="text-[16px] pl-3 font-semibold">TicketSummary</h2>
-        <div className="flex gap-x-2">
-          <select
-            value={dateOption}
-            onChange={(e) => setDateOption(e.target.value)}
-            className="p-2 border-[#EAEEF7] border rounded-md text-xs"
+        <div className="flex gap-x-2 items-center">
+          <h1 className="text-sm font-[600] ">Selected : <span className="text-xs font-[400]">{getWeekText()}</span></h1>  
+          <button
+            onClick={() => setShowCalendar(true)}
+            className="p-2 text-[#535353] rounded-md text-2xl"
           >
-            <option value="This Week">This Week</option>
-            <option value="Previous Week">Previous Week</option>
-            <option value="Custom Week">Custom Week</option>
-          </select>
+            <LiaCalendar />
+          </button>
         </div>
       </div>
 
@@ -191,7 +111,7 @@ const TicketSummary = ({ ticketData }) => {
         </div>
       )}
 
-      <SummaryTable
+      <TicketSummaryTable
         data={filteredData}
         columns={["Created", "Assigned", "Completed", "Reoccur", "Retest"]}
         startDate={startDate}

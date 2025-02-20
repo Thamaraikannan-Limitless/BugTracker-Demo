@@ -168,6 +168,10 @@ section {
   .dev-profile-section img {
     margin-left: 0px;
   }
+  .dev-menu{
+    display: flex;
+    flex-direction: column;
+  }
 }
 @media (max-width: 768px) {
   .dev-profile-section {
@@ -176,6 +180,10 @@ section {
   .dev-profile-section img {
     margin-left: 32px;
   }
+  .dev-menu{
+    display: flex;
+    flex-direction: row;
+  }
 }
 @media (max-width: 760px) {
   .dev-profile-section {
@@ -183,5 +191,9 @@ section {
   }
   .dev-profile-section img {
     margin-left: 4px;
+  }
+  .dev-menu{
+    display: flex;
+    flex-direction:column;
   }
 }
