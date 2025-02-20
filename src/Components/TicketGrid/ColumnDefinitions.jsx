@@ -143,7 +143,19 @@ export const MoreOptionsRenderer = (props) => {
 };
 
 MoreOptionsRenderer.displayName = "MoreOptionsRenderer";
-
+MoreOptionsRenderer.propTypes = {
+  data: PropTypes.shape({
+    id: PropTypes.number.isRequired, // Ticket ID
+    status: PropTypes.oneOf(["Created", "Assigned", "ForRetest", "Done", "NotDone"]).isRequired, // Ticket status
+  }).isRequired,
+  context: PropTypes.shape({
+    onSelectTicket: PropTypes.func.isRequired, // Function to handle ticket selection
+    onAssignTicket: PropTypes.func, // Function to handle ticket assignment
+    onSendForRetest: PropTypes.func, // Function to handle sending for retest
+    onReassignTicket: PropTypes.func, // Function to handle reassignment
+    onCloseTicket: PropTypes.func, // Function to handle closing the ticket
+  }).isRequired,
+};
 export const TicketLinkRenderer = (props) => (
   <div className="flex items-center space-x-1 cursor-pointer">
     <PriorityIndicatorRenderer value={props.data.priority} />
@@ -263,6 +275,7 @@ export const EditTimeRenderer = (props) => {
 EditTimeRenderer.displayName = "EditTimeRenderer";
 EditTimeRenderer.propTypes = {
   value: PropTypes.string, // The time value (optional)
+  onClick: PropTypes.func.isRequired, // Function to handle click events
 };
 // Change status renderer
 // Change status renderer with consistent naming

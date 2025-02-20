@@ -73,7 +73,7 @@ const DeveloperWise = ({ developerData }) => {
                        <h1 className="text-sm font-[600] ">Selected : <span className="text-xs font-[400]">{getWeekText()}</span></h1>  
                        <button
                          onClick={() => setShowCalendar(true)}
-                         className="p-2 text-[#535353] rounded-md text-2xl"
+                         className="p-2 text-[#535353] cursor-pointer rounded-md text-2xl"
                        >
                          <LiaCalendar />
                        </button>
@@ -90,7 +90,7 @@ const DeveloperWise = ({ developerData }) => {
           <div className="bg-white w-[400px] h-[450px] p-6 shadow-lg relative">
             <button
               onClick={() => setShowCalendar(false)}
-              className="absolute top-2 right-2   text-[#535353] px-2 py-1 rounded-md text-xl"
+              className="absolute top-2 right-2  cursor-pointer text-[#535353] px-2 py-1 rounded-md text-xl"
             >
               <HiXMark />
             </button>
@@ -113,7 +113,7 @@ const DeveloperWise = ({ developerData }) => {
             <div className="flex justify-end mt-4">
               <button
                 onClick={confirmDateSelection}
-                className="bg-blue-500 text-white px-4 py-2 rounded-md text-sm"
+                className="bg-blue-500 text-white px-4 py-2 cursor-pointer rounded-md text-sm"
               >
                 OK
               </button>
