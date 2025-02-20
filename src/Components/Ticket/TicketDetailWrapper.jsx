@@ -10,7 +10,7 @@ const TicketDetailWrapper = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-
+ 
   const activeTab = location.state?.activeTab || "All";
   const parsedTicketId = parseInt(ticketId, 10);
 
