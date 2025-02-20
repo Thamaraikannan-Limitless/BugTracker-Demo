@@ -5,13 +5,12 @@ import Header from "../Components/Header/Header";
 import { useState } from "react";
 import TicketSummary from "../Components/Dashboard/TicketSummary";
 import DeveloperWise from "../Components/Dashboard/DeveloperWise";
-import { data,ticketData,developerData } from "../Data/DashBoardData";
+import { data, ticketData, developerData } from "../Data/DashBoardData";
 
 const Dashboard = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   return (
     <>
-      <Header />
       <div className="mt-10 ">
         <section className=" flex flex-col gap-10">
           <div className="grid lg:grid-cols-2 gap-x-10 gap-y-5 grid-cols-1">
