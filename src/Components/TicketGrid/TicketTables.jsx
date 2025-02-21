@@ -8,7 +8,9 @@ import TableHeader from "./TableHeader";
 import TableFilters from "./TableFilters";
 import TicketAssignForm from "../Ticket/TicketAssignForm";
 import AverageTime from "../Ticket/AverageTime";
-
+import ReassignForm from "../Ticket/ReassignForm";
+import RetestForm from "../Ticket/RetestForm";
+import TicketCloseForm from "../Ticket/TicketCloseForm";
 import {
   getCreatedTabColumns,
   getAssignedTabColumns,
@@ -31,6 +33,9 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
   const [gridData, setGridData] = useState(tickets);
   const [isAssignFormOpen, setIsAssignFormOpen] = useState(false);
   const [isAverageTimeFormOpen, setIsAverageTimeFormOpen] = useState(false);
+  const [isReassignFormOpen, setIsReassignFormOpen] = useState(false);
+  const [isRetestFormOpen, setIsRetestFormOpen] = useState(false);
+  const [isCloseFormOpen, setIsCloseFormOpen] = useState(false);
   const gridRef = useRef(null);
 
   // Clear the location state after using it
@@ -48,13 +53,37 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
   const closeAssignForm = () => {
     setIsAssignFormOpen(false);
   }; 
-
+// Average time  form function
   const openAverageTimeForm = () => {
     setIsAverageTimeFormOpen(true);
   };
 
   const closeAverageTimeForm = () => {
     setIsAverageTimeFormOpen(false);
+  };
+// Reassign form function
+  const openReassignForm = () => {
+    setIsReassignFormOpen(true);
+  };
+
+  const closeReassignForm = () => {
+    setIsReassignFormOpen(false);
+  };
+  // ReTest form function
+  const openRetestForm = () => {
+    setIsRetestFormOpen(true);
+  };
+
+  const closeRetestForm = () => {
+    setIsRetestFormOpen(false);
+  };
+   // Close form function
+   const openCloseForm = () => {
+    setIsCloseFormOpen(true);
+  };
+
+  const closeCloseForm = () => {
+    setIsCloseFormOpen(false);
   };
 
   // Process tickets based on activeTab
@@ -165,15 +194,14 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
       case "Created":
         return getCreatedTabColumns(handleTicketSelect, openAssignForm
         );
-
       case "Assigned":
-        return getAssignedTabColumns(handleTicketSelect, openAverageTimeForm);
+        return getAssignedTabColumns(handleTicketSelect, openAverageTimeForm,openReassignForm,openRetestForm);
       case "Completed":
       case "ForRetest":
       case "Done":
-        return getCompletedTabColumns(handleTicketSelect);
+        return getCompletedTabColumns(handleTicketSelect,openCloseForm);
       default:
-        return getDefaultColumns(handleTicketSelect);
+        return getDefaultColumns(handleTicketSelect, openAssignForm,openReassignForm,openRetestForm,openCloseForm);
     }
   };
 
@@ -226,10 +254,16 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
 
       {/* Overlay */}
 
-      {isAssignFormOpen && (
+      {(isAssignFormOpen || isAverageTimeFormOpen || isReassignFormOpen || isRetestFormOpen || isCloseFormOpen) && (
         <div
           className="fixed inset-0 bg-[#00000080] bg-opacity-50 z-10"
-          onClick={closeAssignForm}
+          onClick={() => {
+            closeAssignForm();
+            closeAverageTimeForm();
+            closeReassignForm();
+            closeRetestForm();
+            closeCloseForm();
+          }}
         ></div>
       )}
 
@@ -244,14 +278,6 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
         )}
       </div>
 
-      {/* Overlay for AverageTime Form */}
-      {isAverageTimeFormOpen && (
-        <div
-          className="fixed inset-0 bg-[#00000080] bg-opacity-50 z-10"
-          onClick={closeAverageTimeForm}
-        ></div>
-      )}
-
       {/* AverageTime Form */}
       <div
         className={`fixed md:top-[30%] top-[20%] right-[36%] md:w-[480px] bg-white z-20 w-[380px] rounded-md transform ${
@@ -262,6 +288,35 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
           <AverageTime onClose={closeAverageTimeForm} />
         )}
       </div>
+
+         {/* ReassignForm */}
+         <div
+        className={`fixed md:top-[72px] top-[56px] right-0 h-full max-h-screen md:w-[480px] bg-[#EDEDED] z-20 w-[380px] shadow-md transform ${
+          isReassignFormOpen ? "translate-x-0" : "translate-x-full"
+        } transition-transform duration-500 ease-in-out overflow-y-auto`}
+      >
+        {isReassignFormOpen && <ReassignForm onClose={closeReassignForm} />}
+      </div>
+
+      
+         {/* ReTestForm */}
+         <div
+        className={`fixed md:top-[72px] top-[56px] right-0 h-full max-h-screen md:w-[480px] bg-[#EDEDED] z-20 w-[380px] shadow-md transform ${
+          isRetestFormOpen ? "translate-x-0" : "translate-x-full"
+        } transition-transform duration-500 ease-in-out overflow-y-auto`}
+      >
+        {isRetestFormOpen && <RetestForm onClose={closeRetestForm}/>}
+      </div>
+
+       {/* CloseForm */}
+       <div
+        className={`fixed md:top-[72px] top-[56px] right-0 h-full max-h-screen md:w-[480px] bg-[#EDEDED] z-20 w-[380px] shadow-md transform ${
+          isCloseFormOpen ? "translate-x-0" : "translate-x-full"
+        } transition-transform duration-500 ease-in-out overflow-y-auto`}
+      >
+        {isCloseFormOpen && <TicketCloseForm onClose={closeCloseForm}/>}
+      </div>
+
 
       <div className="ag-theme-quartz h-[450px] w-full overflow-x-auto">
         <AgGridReact

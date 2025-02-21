@@ -100,7 +100,7 @@ export const MoreOptionsRenderer = (props) => {
             )}
 
             {/* Send for Retest & Reassign to - Only for Assigned status */}
-            {status === "Assigned" && (
+            {(status === "Assigned" ||status==="All") && (
               <>
                 <li
                   className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
@@ -118,7 +118,7 @@ export const MoreOptionsRenderer = (props) => {
             )}
 
             {/* Close Ticket - Only for ForRetest status */}
-            {status === "ForRetest" && (
+            {(status === "ForRetest" || status==="All") && (
               <li
                 className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                 onClick={() => props.context.onCloseTicket(props.data)}
@@ -384,7 +384,7 @@ export const getCreatedTabColumns = (onSelectTicket, openAssignForm) => [
   },
 ];
 
-export const getAssignedTabColumns = (onSelectTicket, openAverageTimeForm) => [
+export const getAssignedTabColumns = (onSelectTicket, openAverageTimeForm,openReassignForm,openRetestForm) => [
   {
     headerName: "TICKET #",
     field: "ticket",
@@ -438,13 +438,20 @@ export const getAssignedTabColumns = (onSelectTicket, openAverageTimeForm) => [
     headerName: "",
     field: "moreOptions",
     cellRenderer: MoreOptionsRenderer,
-    cellRendererParams: { onSelectTicket },
+    cellRendererParams: {
+      context: {
+        onSelectTicket,
+        onReassignTicket: openReassignForm,
+        onSendForRetest:openRetestForm
+        
+      },
+    },
     width: 10,
     pinned: "right",
   },
 ];
 
-export const getCompletedTabColumns = (onSelectTicket) => [
+export const getCompletedTabColumns = (onSelectTicket ,openCloseForm) => [
   {
     headerName: "TICKET #",
     field: "ticket",
@@ -505,13 +512,13 @@ export const getCompletedTabColumns = (onSelectTicket) => [
     headerName: "",
     field: "moreOptions",
     cellRenderer: MoreOptionsRenderer,
-    cellRendererParams: { context: { onSelectTicket } },
+    cellRendererParams: { context: { onSelectTicket,onCloseTicket:openCloseForm } },
     width: 10,
     pinned: "right",
   },
 ];
 
-export const getDefaultColumns = (onSelectTicket) => [
+export const getDefaultColumns = (onSelectTicket,openAssignForm,openReassignForm,openRetestForm,openCloseForm) => [
   {
     headerName: "TICKET #",
     field: "ticket",
@@ -577,7 +584,15 @@ export const getDefaultColumns = (onSelectTicket) => [
     headerName: "",
     field: "moreOptions",
     cellRenderer: MoreOptionsRenderer,
-    cellRendererParams: { context: { onSelectTicket } },
+    cellRendererParams: {
+      context: {
+        onSelectTicket,
+        onAssignTicket: openAssignForm,
+        onReassignTicket: openReassignForm,
+        onSendForRetest: openRetestForm,
+        onCloseTicket:openCloseForm,
+       }
+    },
     width: 10,
     pinned: "right",
   },
