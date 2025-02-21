@@ -6,8 +6,7 @@ import PropTypes from "prop-types";
 import { format, startOfWeek, endOfWeek } from "date-fns";
 import { HiXMark } from "react-icons/hi2";
 import { LiaCalendar } from "react-icons/lia";
-import TicketSummaryTable from "./TicketSummaryTable"
-
+import TicketSummaryTable from "./TicketSummaryTable";
 
 const TicketSummary = ({ ticketData }) => {
   const [startDate, setStartDate] = useState(startOfWeek(new Date()));
@@ -48,7 +47,10 @@ const TicketSummary = ({ ticketData }) => {
     const startOfCurrentWeek = startOfWeek(today);
     const endOfCurrentWeek = endOfWeek(today);
 
-    if (startDate.getTime() === startOfCurrentWeek.getTime() && endDate.getTime() === endOfCurrentWeek.getTime()) {
+    if (
+      startDate.getTime() === startOfCurrentWeek.getTime() &&
+      endDate.getTime() === endOfCurrentWeek.getTime()
+    ) {
       return "This Week";
     } else {
       return `${format(startDate, "MMM-dd")} - ${format(endDate, "MMM-dd")}`;
@@ -60,7 +62,12 @@ const TicketSummary = ({ ticketData }) => {
       <div className="flex justify-between items-center flex-row mb-4">
         <h2 className="text-[16px] pl-3 font-semibold">TicketSummary</h2>
         <div className="flex gap-x-2 items-center">
-          <h1 className="text-sm font-[600] text-[#9F9F9F]">Selected : <span className="text-xs font-[400] text-black">{getWeekText()}</span></h1>  
+          <h1 className="text-sm font-[600]">
+            Selected :{" "}
+            <span className="text-xs font-[400] text-black">
+              {getWeekText()}
+            </span>
+          </h1>
           <button
             onClick={() => setShowCalendar(true)}
             className="p-2 text-[#535353] cursor-pointer rounded-md text-2xl"
