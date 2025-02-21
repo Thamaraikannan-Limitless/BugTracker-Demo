@@ -1,9 +1,11 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
+
 const ColumnSelector = ({ allColumns, hiddenColumns, setHiddenColumns }) => {
   const [selectAllColumns, setSelectAllColumns] = useState(
     hiddenColumns.length === 0
   );
+
   const handleColumnToggle = (field) => {
     setHiddenColumns((prev) => {
       let updatedColumns;
@@ -20,13 +22,14 @@ const ColumnSelector = ({ allColumns, hiddenColumns, setHiddenColumns }) => {
   };
 
   const handleSelectAllToggle = () => {
-    if (selectAllColumns) {
-      setHiddenColumns(allColumns.map((col) => col.field));
-    } else {
+    if (!selectAllColumns) {
       setHiddenColumns([]);
+      setSelectAllColumns(true);
     }
-    setSelectAllColumns(!selectAllColumns);
   };
+
+  // Remove the last column from the displayed list
+  const displayedColumns = allColumns.slice(0, -1);
 
   return (
     <div className="absolute right-0 bg-white border-gray-300 mt-1 rounded shadow-md z-10">
@@ -39,7 +42,7 @@ const ColumnSelector = ({ allColumns, hiddenColumns, setHiddenColumns }) => {
         />
         All
       </label>
-      {allColumns.map((col) => (
+      {displayedColumns.map((col) => (
         <label
           key={col.field}
           className="flex items-center px-2 w-44 py-1.5 text-[12px] font-light lowercase border-b border-gray-100 hover:bg-gray-100"

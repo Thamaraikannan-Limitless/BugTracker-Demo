@@ -16,7 +16,7 @@ import {
   getAssignedTabColumns,
   getCompletedTabColumns,
   getDefaultColumns,
-} from "./columnDefinitions";
+} from "./ColumnDefinition";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
