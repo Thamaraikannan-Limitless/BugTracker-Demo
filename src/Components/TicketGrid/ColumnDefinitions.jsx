@@ -1,6 +1,6 @@
 import { MdOutlineModeEdit } from "react-icons/md";
 import { FiMoreVertical } from "react-icons/fi";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaSquarePlus } from "react-icons/fa6";
 import PropTypes from "prop-types";
 // import useMenuStore from "../../Store/useMenuStore";
@@ -49,22 +49,81 @@ PriorityIndicatorRenderer.propTypes = {
   value: PropTypes.string.isRequired, // The priority value
 };
 
+// More Option
+// Create a static store to manage all open menus
+const MenuManager = {
+  activeMenu: null,
+  listeners: [],
+
+  setActiveMenu(menuId) {
+    this.activeMenu = menuId;
+    // Notify all listeners that the active menu has changed
+    this.listeners.forEach((listener) => listener(menuId));
+  },
+
+  subscribe(listener) {
+    this.listeners.push(listener);
+    return () => {
+      this.listeners = this.listeners.filter((l) => l !== listener);
+    };
+  },
+
+  closeAll() {
+    this.activeMenu = null;
+    this.listeners.forEach((listener) => listener(null));
+  },
+};
+
+// Add a global click handler to close all menus when clicking outside
+document.addEventListener("click", () => {
+  MenuManager.closeAll();
+});
+
 export const MoreOptionsRenderer = (props) => {
+  const { status } = props.data;
+  const rowId = props.data.id;
   const [isOpen, setIsOpen] = useState(false);
-  const { status } = props.data; // Extract status from props
+
+  // Subscribe to menu changes
+  useEffect(() => {
+    const unsubscribe = MenuManager.subscribe((activeMenuId) => {
+      // Only update state if necessary to avoid unnecessary renders
+      if (isOpen && activeMenuId !== rowId) {
+        setIsOpen(false);
+      }
+    });
+
+    // Clean up subscription
+    return unsubscribe;
+  }, [rowId, isOpen]);
 
   const handleToggle = (event) => {
+    // Stop propagation to prevent the document click handler from firing
     event.stopPropagation();
-    setIsOpen(!isOpen);
+    event.nativeEvent.stopImmediatePropagation();
 
     if (!isOpen) {
-      window.addEventListener("click", handleClose);
+      // Open this menu and notify the manager
+      MenuManager.setActiveMenu(rowId);
+      setIsOpen(true);
+    } else {
+      // Close this menu
+      MenuManager.setActiveMenu(null);
+      setIsOpen(false);
     }
   };
 
-  const handleClose = () => {
+  const handleMenuItemClick = (callback) => (event) => {
+    // Stop propagation to prevent document click handler
+    event.stopPropagation();
+    event.nativeEvent.stopImmediatePropagation();
+
+    // Execute the callback
+    callback(props.data);
+
+    // Close the menu
+    MenuManager.setActiveMenu(null);
     setIsOpen(false);
-    window.removeEventListener("click", handleClose);
   };
 
   return (
@@ -78,13 +137,16 @@ export const MoreOptionsRenderer = (props) => {
       {isOpen && (
         <div
           className="fixed right-7 mr-2 top-0 bg-white border border-gray-300 rounded-md shadow-lg z-20 w-40"
-          onClick={(e) => e.stopPropagation()}
+          onClick={(e) => {
+            e.stopPropagation();
+            e.nativeEvent.stopImmediatePropagation();
+          }}
         >
           <ul className="text-sm">
             {/* View - Available for all statuses */}
             <li
               className="px-4 py-2 border-b border-[#cfcfcf] hover:bg-gray-100 cursor-pointer"
-              onClick={() => props.context.onSelectTicket(props.data)}
+              onClick={handleMenuItemClick(props.context.onSelectTicket)}
             >
               View
             </li>
@@ -93,7 +155,7 @@ export const MoreOptionsRenderer = (props) => {
             {(status === "Created" || status === "All") && (
               <li
                 className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                onClick={() => props.context.onAssignTicket(props.data)}
+                onClick={handleMenuItemClick(props.context.onAssignTicket)}
               >
                 Assign to
               </li>
@@ -104,13 +166,13 @@ export const MoreOptionsRenderer = (props) => {
               <>
                 <li
                   className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                  onClick={() => props.context.onSendForRetest(props.data)}
+                  onClick={handleMenuItemClick(props.context.onSendForRetest)}
                 >
                   Send for Retest
                 </li>
                 <li
                   className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                  onClick={() => props.context.onReassignTicket(props.data)}
+                  onClick={handleMenuItemClick(props.context.onReassignTicket)}
                 >
                   Reassign to
                 </li>
@@ -121,7 +183,7 @@ export const MoreOptionsRenderer = (props) => {
             {(status === "ForRetest" || status === "All") && (
               <li
                 className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                onClick={() => props.context.onCloseTicket(props.data)}
+                onClick={handleMenuItemClick(props.context.onCloseTicket)}
               >
                 Close Ticket
               </li>
@@ -131,7 +193,7 @@ export const MoreOptionsRenderer = (props) => {
             {status === "NotDone" && (
               <li
                 className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                onClick={() => props.context.onSendForRetest(props.data)}
+                onClick={handleMenuItemClick(props.context.onSendForRetest)}
               >
                 Send for Retest
               </li>
