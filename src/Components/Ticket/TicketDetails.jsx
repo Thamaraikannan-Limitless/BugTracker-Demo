@@ -27,13 +27,15 @@ const TicketDetails = ({ ticket, onBack }) => {
         <span
           className={`px-2 py-1 text-sm font-medium absolute left-52 top-0 rounded-md ${
             ticket.status === "Created"
-              ? "bg-yellow-200 text-yellow-700"
+              ? "bg-[#ECBF50] text-white"
               : ticket.status === "Assigned"
-              ? "bg-orange-200 text-orange-700"
+              ? "bg-[#E5927A] text-white"
               : ticket.status === "Done"
-              ? "bg-green-200 text-green-700"
+              ? "bg-[#00C875] text-white"
                 : ticket.status === "ForRetest"
-              ?  "bg-red-200 text-red-700"
+                  ? "bg-[#FF0000] text-white"
+                   : ticket.status === "NotDone"
+              ?  "bg-[#6141AC] text-white"
                :"bg-amber-800"
           }`}
         >
