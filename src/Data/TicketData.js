@@ -74,8 +74,8 @@ export const rowData = [
   {
     id: 2,
     priority: "Low",
-    ticket: "TK000001",
-    project: "Project 1",
+    ticket: "TK000002",
+    project: "Project 2",
     createdOn: "20 Jan",
     assignedOn: "21 Jan",
     completedOn: "28 Jan",
@@ -119,7 +119,7 @@ export const rowData = [
   {
     id: 4,
     priority: "Low",
-    ticket: "TK000001",
+    ticket: "TK000003",
     project: "Project B",
     createdOn: "20 Jan",
     assignedOn: "21 Jan",
@@ -164,8 +164,8 @@ export const rowData = [
   {
     id: 3,
     priority: "Medium",
-    ticket: "TK000003",
-    project: "Project 1",
+    ticket: "TK000004",
+    project: "Project c",
     createdOn: "20 Jan",
     assignedOn: "21 Jan",
     completedOn: "28 Jan",
@@ -233,6 +233,11 @@ export const rowData = [
       date: "20 Jan,2025",
       image: userImage,
     },
+    assignedTo: {
+      name: "Syed",
+      date: "20 Jan,2025",
+      image: userImage,
+    },
     reportedBy: {
       name: "Kannan",
       date: "20 Jan,2025",
@@ -272,7 +277,7 @@ export const rowData = [
     id: 6,
     priority: "Medium",
     ticket: "TK000006",
-    project: "Project A",
+    project: "Project D",
     createdOn: "20 Jan",
     assignedOn: "21 Jan",
     completedOn: "28 Jan",

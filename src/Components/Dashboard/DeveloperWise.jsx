@@ -70,7 +70,7 @@ const DeveloperWise = ({ developerData }) => {
             <option value="Thamarai">Thamarai</option>
           </select>
               <div className="flex gap-x-4 items-center dev-calendar-sec">
-                       <h1 className="text-sm font-[600] ">Selected : <span className="text-xs font-[400]">{getWeekText()}</span></h1>  
+                       <h1 className="text-sm font-[600] text-[#9F9F9F] ">Selected : <span className="text-xs font-[400] text-black">{getWeekText()}</span></h1>  
                        <button
                          onClick={() => setShowCalendar(true)}
                          className="p-2 text-[#535353] cursor-pointer rounded-md text-2xl"
