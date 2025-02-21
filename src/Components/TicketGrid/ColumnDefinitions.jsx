@@ -100,7 +100,7 @@ export const MoreOptionsRenderer = (props) => {
             )}
 
             {/* Send for Retest & Reassign to - Only for Assigned status */}
-            {(status === "Assigned" ||status==="All") && (
+            {(status === "Assigned" || status === "All") && (
               <>
                 <li
                   className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
@@ -118,7 +118,7 @@ export const MoreOptionsRenderer = (props) => {
             )}
 
             {/* Close Ticket - Only for ForRetest status */}
-            {(status === "ForRetest" || status==="All") && (
+            {(status === "ForRetest" || status === "All") && (
               <li
                 className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                 onClick={() => props.context.onCloseTicket(props.data)}
@@ -331,7 +331,8 @@ export const getCreatedTabColumns = (onSelectTicket, openAssignForm) => [
     field: "ticket",
     cellRenderer: TicketLinkRenderer,
     cellRendererParams: { onSelectTicket },
-    sortable: false,
+    sortable: true,
+    sort: "asc",
     filter: false,
     flex: 1,
     minWidth: 100,
@@ -340,7 +341,8 @@ export const getCreatedTabColumns = (onSelectTicket, openAssignForm) => [
   {
     headerName: "PROJECT",
     field: "project",
-    sortable: false,
+    sortable: true,
+    sort: "asc",
     filter: false,
     flex: 1,
     minWidth: 200,
@@ -349,7 +351,8 @@ export const getCreatedTabColumns = (onSelectTicket, openAssignForm) => [
   {
     headerName: "CREATED ON",
     field: "createdOn",
-    sortable: false,
+    sortable: true,
+    sort: "asc",
     filter: false,
     flex: 1,
     minWidth: 200,
@@ -384,13 +387,19 @@ export const getCreatedTabColumns = (onSelectTicket, openAssignForm) => [
   },
 ];
 
-export const getAssignedTabColumns = (onSelectTicket, openAverageTimeForm,openReassignForm,openRetestForm) => [
+export const getAssignedTabColumns = (
+  onSelectTicket,
+  openAverageTimeForm,
+  openReassignForm,
+  openRetestForm
+) => [
   {
     headerName: "TICKET #",
     field: "ticket",
     cellRenderer: TicketLinkRenderer,
     cellRendererParams: { onSelectTicket },
-    sortable: false,
+    sortable: true,
+    sort: "asc",
     filter: false,
     flex: 1,
     minWidth: 150,
@@ -399,7 +408,8 @@ export const getAssignedTabColumns = (onSelectTicket, openAverageTimeForm,openRe
   {
     headerName: "PROJECT",
     field: "project",
-    sortable: false,
+    sortable: true,
+    sort: "asc",
     filter: false,
     flex: 1,
     minWidth: 250,
@@ -407,7 +417,8 @@ export const getAssignedTabColumns = (onSelectTicket, openAverageTimeForm,openRe
   {
     headerName: "ASSIGNED ON",
     field: "assignedOn",
-    sortable: false,
+    sortable: true,
+    sort: "asc",
     filter: false,
     flex: 1,
     minWidth: 150,
@@ -429,6 +440,8 @@ export const getAssignedTabColumns = (onSelectTicket, openAverageTimeForm,openRe
   {
     headerName: "AVERAGE TIME",
     field: "averageTime",
+    sortable: true,
+    sort: "asc",
     cellRenderer: EditTimeRenderer,
     cellRendererParams: { onClick: openAverageTimeForm }, // Pass the onClick handler
     flex: 1,
@@ -442,8 +455,7 @@ export const getAssignedTabColumns = (onSelectTicket, openAverageTimeForm,openRe
       context: {
         onSelectTicket,
         onReassignTicket: openReassignForm,
-        onSendForRetest:openRetestForm
-        
+        onSendForRetest: openRetestForm,
       },
     },
     width: 10,
@@ -451,13 +463,14 @@ export const getAssignedTabColumns = (onSelectTicket, openAverageTimeForm,openRe
   },
 ];
 
-export const getCompletedTabColumns = (onSelectTicket ,openCloseForm) => [
+export const getCompletedTabColumns = (onSelectTicket, openCloseForm) => [
   {
     headerName: "TICKET #",
     field: "ticket",
     cellRenderer: TicketLinkRenderer,
     cellRendererParams: { onSelectTicket },
-    sortable: false,
+    sortable: true,
+    sort: "asc",
     filter: false,
     flex: 1,
     minWidth: 120,
@@ -466,7 +479,8 @@ export const getCompletedTabColumns = (onSelectTicket ,openCloseForm) => [
   {
     headerName: "PROJECT",
     field: "project",
-    sortable: false,
+    sortable: true,
+    sort: "asc",
     filter: false,
     flex: 1,
     minWidth: 120,
@@ -474,6 +488,7 @@ export const getCompletedTabColumns = (onSelectTicket ,openCloseForm) => [
   {
     headerName: "COMPLETED BY",
     field: "completedBy.name",
+    sortable: false,
     cellRenderer: UserProfileRenderer,
     flex: 1,
     minWidth: 150,
@@ -481,7 +496,8 @@ export const getCompletedTabColumns = (onSelectTicket ,openCloseForm) => [
   {
     headerName: "COMPLETED ON",
     field: "completedOn",
-    sortable: false,
+    sortable: true,
+    sort: "asc",
     filter: false,
     flex: 1,
     minWidth: 150,
@@ -496,7 +512,8 @@ export const getCompletedTabColumns = (onSelectTicket ,openCloseForm) => [
   {
     headerName: "TIME TO FINISH",
     field: "timeToFinish",
-    sortable: false,
+    sortable: true,
+    sort: "asc",
     filter: false,
     flex: 1,
     minWidth: 150,
@@ -512,19 +529,28 @@ export const getCompletedTabColumns = (onSelectTicket ,openCloseForm) => [
     headerName: "",
     field: "moreOptions",
     cellRenderer: MoreOptionsRenderer,
-    cellRendererParams: { context: { onSelectTicket,onCloseTicket:openCloseForm } },
+    cellRendererParams: {
+      context: { onSelectTicket, onCloseTicket: openCloseForm },
+    },
     width: 10,
     pinned: "right",
   },
 ];
 
-export const getDefaultColumns = (onSelectTicket,openAssignForm,openReassignForm,openRetestForm,openCloseForm) => [
+export const getDefaultColumns = (
+  onSelectTicket,
+  openAssignForm,
+  openReassignForm,
+  openRetestForm,
+  openCloseForm
+) => [
   {
     headerName: "TICKET #",
     field: "ticket",
     cellRenderer: TicketLinkRenderer,
     cellRendererParams: { onSelectTicket },
-    sortable: false,
+    sortable: true,
+    sort: "asc",
     filter: false,
     minWidth: 150,
     pinned: "left",
@@ -540,7 +566,8 @@ export const getDefaultColumns = (onSelectTicket,openAssignForm,openReassignForm
   {
     headerName: "CREATED ON",
     field: "createdOn",
-    sortable: false,
+    sortable: true,
+    sort: "asc",
     filter: false,
     flex: 1,
     minWidth: 150,
@@ -548,7 +575,8 @@ export const getDefaultColumns = (onSelectTicket,openAssignForm,openReassignForm
   {
     headerName: "ASSIGNED ON",
     field: "assignedOn",
-    sortable: false,
+    sortable: true,
+    sort: "asc",
     filter: false,
     flex: 1,
     minWidth: 150,
@@ -556,7 +584,8 @@ export const getDefaultColumns = (onSelectTicket,openAssignForm,openReassignForm
   {
     headerName: "COMPLETED ON",
     field: "completedOn",
-    sortable: false,
+    sortable: true,
+    sort: "asc",
     filter: false,
     flex: 1,
     minWidth: 150,
@@ -573,10 +602,14 @@ export const getDefaultColumns = (onSelectTicket,openAssignForm,openReassignForm
     field: "timeToAllocate",
     minWidth: 150,
     flex: 1,
+    sortable: true,
+    sort: "asc",
   },
   {
     headerName: "TIME TO FINISH",
     field: "timeToFinish",
+    sortable: true,
+    sort: "asc",
     minWidth: 150,
     flex: 1,
   },
@@ -590,8 +623,8 @@ export const getDefaultColumns = (onSelectTicket,openAssignForm,openReassignForm
         onAssignTicket: openAssignForm,
         onReassignTicket: openReassignForm,
         onSendForRetest: openRetestForm,
-        onCloseTicket:openCloseForm,
-       }
+        onCloseTicket: openCloseForm,
+      },
     },
     width: 10,
     pinned: "right",
