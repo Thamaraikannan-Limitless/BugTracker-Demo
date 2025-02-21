@@ -44,16 +44,16 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
       window.history.replaceState({}, document.title);
     }
   }, [location.state]);
-   // Function to open the assign form
-   const openAssignForm = () => {
+  // Function to open the assign form
+  const openAssignForm = () => {
     setIsAssignFormOpen(true);
   };
 
   // Function to close the assign form
   const closeAssignForm = () => {
     setIsAssignFormOpen(false);
-  }; 
-// Average time  form function
+  };
+  // Average time  form function
   const openAverageTimeForm = () => {
     setIsAverageTimeFormOpen(true);
   };
@@ -61,7 +61,7 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
   const closeAverageTimeForm = () => {
     setIsAverageTimeFormOpen(false);
   };
-// Reassign form function
+  // Reassign form function
   const openReassignForm = () => {
     setIsReassignFormOpen(true);
   };
@@ -77,8 +77,8 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
   const closeRetestForm = () => {
     setIsRetestFormOpen(false);
   };
-   // Close form function
-   const openCloseForm = () => {
+  // Close form function
+  const openCloseForm = () => {
     setIsCloseFormOpen(true);
   };
 
@@ -192,16 +192,26 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
   const getColumnsForTab = () => {
     switch (activeTab) {
       case "Created":
-        return getCreatedTabColumns(handleTicketSelect, openAssignForm
-        );
+        return getCreatedTabColumns(handleTicketSelect, openAssignForm);
       case "Assigned":
-        return getAssignedTabColumns(handleTicketSelect, openAverageTimeForm,openReassignForm,openRetestForm);
+        return getAssignedTabColumns(
+          handleTicketSelect,
+          openAverageTimeForm,
+          openReassignForm,
+          openRetestForm
+        );
       case "Completed":
       case "ForRetest":
       case "Done":
-        return getCompletedTabColumns(handleTicketSelect,openCloseForm);
+        return getCompletedTabColumns(handleTicketSelect, openCloseForm);
       default:
-        return getDefaultColumns(handleTicketSelect, openAssignForm,openReassignForm,openRetestForm,openCloseForm);
+        return getDefaultColumns(
+          handleTicketSelect,
+          openAssignForm,
+          openReassignForm,
+          openRetestForm,
+          openCloseForm
+        );
     }
   };
 
@@ -254,7 +264,11 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
 
       {/* Overlay */}
 
-      {(isAssignFormOpen || isAverageTimeFormOpen || isReassignFormOpen || isRetestFormOpen || isCloseFormOpen) && (
+      {(isAssignFormOpen ||
+        isAverageTimeFormOpen ||
+        isReassignFormOpen ||
+        isRetestFormOpen ||
+        isCloseFormOpen) && (
         <div
           className="fixed inset-0 bg-[#00000080] bg-opacity-50 z-10"
           onClick={() => {
@@ -273,9 +287,7 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
           isAssignFormOpen ? "translate-x-0" : "translate-x-full"
         } transition-transform duration-500 ease-in-out overflow-y-auto`}
       >
-        {isAssignFormOpen && (
-          <TicketAssignForm onClose={closeAssignForm} />
-        )}
+        {isAssignFormOpen && <TicketAssignForm onClose={closeAssignForm} />}
       </div>
 
       {/* AverageTime Form */}
@@ -289,8 +301,8 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
         )}
       </div>
 
-         {/* ReassignForm */}
-         <div
+      {/* ReassignForm */}
+      <div
         className={`fixed md:top-[72px] top-[56px] right-0 h-full max-h-screen md:w-[480px] bg-[#EDEDED] z-20 w-[380px] shadow-md transform ${
           isReassignFormOpen ? "translate-x-0" : "translate-x-full"
         } transition-transform duration-500 ease-in-out overflow-y-auto`}
@@ -298,25 +310,23 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
         {isReassignFormOpen && <ReassignForm onClose={closeReassignForm} />}
       </div>
 
-      
-         {/* ReTestForm */}
-         <div
+      {/* ReTestForm */}
+      <div
         className={`fixed md:top-[72px] top-[56px] right-0 h-full max-h-screen md:w-[480px] bg-[#EDEDED] z-20 w-[380px] shadow-md transform ${
           isRetestFormOpen ? "translate-x-0" : "translate-x-full"
         } transition-transform duration-500 ease-in-out overflow-y-auto`}
       >
-        {isRetestFormOpen && <RetestForm onClose={closeRetestForm}/>}
+        {isRetestFormOpen && <RetestForm onClose={closeRetestForm} />}
       </div>
 
-       {/* CloseForm */}
-       <div
+      {/* CloseForm */}
+      <div
         className={`fixed md:top-[72px] top-[56px] right-0 h-full max-h-screen md:w-[480px] bg-[#EDEDED] z-20 w-[380px] shadow-md transform ${
           isCloseFormOpen ? "translate-x-0" : "translate-x-full"
         } transition-transform duration-500 ease-in-out overflow-y-auto`}
       >
-        {isCloseFormOpen && <TicketCloseForm onClose={closeCloseForm}/>}
+        {isCloseFormOpen && <TicketCloseForm onClose={closeCloseForm} />}
       </div>
-
 
       <div className="ag-theme-quartz h-[450px] w-full overflow-x-auto">
         <AgGridReact
@@ -324,6 +334,7 @@ const TicketTables = ({ tickets, onSelectTicket }) => {
           columnDefs={columnDefs}
           defaultColDef={defaultColDef}
           pagination={true}
+          suppressMultiSortPriority={true}
           paginationPageSize={paginationPageSize}
           paginationPageSizeSelector={[10, 25, 50, 100]}
           onGridReady={(params) => {

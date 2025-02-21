@@ -84,6 +84,16 @@ section {
   color: #9f9f9f !important; /* White text for contrast */
 }
 
+/* sorting number */
+
+/* 
+<span data-ref="eSortOrder" class="ag-sort-indicator-icon ag-sort-order" aria-hidden="true">1</span>
+*/
+
+.ag-sort-order {
+  display: none !important;
+}
+
 /* Grid data pagination */
 @media (max-width: 465px) {
   .ag-paging-panel {
@@ -122,14 +132,14 @@ section {
   height: 150px !important;
 }
 
- .fc-scrollgrid-sync-inner{
-  text-align:center;
+.fc-scrollgrid-sync-inner {
+  text-align: center;
 }
 .fc-button-group .fc-prev-button {
   background-color: #b0b0b0;
   border: none;
 }
-.fc-button-group .fc-next-button{
+.fc-button-group .fc-next-button {
   background-color: #b0b0b0;
   border: none;
 }
@@ -168,7 +178,7 @@ section {
   .dev-profile-section img {
     margin-left: 0px;
   }
-  .dev-menu{
+  .dev-menu {
     display: flex;
     flex-direction: column;
   }
@@ -180,7 +190,7 @@ section {
   .dev-profile-section img {
     margin-left: 32px;
   }
-  .dev-menu{
+  .dev-menu {
     display: flex;
     flex-direction: row;
   }
@@ -192,8 +202,8 @@ section {
   .dev-profile-section img {
     margin-left: 4px;
   }
-  .dev-menu{
+  .dev-menu {
     display: flex;
-    flex-direction:column;
+    flex-direction: column;
   }
 }
