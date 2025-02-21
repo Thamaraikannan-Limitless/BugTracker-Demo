@@ -90,7 +90,7 @@ export const MoreOptionsRenderer = (props) => {
             </li>
 
             {/* Assign to - Only for Created status */}
-            {(status === "Created" || status ==="All") &&(
+            {(status === "Created" || status === "All") && (
               <li
                 className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                 onClick={() => props.context.onAssignTicket(props.data)}
@@ -342,8 +342,8 @@ export const getCreatedTabColumns = (onSelectTicket, openAssignForm) => [
     field: "project",
     sortable: false,
     filter: false,
-    // flex: 1,
-    minWidth: 300,
+    flex: 1,
+    minWidth: 200,
   },
 
   {
@@ -377,9 +377,9 @@ export const getCreatedTabColumns = (onSelectTicket, openAssignForm) => [
         onSelectTicket,
         onAssignTicket: openAssignForm, // Pass the openAssignForm function
       },
-    }, 
+    },
     flex: 1,
-    minWidth: 100,
+    width: 10,
     pinned: "right",
   },
 ];

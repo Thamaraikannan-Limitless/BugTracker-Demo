@@ -1,12 +1,12 @@
 import { useState, useRef, useEffect } from "react";
 import { FiSearch, FiFilter } from "react-icons/fi";
-import { CiViewColumn } from "react-icons/ci";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 import PropTypes from "prop-types";
 import TicketFilterForm from "./TicketFilterForm";
 import ColumnSelector from "./ColumnSelector";
 import AppliedFiltersDisplay from "./AppliedFiltersDisplay";
+import { TbColumns2 } from "react-icons/tb";
 
 const TableFilters = ({
   searchQuery,
@@ -62,7 +62,7 @@ const TableFilters = ({
         <Tippy content={`Filters`} placement="top" arrow={true}>
           <div className="flex justify-end">
             <FiFilter
-              size={21}
+              size={24}
               className="cursor-pointer font-light"
               onClick={() => setIsFilterOpen(true)}
             />
@@ -81,12 +81,13 @@ const TableFilters = ({
 
       <div className="relative" ref={dropdownRef}>
         <Tippy content={`Toggle Column`} placement="top" arrow={true}>
-          <button
-            className="cursor-pointer"
-            onClick={() => setDropdownOpen(!dropdownOpen)}
-          >
-            <CiViewColumn className="text-2xl font-bold" />
-          </button>
+          <div className="flex justify-end">
+            <TbColumns2
+              size={24}
+              className="cursor-pointer"
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+            />
+          </div>
         </Tippy>
 
         {dropdownOpen && (
