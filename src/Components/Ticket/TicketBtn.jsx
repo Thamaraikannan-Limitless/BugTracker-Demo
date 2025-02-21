@@ -2,22 +2,11 @@ import { useState, useEffect, useRef } from "react";
 import TicketForm from "./TicketForm";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import ReassignForm from "./ReassignForm";
-import RetestForm from "./RetestForm";
-import TicketCloseForm from "./TicketCloseForm"
 import RemarkForm from "./RemarkForm";
 const TicketBtn = () => {
   const [showForm, setShowForm] = useState(false);
-
-  const [reassignForm, setReAssignForm] = useState(false);
-  const [retestForm, setRetestForm] = useState(false);
-  const [closeForm, setCloseForm] = useState(false);
   const [remarkForm, setRemarkForm] = useState(false);
   const formRef = useRef(null);
-
-  const reassignRef = useRef(null);
-  const retestRef = useRef(null);
-  const closeRef = useRef(null);
   const remarkRef = useRef(null);
   
   // Close form when clicking outside
@@ -26,16 +15,7 @@ const TicketBtn = () => {
       if (formRef.current && !formRef.current.contains(event.target)) {
         setShowForm(false);
       }
-     
-      if (reassignRef.current && !reassignRef.current.contains(event.target)) {
-        setReAssignForm(false);
-      }
-      if (retestRef.current && !retestRef.current.contains(event.target)) {
-        setRetestForm(false);
-      }
-      if (closeRef.current && !closeRef.current.contains(event.target)) {
-        setCloseForm(false);
-      }
+    
       if (remarkRef.current && !remarkRef.current.contains(event.target)) {
         setRemarkForm(false);
       }
@@ -70,30 +50,6 @@ const TicketBtn = () => {
           >
             New Ticket
           </button>
-          {/* Reassign Button */}
-          <button
-            onClick={() => setReAssignForm(true)}
-            className="bg-[#034C41] text-white px-4 py-2 rounded-full h-[37px] w-[125px] hover:bg-[#026f63] transition"
-          >
-            ReAssign To
-          </button>
-
-          {/* Retest Button */}
-          <button
-            onClick={() => setRetestForm(true)}
-            className="bg-[#034C41] text-white px-4 py-2 rounded-full h-[37px] w-[125px] hover:bg-[#026f63] transition"
-          >
-            ReTest To
-          </button>
-
-          {/* Close Button */}
-          <button
-            onClick={() => setCloseForm(true)}
-            className="bg-[#034C41] text-white px-4 py-2 rounded-full h-[37px] w-[125px] hover:bg-[#026f63] transition"
-          >
-            Close Form
-          </button>
-
           {/* Remark Button */}
           <button
             onClick={() => setRemarkForm(true)}
@@ -122,63 +78,6 @@ const TicketBtn = () => {
       >
         {showForm && <TicketForm onClose={() => setShowForm(false)} />}
       </div>
-
-      {/* Overlay Background */}
-   {reassignForm && (
-        <div
-          className="fixed inset-0 bg-[#00000080] bg-opacity-50 z-10 "
-          onClick={() => setReAssignForm(false)} // Close form when clicking overlay
-        ></div>
-      )}
-      {/*Re-Assign Form (Opens on click, Closes on clicking outside) */}
-     
-        <div
-          ref={reassignRef}
-          className={`fixed md:top-[72px] top-[56px] right-0 h-full max-h-screen md:w-[480px] bg-[#EDEDED] z-20 w-[380px] shadow-md transform ${
-            reassignForm ? "translate-x-0" : "translate-x-full"
-          } transition-transform duration-500 ease-in-out overflow-y-auto`}
-        >
-         {reassignForm && (  <ReassignForm onClose={() => setReAssignForm(false)}/> )}
-  
-      </div>
-
-
-        {/* Overlay Background */}
-   {retestForm && (
-        <div
-          className="fixed inset-0 bg-[#00000080] bg-opacity-50 z-10 "
-          onClick={() => setRetestForm(false)} // Close form when clicking overlay
-        ></div>
-      )}
-      {/*Re-Test Form (Opens on click, Closes on clicking outside) */}
-     
-        <div
-          ref={retestRef}
-          className={`fixed md:top-[72px] top-[56px] right-0 h-full max-h-screen md:w-[480px] bg-[#EDEDED] z-20 w-[380px] shadow-md transform ${
-            retestForm ? "translate-x-0" : "translate-x-full"
-          } transition-transform duration-500 ease-in-out overflow-y-auto`}
-        >
-         {retestForm && (  <RetestForm onClose={() => setRetestForm(false)}/> )}
-  
-      </div>
-      
-      {/* Close Form (Opens on click, Closes on clicking outside) */}
-      {closeForm && (
-        <div
-          className="fixed inset-0 bg-[#00000080] bg-opacity-50 z-10 "
-          onClick={() => setCloseForm(false)} // Close form when clicking overlay
-        ></div>
-      )}     
-        <div
-          ref={closeRef}
-          className={`fixed md:top-[72px] top-[56px] right-0 h-full max-h-screen md:w-[480px] bg-[#EDEDED] z-20 w-[380px] shadow-md transform ${
-            closeForm ? "translate-x-0" : "translate-x-full"
-          } transition-transform duration-500 ease-in-out overflow-y-auto`}
-        >
-         {closeForm && (  <TicketCloseForm onClose={() => setCloseForm(false)}/> )}
-  
-      </div>
-      
       {/* Remark Form (Opens on click, Closes on clicking outside) */}
        {remarkForm && (
         <div
