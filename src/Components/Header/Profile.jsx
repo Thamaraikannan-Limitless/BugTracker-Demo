@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { IoIosArrowDown } from "react-icons/io";
-import useLoginAuthStore from "../../store/useLoginAuthStore";
+import useLoginAuthStore from "../../Store/useLoginAuthStore";
 import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
