@@ -20,6 +20,7 @@ const TicketForm = ({ onClose }) => {
     project: "",
     ticketNumber: "",
     ticketDate: "",
+    reportedBy:"",
     bugDetails: "",
     priority: "",
     screenshots: [],
@@ -83,6 +84,7 @@ const TicketForm = ({ onClose }) => {
     if (!formData.ticketNumber)
       newErrors.ticketNumber = "Ticket number is required.";
     if (!formData.ticketDate) newErrors.ticketDate = "Ticket date is required.";
+    if (!formData.reportedBy) newErrors.reportedBy = "Please select a ReportedBy.";
     if (!formData.bugDetails)
       newErrors.bugDetails = "Bug details are required.";
     if (!formData.priority) newErrors.priority = "Please select a priority.";
@@ -104,6 +106,7 @@ const TicketForm = ({ onClose }) => {
       project: formData.project,
       ticketNumber: formData.ticketNumber,
       ticketDate: formData.ticketDate,
+      reportedBy: formData.reportedBy,
       bugDetails: formData.bugDetails,
       priority: formData.priority,
       screenshots: formData.screenshots.map((file) => file.name),
@@ -195,7 +198,33 @@ const TicketForm = ({ onClose }) => {
           )}
         </div>
       </div>
+        {/*  Reported by*/}
+        <label className="block mb-2 text-sm font-[400] ">
 
+Reported By <span className="text-red-600">*</span>
+</label>
+<select
+name="reportedBy"
+value={formData.reportedBy}
+onChange={handleChange}
+className={`" border border-gray-400 w-full p-2  rounded-md ${
+
+  errors.reportedBy ? " mb-1 " : " mb-5 "
+
+}"`}
+>
+<option value="">Select reportedBy</option>
+  {
+    data.map((data) => {
+      return (
+        <option key={data.id} >{data.name}</option>
+      )
+    })
+}
+</select>
+{errors.reportedBy && (
+<p className="text-red-500 text-sm mb-2 ">{errors.reportedBy }</p>
+)}
       {/* Bug Details */}
       <div>
         <label className="block mb-2 text-sm font-[400] ">
