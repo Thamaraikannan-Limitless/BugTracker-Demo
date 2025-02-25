@@ -1,11 +1,9 @@
 import DeveloperSummary from "../Components/Dashboard/DeveloperSummary";
-
 import ProjectSummary from "../Components/Dashboard/ProjectSummary";
-import Header from "../Components/Header/Header";
 import { useState } from "react";
 import TicketSummary from "../Components/Dashboard/TicketSummary";
 import DeveloperWise from "../Components/Dashboard/DeveloperWise";
-import { data, ticketData, developerData } from "../Data/DashBoardData";
+import { data, ticketData, developerData } from "../Data/DashBoardData.js";
 
 const Dashboard = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
