@@ -29,6 +29,7 @@ const TicketForm = ({ onClose }) => {
   } = useTicketStore();
   const fileInputRef = useRef(null);
   const [projects, setProjects] = useState([])
+  const [devname, setDevName]=useState([])
   
   useEffect(() => {
     const fetchProjectList = async () => {
@@ -49,6 +50,28 @@ const TicketForm = ({ onClose }) => {
     };
   
     fetchProjectList();
+
+    const fetchDeveloperList = async () => {
+      try {
+        const response = await axios.post(`${baseUrl}/Developer/list`,
+          {},
+          {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+  
+        console.log("API Response:", response.data); // Debugging log
+        const tester = response.data.model.filter((user)=>user.department==="Tester")
+      
+          setDevName(tester);
+        } 
+       catch (err) {
+        console.error("Error fetching project list:", err);
+        setDevName([]); // Prevent undefined errors
+      }
+    }
+    fetchDeveloperList();
   }, []);
   
   // Handle file selection
@@ -167,7 +190,9 @@ const TicketForm = ({ onClose }) => {
             )}
           </div>
         </div>
+
         {/*  Reported by*/}
+        <div className="w-full">
         <label className="block mb-2 text-sm font-[400] ">
           Reported By <span className="text-red-600">*</span>
         </label>
@@ -175,18 +200,19 @@ const TicketForm = ({ onClose }) => {
           name="reportedBy"
           value={formData.reportedBy}
           onChange={handleChange}
-          className={`" border border-gray-400 w-full p-2  rounded-md ${
+          className={` border border-gray-400 w-full p-2 z-10  rounded-md ${
             errors.reportedBy ? " mb-1 " : " mb-5 "
-          }"`}
+          }`}
         >
-          <option value="">Select reportedBy</option>
-          {data.map((data) => {
+          <option value="" >Select reportedBy</option>
+          {devname.map((data) => {
             return <option key={data.id}>{data.name}</option>;
           })}
         </select>
         {errors.reportedBy && (
           <p className="text-red-500 text-sm mb-2 ">{errors.reportedBy}</p>
-        )}
+          )}
+          </div>
         {/* Bug Details */}
         <div>
           <label className="block mb-2 text-sm font-[400] ">
