@@ -3,31 +3,39 @@ import { FaUser, FaLock } from "react-icons/fa";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import useLoginAuthStore from "../../Store/useLoginAuthStore";
 import PropType from "prop-types";
+import { useNavigate } from "react-router-dom";
+
 const LoginForm = ({ setResetPassword, setIsLogin }) => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const { login, error: loginError } = useLoginAuthStore();
+  const navigate = useNavigate();
+  const { login, error: loginError, isLoading } = useLoginAuthStore();
 
-  const isFormValid = username.trim() !== "" && password.trim() !== "";
+  const isFormValid = email.trim() !== "" && password.trim() !== "";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await login(username, password);
+    const success = await login(email, password);
+    if (success) {
+      navigate("/dashboard");
+    }
   };
 
   return (
     <>
       {loginError && <p className="text-red-500 text-sm mb-3">{loginError}</p>}
+
       <form onSubmit={handleSubmit} className="space-y-7">
         <div className="flex items-center border border-white p-3 rounded-lg">
           <FaUser className="text-gray-400 mx-2" />
           <input
-            type="text"
-            placeholder="Username"
+            type="email"
+            placeholder="email"
             className="bg-transparent w-full outline-none text-white"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            autoComplete="email"
           />
         </div>
 
@@ -35,10 +43,11 @@ const LoginForm = ({ setResetPassword, setIsLogin }) => {
           <FaLock className="text-gray-400 mx-2" />
           <input
             type={showPassword ? "text" : "password"}
-            placeholder="Password"
+            placeholder="password"
             className="bg-transparent w-full outline-none text-white"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            autoComplete="current-password"
           />
           <button
             type="button"
@@ -52,11 +61,13 @@ const LoginForm = ({ setResetPassword, setIsLogin }) => {
         <button
           type="submit"
           className={`w-full bg-gradient-to-r from-[#71BF44] to-[#034C41] text-white py-2 rounded-lg ${
-            !isFormValid ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+            !isFormValid || isLoading
+              ? "opacity-50 cursor-not-allowed"
+              : "cursor-pointer"
           }`}
-          disabled={!isFormValid}
+          disabled={!isFormValid || isLoading}
         >
-          LOGIN
+          {isLoading ? "Logging in..." : "LOGIN"}
         </button>
       </form>
 
