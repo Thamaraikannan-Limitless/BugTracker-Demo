@@ -1,42 +1,57 @@
 import { create } from "zustand";
+import api from "../API/AxiosInterceptor";
 
 const useLoginAuthStore = create((set) => ({
   user: JSON.parse(localStorage.getItem("user")) || null,
+  token: localStorage.getItem("token") || null,
   isLoading: false,
   error: null,
 
-  login: async (username, password, navigate) => {
+  login: async (email, password) => {
     set({ isLoading: true, error: null });
 
     try {
       console.log("Login started");
-      let users = JSON.parse(localStorage.getItem("users")) || [];
-      console.log("Existing users:", users);
+      const response = await api.post("/Auth/login", { email, password });
+      const { model, status, message } = response.data;
+      console.log("API Response:", response.data);
+      console.log(message);
 
-      const user = users.find(
-        (u) => u.username === username && u.password === password
-      );
+      if (status === "Success" && model) {
+        console.log("User found, logging in:", model.name);
+        // Store the complete user model
+        localStorage.setItem("user", JSON.stringify(model));
+        localStorage.setItem("token", model.token);
 
-      if (user) {
-        console.log("User found, logging in:", user);
-        localStorage.setItem("user", JSON.stringify(user));
-        set({ user, isLoading: false, error: null });
-        navigate("/dashboard");
+        console.log(localStorage.getItem("token"));
+
+        set({
+          user: model, // Store the full user object
+          token: model.token,
+          isLoading: false,
+          error: null,
+        });
+        return true; // Successful login
       } else {
-        console.log("Invalid username or password");
-        set({ error: "Invalid username or password", isLoading: false });
+        console.log("Invalid email or password");
+        set({ error: "Invalid email or password", isLoading: false });
+        return false;
       }
     } catch (err) {
       console.error("Login error:", err);
-      set({ error: "Error logging in", isLoading: false });
+      set({
+        error: err.response?.data?.message || "Login failed",
+        isLoading: false,
+      });
+      return false;
     }
   },
 
-  logout: (navigate) => {
+  logout: () => {
     console.log("User logged out");
     localStorage.removeItem("user");
-    set({ user: null, error: null });
-    navigate("/");
+    localStorage.removeItem("token");
+    set({ user: null, token: null, error: null });
   },
 }));
 

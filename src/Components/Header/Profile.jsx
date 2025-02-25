@@ -34,7 +34,7 @@ const Profile = () => {
     }
     return (
       <div className="w-12 h-12 rounded-full flex items-center justify-center bg-gray-300 text-white">
-        {user?.username.charAt(0).toUpperCase()}
+        {user?.name.charAt(0).toUpperCase()}
       </div>
     );
   };
@@ -58,7 +58,7 @@ const Profile = () => {
           </label>
           <div className="text-white ">
             <h6 className="text-xs font-bold leading-none pt-0">
-              {user?.username}{" "}
+              {user?.name}
               <span className="text-[10px] font-extralight block leading-0 pt-1 mt-1">
                 Ui/Ux Designer
               </span>
@@ -79,7 +79,6 @@ const Profile = () => {
             >
               Log Out
             </li>
-  
           </ul>
         </nav>
       )}
