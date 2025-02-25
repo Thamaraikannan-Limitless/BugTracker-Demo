@@ -1,11 +1,39 @@
 import { create } from "zustand";
 import api from "../API/AxiosInterceptor";
 
-const useLoginAuthStore = create((set) => ({
+const useLoginAuthStore = create((set, get) => ({
   user: JSON.parse(localStorage.getItem("user")) || null,
   token: localStorage.getItem("token") || null,
-  isLoading: false,
+  isAuthenticated: !!localStorage.getItem("token"),
+  isLoading: true, // Start with loading state
   error: null,
+
+  // Function to check authentication status on app load
+  checkAuth: () => {
+    const { isAuthenticated } = get(); // Get current state to prevent unnecessary updates
+    const token = localStorage.getItem("token");
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    // Only update state if authentication has actually changed
+    if (token && user && !isAuthenticated) {
+      set({
+        user: user,
+        token: token,
+        isAuthenticated: true,
+        isLoading: false,
+      });
+    } else if (!token || !user) {
+      set({
+        user: null,
+        token: null,
+        isAuthenticated: false,
+        isLoading: false,
+      });
+    } else {
+      // Prevent unnecessary re-renders by setting isLoading to false only if needed
+      set({ isLoading: false });
+    }
+  },
 
   login: async (email, password) => {
     set({ isLoading: true, error: null });
@@ -13,25 +41,24 @@ const useLoginAuthStore = create((set) => ({
     try {
       console.log("Login started");
       const response = await api.post("/Auth/login", { email, password });
-      const { model, status, message } = response.data;
+      const { model, status } = response.data;
       console.log("API Response:", response.data);
-      console.log(message);
 
       if (status === "Success" && model) {
         console.log("User found, logging in:", model.name);
-        // Store the complete user model
+
+        // Store user & token in localStorage
         localStorage.setItem("user", JSON.stringify(model));
         localStorage.setItem("token", model.token);
 
-        console.log(localStorage.getItem("token"));
-
         set({
-          user: model, // Store the full user object
+          user: model,
           token: model.token,
+          isAuthenticated: true,
           isLoading: false,
           error: null,
         });
-        return true; // Successful login
+        return true;
       } else {
         console.log("Invalid email or password");
         set({ error: "Invalid email or password", isLoading: false });
@@ -49,9 +76,19 @@ const useLoginAuthStore = create((set) => ({
 
   logout: () => {
     console.log("User logged out");
+
+    // Clear localStorage
     localStorage.removeItem("user");
     localStorage.removeItem("token");
-    set({ user: null, token: null, error: null });
+
+    // Reset Zustand state
+    set({
+      user: null,
+      token: null,
+      isAuthenticated: false,
+      isLoading: false,
+      error: null,
+    });
   },
 }));
 
