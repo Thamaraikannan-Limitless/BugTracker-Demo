@@ -1,0 +1,5 @@
+export const baseUrl =
+  "https://lms-dev-apsr-09-hxf6aefxbpgjgxcm.centralindia-01.azurewebsites.net";
+
+export const token =
+  " eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InRpY2tldC10cmFja2VyQGdtYWlsLmNvbSIsIk5hbWUiOiJ0aWNrZXQtdHJhY2tlciIsIlVzZXJJZCI6MSwiZXhwIjoxNzQwNjM4OTQ5LCJpc3MiOiJidWd0cmFja2VyIiwiYXVkIjoiYnVnIHRyYWNrZXIifQ.Ue3H4O7zug6iG_KsG_DPq_Qw5FhkiFJbbxqAqIZgT9s";

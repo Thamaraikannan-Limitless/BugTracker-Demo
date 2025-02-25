@@ -1,28 +1,24 @@
 // Update TicketDetailWrapper.jsx
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import TicketDetails from "./TicketDetails";
-import { rowData } from "../../Data/TicketData";
+import { rowData } from "../../Data/TicketData.js";
 
 const TicketDetailWrapper = () => {
   const { ticketId } = useParams();
 
-
   const navigate = useNavigate();
   const location = useLocation();
 
- 
   const activeTab = location.state?.activeTab || "All";
   const parsedTicketId = parseInt(ticketId, 10);
 
   const ticket = rowData.find((t) => {
-
     return t.id === parsedTicketId;
-  
   });
 
   const handleBack = () => {
-    navigate("/ticket", { 
-      state: { activeTab }
+    navigate("/ticket", {
+      state: { activeTab },
     });
   };
 
